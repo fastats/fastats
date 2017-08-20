@@ -17,6 +17,6 @@ before_install:
   - pip install sphinx_rtd_theme
 script:
   - pytest
-  - sphinx-build docs/source docs/build -W
+#  - sphinx-build docs/source docs/build -W
 after_success:
     - coveralls
