@@ -5,34 +5,32 @@
 """
 
 import ast
-from copy import copy
 import inspect
-from inspect import signature, Parameter, isfunction, Signature
-from pprint import pprint
 import re
+from inspect import isfunction, signature
+from pprint import pprint
 from types import CodeType
 
 from fastats.core.ast_transforms.copy_func import copy_func
-from fastats.core.ast_transforms.transformer import Transformer
+from fastats.core.ast_transforms.transformer import CallTransform
 
 
 class AstProcessor:
-    def __init__(self, top_level_func, overrides, replaced):
+    def __init__(self, top_level_func, overrides, replaced, new_funcs=None):
         assert isfunction(top_level_func)
 
-        self.top_level_func = copy_func(top_level_func)
+        self.top_level_func = copy_func(top_level_func, new_funcs or {})
+        self._new_funcs = new_funcs or {}
         self._sig = signature(self.top_level_func)
         self._overrides = overrides
         self._replaced = replaced
         self._debug = self._overrides.get('debug')
 
     def process(self):
-        print('Globs: ', self.top_level_func, id(self.top_level_func.__globals__))
-
         source = inspect.getsource(self.top_level_func)
         tree = ast.parse(source)
         globs = self.top_level_func.__globals__
-        t = Transformer(self._overrides, globs, self._replaced)
+        t = CallTransform(self._overrides, globs, self._replaced, self._new_funcs)
         new_tree = t.visit(tree)
 
         # TODO remove the fs decorator from within the ast code
@@ -43,17 +41,19 @@ class AstProcessor:
 
         code_obj = self.recompile(new_tree, '<fastats>', 'exec')
 
-        func_copy = copy(self.top_level_func)
-        func_copy.__code__ = code_obj
-        print('Copy: ', self.top_level_func, id(func_copy.__globals__))
-        return func_copy
+        self.top_level_func.__code__ = code_obj
+        return self.top_level_func
 
     def recompile(self, source, filename, mode, flags=0, firstlineno=1, privateprefix=None):
-        """ recompile output of uncompile back to a code object. source may also be preparsed AST """
+        """
+        This is based on an ActiveState recipe by Oren Tirosh:
+        http://code.activestate.com/recipes/578353-code-to-source-and-back/
+
+        Recompiles output back to a code object.
+        Source may also be preparsed AST.
+        """
         a = source
         node = a.body[0]
-        if not isinstance(node, ast.FunctionDef):
-            raise TypeError('Expecting function AST node')
 
         c0 = compile(a, filename, mode, flags, True)
 
@@ -72,7 +72,8 @@ class AstProcessor:
                 isprivate = re.compile('^__.*(?<!__)$').match
                 return tuple(privateprefix + name if isprivate(name) else name for name in names)
 
-            c = CodeType(c.co_argcount, c.co_nlocals, c.co_stacksize, c.co_flags, c.co_code, c.co_consts,
-                     fixnames(c.co_names), fixnames(c.co_varnames), c.co_filename, c.co_name,
-                     c.co_firstlineno, c.co_lnotab, c.co_freevars, c.co_cellvars)
+            c = CodeType(
+                c.co_argcount, c.co_nlocals, c.co_stacksize, c.co_flags, c.co_code, c.co_consts,
+                fixnames(c.co_names), fixnames(c.co_varnames), c.co_filename, c.co_name,
+                c.co_firstlineno, c.co_lnotab, c.co_freevars, c.co_cellvars)
         return c

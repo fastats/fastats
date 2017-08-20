@@ -26,7 +26,6 @@ def parent(a):
 
 
 def double(x):
-    print(f'Double called with {x}')
     return x + x
 
 
@@ -48,13 +47,14 @@ def test_top_level_square_to_add():
 
 
 def test_second_level_square_to_add():
-    # original = fs(quad)(3)
-    # assert original == 3**4
+    original = fs(quad)(3)
+    assert original == 3**4
 
-    # potentially doesn't like
-    # nested hierarchies.
     new = fs(quad)(3, square=double)
     assert new == 6 * 3**2
+
+    assert quad(3) == 81
+    assert cube(3) == 27
 
 
 def test_square_to_add_ast_replace():
@@ -64,6 +64,8 @@ def test_square_to_add_ast_replace():
     """
     add = parent(2, square=double)
     assert add == 2 * 3**4
+
+    assert double(2) == 4
 
 
 def test_square_to_add_no_side_effects():
@@ -86,19 +88,22 @@ def test_square_to_add_no_side_effects():
     assert final == 4**5
 
 
-# def test_multiple_ast_replacements():
-#     # Does the normal function work?
-#     original = parent(3)
-#     assert original == 4**5
-#
-#     add = parent(3, square=double)
-#     assert add == 2 * 4**4
-#
-#     triple = parent(3, square=triple)
-#     assert add == ???
-#
-#     final = parent(2)
-#     assert final == 3**5
+def test_multiple_ast_replacements():
+    # Does the normal function work?
+    original = parent(3)
+    assert original == 4**5
+
+    add = parent(3, square=double)
+    assert add == 2 * 4**4
+
+    trip = parent(3, square=triple)
+    assert trip == 768
+
+    final = parent(2)
+    assert final == 3**5
+
+    assert triple(3) == 9
+    assert square(4) == 16
 
 
 if __name__ == '__main__':
