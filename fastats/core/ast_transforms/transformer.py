@@ -1,18 +1,29 @@
-"""
-Update any functions in the tree with the args
-specified.
-"""
 
-from logging import info
 import ast
 
 
 class Transformer(ast.NodeTransformer):
+    """
+    The class which performs the AST mutations.
+
+    Warning
+    -------
+    `func_globals` and `replaced` are both **mutated**, not copied,
+    by this class.
+
+    `func_globals` is required as it's the `__globals__` dict on
+    each function object. Unfortunately this dict can't be replaced
+    (it is supposedly read-only), but given that it's a normal dict,
+    it can be modified.
+
+    Therefore during the `code_transform` context manager, we modify
+    the globals dict with the ast-transformed function objects, then
+    replace the original function objects in the context `exit` code.
+    """
     def __init__(self, change_params: dict, func_globals: dict, replaced: dict):
         self._params = change_params
         self._globals = func_globals
         self._replaced = replaced
-        # super().__init__()
 
     def visit_Call(self, node):
         print('Call: ', node.func.id)
@@ -31,7 +42,6 @@ class Transformer(ast.NodeTransformer):
             proc = AstProcessor(orig_inner_func, self._params, self._replaced)
             new_inner_func = proc.process()
             self._globals[node.func.id] = new_inner_func
-
         ast.fix_missing_locations(node)
         return node
 

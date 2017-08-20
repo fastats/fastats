@@ -34,37 +34,36 @@ def triple(x):
     return double(x) + x
 
 
-# def test_top_level_square_to_add():
-#     original = fs(cube)(3)
-#     assert original == 3**3
-#
-#     new = fs(cube)(3, square=double)
-#     assert new == 6 * 3
-#
-#     # Ensure the standalone functions
-#     # still work as normal.
-#     assert square(3) == 9
-#     assert cube(3) == 27
+def test_top_level_square_to_add():
+    original = fs(cube)(3)
+    assert original == 3**3
+
+    new = fs(cube)(3, square=double)
+    assert new == 6 * 3
+
+    # Ensure the standalone functions
+    # still work as normal.
+    assert square(3) == 9
+    assert cube(3) == 27
 
 
-# def test_second_level_square_to_add():
-#     # original = fs(quad)(3)
-#     # assert original == 3**4
-#
-#     # TODO : this fails.
-#     # potentially doesn't like
-#     # nested hierarchies.
-#     new = fs(quad)(3, square=double)
-#     assert new == 6 * 3**2
+def test_second_level_square_to_add():
+    # original = fs(quad)(3)
+    # assert original == 3**4
 
-#
-# def test_square_to_add_ast_replace():
-#     """
-#     This confirms that the nested AST
-#     replacement actually works.
-#     """
-#     add = parent(2, square=double)
-#     assert add == 2 * 3**4
+    # potentially doesn't like
+    # nested hierarchies.
+    new = fs(quad)(3, square=double)
+    assert new == 6 * 3**2
+
+
+def test_square_to_add_ast_replace():
+    """
+    This confirms that the nested AST
+    replacement actually works.
+    """
+    add = parent(2, square=double)
+    assert add == 2 * 3**4
 
 
 def test_square_to_add_no_side_effects():

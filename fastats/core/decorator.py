@@ -17,6 +17,7 @@ def code_transform(func, replaced, debug=True):
     try:
         yield original
     finally:
+        # import pdb; pdb.set_trace()
         for k, v in replaced.items():
             print(f'Replacing: {k} in globals')
             func.__globals__[k] = v

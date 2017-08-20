@@ -12,26 +12,26 @@ from pprint import pprint
 import re
 from types import CodeType
 
+from fastats.core.ast_transforms.copy_func import copy_func
 from fastats.core.ast_transforms.transformer import Transformer
 
 
 class AstProcessor:
     def __init__(self, top_level_func, overrides, replaced):
-        self.top_level_func = copy(top_level_func)
+        assert isfunction(top_level_func)
+
+        self.top_level_func = copy_func(top_level_func)
         self._sig = signature(self.top_level_func)
         self._overrides = overrides
         self._replaced = replaced
         self._debug = self._overrides.get('debug')
 
     def process(self):
-        # import pdb; pdb.set_trace()
-        assert isfunction(self.top_level_func)
-        assert isinstance(self._sig, Signature)
         print('Globs: ', self.top_level_func, id(self.top_level_func.__globals__))
 
         source = inspect.getsource(self.top_level_func)
         tree = ast.parse(source)
-        globs = copy(self.top_level_func.__globals__)
+        globs = self.top_level_func.__globals__
         t = Transformer(self._overrides, globs, self._replaced)
         new_tree = t.visit(tree)
 
