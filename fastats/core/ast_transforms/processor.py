@@ -11,8 +11,12 @@ from inspect import isfunction, signature
 from pprint import pprint
 from types import CodeType
 
+from numba import jit
+
 from fastats.core.ast_transforms.copy_func import copy_func
 from fastats.core.ast_transforms.transformer import CallTransform
+
+_jit = jit(nopython=True, nogil=True)
 
 
 class AstProcessor:

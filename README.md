@@ -3,6 +3,8 @@ A pure python library for benchmarked, scalable numerics, built using [numba](ht
 
 ---
 
+### **This is pre-release software, there are no packages published yet.**
+
 ## Aims/Reasoning
 
 
@@ -80,7 +82,11 @@ All contributions are welcome :)
 If you would like to contribute anything, open a PR (issues are turned off):
 
 - To report a bug, open a PR with a unittest that fails.
-- To request an API change, open a PR with a failing unittest showing your preferred API.
-- To request new functionality, open a PR with a failing unittest that shows your idea.
+- To request an API change/new functionality, open a PR with a failing unittest showing your preferred API.
+- To submit a fix, open a PR with passing unittests + doctests. Doctests should be minimal, and serve as API docs for the most common use cases, unittests should be exhaustive.
 
 Simples :)
+
+#### Sponsors
+
+

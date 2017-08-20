@@ -1,6 +1,6 @@
 
 from numpy import cos, tan, isnan
-from pytest import approx, raises
+from pytest import approx, raises, warns
 
 from fastats.optimise.root_finding import newton_raphson
 
@@ -71,7 +71,8 @@ def test_non_converging():
     def tan_func(x):
         return x - tan(x)
 
-    value = newton_raphson(5.0, 1e-6, root=tan_func)
+    with warns(RuntimeWarning):
+        value = newton_raphson(5.0, 1e-6, root=tan_func)
     assert isnan(value)
 
 

@@ -1,5 +1,4 @@
 
-import nose
 from numpy.testing import assert_almost_equal
 
 from fastats.maths.norm_cdf import norm_cdf
@@ -19,4 +18,5 @@ def test_norm_cdf_dartmouth():
 
 
 if __name__ == '__main__':
-    nose.runmodule()
+    import pytest
+    pytest.main()

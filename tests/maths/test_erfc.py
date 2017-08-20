@@ -31,4 +31,5 @@ def test_erfc_negative_input():
 
 
 if __name__ == '__main__':
-    nose.runmodule()
+    import pytest
+    pytest.main()

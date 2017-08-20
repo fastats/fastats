@@ -1,5 +1,4 @@
 
-
 import numpy as np
 
 from fastats.core.decorator import fs
