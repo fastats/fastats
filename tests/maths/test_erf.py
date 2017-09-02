@@ -1,5 +1,4 @@
 import numpy as np
-from nose.tools import assert_true
 from scipy import special
 
 from fastats.maths.erf import erf
@@ -11,7 +10,6 @@ def test_erf_basic_sanity():
     which is from U. Waterloo, Canada.
     """
     test_data = ((0.0, 0.0000000000),
-                 (0.0, 0.0000000000),
                  (0.5, 0.5204998778),
                  (1.0, 0.8427007929),
                  (1.5, 0.9661051465),
@@ -24,16 +22,16 @@ def test_erf_basic_sanity():
 
     x, expected = zip(*test_data)
     output = erf(np.array(x))
-    assert_true(np.allclose(expected, output, atol=1.5e-7))  # max error 1.5e-7
+    assert np.allclose(expected, output, atol=1.5e-7)  # max error 1.5e-7
 
 
-def test_erf_array_input_reconcile_to_scipy():
+def test_erf_reconcile_to_scipy():
     x = np.linspace(-5.0, 5.0, 400)
     expected = special.erf(x)
     output = erf(x)
-    assert_true(np.allclose(expected, output, atol=1.5e-7))  # max error 1.5e-7
+    assert np.allclose(expected, output, atol=1.5e-7)  # max error 1.5e-7
 
 
 if __name__ == '__main__':
-    import nose
-    nose.runmodule()
+    import pytest
+    pytest.main()

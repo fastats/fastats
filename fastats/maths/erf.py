@@ -4,7 +4,7 @@ import numpy as np
 def erf(x):
     """
     Returns error function for an input np.array of floats (x) using
-    Abramowitz and Stegun method (maximum error: 1.5×10−7)
+    Abramowitz and Stegun method (maximum error: 1.5e−7)
     """
     sign = np.ones_like(x)
     sign[x < 0] = -1.0
