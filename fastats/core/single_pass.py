@@ -14,7 +14,6 @@ def single_pass(x):
     Performs a single iteration over the first
     dimension of `x`.
 
-
     Tests
     -----
     >>> def square(x):

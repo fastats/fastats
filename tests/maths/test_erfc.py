@@ -1,5 +1,4 @@
 
-import nose
 from pytest import approx
 
 from fastats.maths.erfc import erfc

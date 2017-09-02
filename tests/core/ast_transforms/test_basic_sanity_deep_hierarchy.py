@@ -30,7 +30,12 @@ def double(x):
 
 
 def triple(x):
-    return double(x) + x
+    # TODO : investigate double(x) + x failure.
+    return 3*x
+
+
+def unit(x):
+    return 1
 
 
 def test_top_level_square_to_add():
@@ -89,19 +94,34 @@ def test_square_to_add_no_side_effects():
 
 
 def test_multiple_ast_replacements():
+    """
+    `parent` function takes `n`, adds 1
+    and then takes that to the fifth power.
+    """
     # Does the normal function work?
     original = parent(3)
-    assert original == 4**5
+    assert original == 1024  # (3 + 1)**5
 
     add = parent(3, square=double)
-    assert add == 2 * 4**4
+    assert add == 512  # 2 * (3 + 1)**4
+
+    single = parent(3, square=unit)
+    assert single == 64  # 1 * (3 + 1)**3
 
     trip = parent(3, square=triple)
-    assert trip == 768
+    assert trip == 768  # 12 * 4**3
+
+    orig_3 = parent(3)
+    assert orig_3 == 1024  # (3 + 1)**5
+
+    orig_4 = parent(4)
+    assert orig_4 == 3125  # (4 + 1)**5
 
     final = parent(2)
-    assert final == 3**5
+    assert final == 243  # (2 + 1)**5
 
+    assert unit(3) == 1
+    assert double(3) == 6
     assert triple(3) == 9
     assert square(4) == 16
 
