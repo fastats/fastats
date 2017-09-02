@@ -1,4 +1,7 @@
 # fastats
+[![Build Status](https://travis-ci.org/fastats/fastats.svg?branch=master)](https://travis-ci.org/fastats/fastats)
+[![Coverage Status](https://coveralls.io/repos/github/fastats/fastats/badge.svg?branch=master)](https://coveralls.io/github/fastats/fastats?branch=master)
+
 A pure python library for benchmarked, scalable numerics, built using [numba](http://numba.pydata.org/).
 
 ---
@@ -24,21 +27,17 @@ fastats (ie, fast-stats) tries to help with both of these by using [numba](http:
 Finding the roots of an equation is central to much of machine learning. For monotonic functions we can use a Newton-Raphson solver to find the root:
 
 ```python
+from fastats.api import newton_raphson
 
-from fastats.api import make_newton
+def my_func(x):
+    return x**3 - x - 1
 
-def my_function(x, y, z):
-    return blah
-
-fast = make_newton(my_function, x, y, z)
-
-result = fast(x0=0.025)
-
+result = newton_raphson(0.025, 1e-6, root=my_func)
 ```
 
 
 ```bash
->>> %timeit fast(x, y, z)
+>>> %timeit newton_raphson(0.025, 1e-6, root=my_func)
 
 ```
 
@@ -72,7 +71,6 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 - Python >= 3.5
 - Numba >= 0.33
-
 
 
 #### Contributing
