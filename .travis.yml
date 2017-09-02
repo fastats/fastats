@@ -10,6 +10,7 @@ before_install:
   - pip install scipy
   - pip install scikit-learn
   - pip install numba
+  - pip install hypothesis
   - pip install pytest pytest-cov
   - pip install python-coveralls
   - pip install coveralls
