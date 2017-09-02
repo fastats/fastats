@@ -12,6 +12,10 @@ def test_basic_sanity():
     assert data[1] == -9
     assert data[-1] == 9
 
+    assert clip(5)(10) == 5
+    assert clip(5)(-9) == -5
+    assert clip(5)(2) == 2
+
     result = single_pass(data, value=clip(5))
 
     assert result[0] == -5

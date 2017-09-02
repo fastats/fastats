@@ -1,8 +1,3 @@
-"""
-(1) Get kwargs from top-level func to override (now done in decorator)
-(2) Work out what to do with each one (is it a func, a const etc)
-(3) Replace each function call from leaf nodes upwards
-"""
 
 import ast
 import inspect
@@ -13,16 +8,13 @@ from types import CodeType
 
 from numba import jit
 
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.core.ast_transforms.copy_func import copy_func
 from fastats.core.ast_transforms.transformer import CallTransform
-
-_jit = jit(nopython=True, nogil=True)
 
 
 class AstProcessor:
     def __init__(self, top_level_func, overrides, replaced, new_funcs=None):
-        assert isfunction(top_level_func)
-
         self.top_level_func = copy_func(top_level_func, new_funcs or {})
         self._new_funcs = new_funcs or {}
         self._sig = signature(self.top_level_func)
@@ -46,9 +38,9 @@ class AstProcessor:
         code_obj = self.recompile(new_tree, '<fastats>', 'exec')
 
         self.top_level_func.__code__ = code_obj
-        return self.top_level_func
+        return jit(self.top_level_func)
 
-    def recompile(self, source, filename, mode, flags=0, firstlineno=1, privateprefix=None):
+    def recompile(self, source, filename, mode, flags=0, privateprefix=None):
         """
         This is based on an ActiveState recipe by Oren Tirosh:
         http://code.activestate.com/recipes/578353-code-to-source-and-back/
@@ -74,10 +66,12 @@ class AstProcessor:
         if privateprefix is not None:
             def fixnames(names):
                 isprivate = re.compile('^__.*(?<!__)$').match
-                return tuple(privateprefix + name if isprivate(name) else name for name in names)
+                return tuple(privateprefix + name if isprivate(name)
+                             else name for name in names)
 
             c = CodeType(
-                c.co_argcount, c.co_nlocals, c.co_stacksize, c.co_flags, c.co_code, c.co_consts,
-                fixnames(c.co_names), fixnames(c.co_varnames), c.co_filename, c.co_name,
+                c.co_argcount, c.co_nlocals, c.co_stacksize, c.co_flags,
+                c.co_code, c.co_consts, fixnames(c.co_names),
+                fixnames(c.co_varnames), c.co_filename, c.co_name,
                 c.co_firstlineno, c.co_lnotab, c.co_freevars, c.co_cellvars)
         return c

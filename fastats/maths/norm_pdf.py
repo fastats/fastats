@@ -10,6 +10,15 @@ def norm_pdf(x, mu, sigma):
     PDF across `x` for a normal
     distribution with mean `mu` and
     standard deviation `sigma`.
+
+    >>> norm_pdf(0, 0.0, 1.0)
+    0.3989422804014327
+    >>> norm_pdf(-0.1, 0.0, 1.0)
+    0.39695254747701181
+    >>> norm_pdf(0.1, 0.0, 1.0)
+    0.39695254747701181
+    >>> norm_pdf(7, 5, 5) # doctest: +ELLIPSIS
+    0.073654028060664...
     """
     a = abs(sigma)
     u = (x - mu) / a

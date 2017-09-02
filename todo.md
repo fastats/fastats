@@ -5,6 +5,7 @@ core
 - isf
 - norm_cdf
 - norm_pdf
+- norm_inv
 - ppf
 - rv
 - sf

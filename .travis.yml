@@ -7,7 +7,10 @@ python:
   - 3.6-dev
 before_install:
   - pip install numpy
+  - pip install scipy
+  - pip install scikit-learn
   - pip install numba
+  - pip install hypothesis
   - pip install pytest pytest-cov
   - pip install python-coveralls
   - pip install coveralls

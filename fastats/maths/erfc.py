@@ -3,7 +3,12 @@ import numpy as np
 
 
 def erfc(x):
-    """Complementary error function."""
+    """
+    Complementary error function.
+
+    >>> erfc(0.5)  # doctest: +ELLIPSIS
+    0.47950009227...
+    """
     z = np.abs(x)
     t = 1.0 / (1.0 + 0.5*z)
     r = t * np.exp(-z*z-1.26551223+t*(1.00002368+t*(.37409196+
@@ -14,3 +19,8 @@ def erfc(x):
         return r
     else:
         return 2. - r
+
+
+if __name__ == '__main__':
+    import pytest
+    pytest.main()

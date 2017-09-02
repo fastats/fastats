@@ -1,7 +1,9 @@
+
 import numpy as np
+from pytest import approx
 from scipy import special
 
-from fastats.maths.erf import erf
+from fastats.maths import erf
 
 
 def test_erf_basic_sanity():
