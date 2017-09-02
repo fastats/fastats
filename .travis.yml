@@ -8,6 +8,7 @@ python:
 before_install:
   - pip install numpy
   - pip install scipy
+  - pip install scikit-learn
   - pip install numba
   - pip install pytest pytest-cov
   - pip install python-coveralls
