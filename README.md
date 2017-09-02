@@ -87,4 +87,4 @@ Simples :)
 
 #### Sponsors
 
-
+[![Pico Software](http://pico-software.com/images/picosoftware.png | width=200)](https://www.pico-software.com)
