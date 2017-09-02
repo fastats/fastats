@@ -1,7 +1,6 @@
 
 
 core
-- erf
 - erfc
 - isf
 - norm_cdf
