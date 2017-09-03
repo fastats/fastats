@@ -1,6 +1,6 @@
 
 from numpy.linalg import inv
-from scipy import linalg
+from scipy.linalg import qr, solve_triangular
 
 
 def ols(A, b):
@@ -19,7 +19,7 @@ def ols(A, b):
     return inv(A.T @ A) @ A.T @ b
 
 
-def ols_qr(A,b):
+def ols_qr(A, b):
     """
     Ordinary Least-Squares Regression
     Coefficients Estimation.
@@ -28,8 +28,8 @@ def ols_qr(A,b):
     to OLS; Ax = b, A = QR, QRx = b,
     therefore Rx = Q.T * b
     """
-    Q, R = linalg.qr(A, mode='economic')
-    return linalg.solve_triangular(R, Q.T @ b)
+    Q, R = qr(A, mode='economic')
+    return solve_triangular(R, Q.T @ b)
 
 
 if __name__ == '__main__':
