@@ -2,13 +2,12 @@
 import ast
 import inspect
 import re
-from inspect import isfunction, signature
+from inspect import signature
 from pprint import pprint
 from types import CodeType
 
 from numba import jit
 
-from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.core.ast_transforms.copy_func import copy_func
 from fastats.core.ast_transforms.transformer import CallTransform
 
