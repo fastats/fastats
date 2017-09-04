@@ -33,7 +33,7 @@ class CallTransform(ast.NodeTransformer):
         self._new_funcs = new_funcs
 
     def visit_Call(self, node):
-        node = self.generic_visit(node)
+
         if hasattr(node.func, 'attr'):
             # This will be hit where you have module
             # functions such as np.zeros_like.
@@ -64,11 +64,13 @@ class CallTransform(ast.NodeTransformer):
             orig_inner_func = self._globals[node.func.id]
             self._replaced[node.func.id] = orig_inner_func
             proc = AstProcessor(
-                orig_inner_func, self._params, self._replaced, self._new_funcs
+                orig_inner_func, self._params,
+                self._replaced, self._new_funcs
             )
             new_inner_func = proc.process()
             self._globals[node.func.id] = convert_to_jit(new_inner_func)
         ast.fix_missing_locations(node)
+        node = self.generic_visit(node)
         return node
 
     def modify_function_name(self, call_node):

@@ -2,7 +2,8 @@
 import math
 
 import numpy as np
-from pytest import approx, raises
+from numpy import sum as nsum
+from pytest import approx
 
 from fastats import single_pass
 
@@ -101,6 +102,48 @@ def test_nested_math_function_supported():
     assert result[1] == approx(1.38629436)
     assert result[2] == approx(2.19722462)
     assert result.sum() == approx(25.603655)
+
+
+def test_multi_column_support():
+    """
+    This still needs work - sum(x)/len(x) fails
+    with a NameError, and the default return value
+    is the same shape as input - ie, no reduction
+    takes place.
+    """
+    data = np.array(range(10), dtype='float').reshape((5, 2))
+
+    def mean(x):
+        return np.sum(x) / len(x)
+
+    result = single_pass(data, value=mean)
+
+    # TODO : update internals to be able to
+    # reduce dimensions for reductions such as
+    # mean
+    assert result[0][0] == approx(0.5)
+    assert result[1][0] == approx(2.5)
+    assert result[2][0] == approx(4.5)
+    assert result[3][0] == approx(6.5)
+    assert result[4][0] == approx(8.5)
+
+    # TODO: is sum not supported?
+    #
+    # def mean_py(x):
+    #     return sum(x) / len(x)
+    #
+    # result_py = single_pass(data, value=mean_py)
+    #
+    # assert result_py[0][0] == approx(0.5)
+    # assert result_py[4][0] == approx(8.5)
+
+    def mean_npy(x):
+        return nsum(x) / len(x)
+
+    result_npy = single_pass(data, value=mean_npy)
+
+    assert result_npy[0][0] == approx(0.5)
+    assert result_npy[4][0] == approx(8.5)
 
 
 if __name__ == '__main__':
