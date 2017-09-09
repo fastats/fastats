@@ -1,6 +1,7 @@
 # fastats
 [![Build Status](https://travis-ci.org/fastats/fastats.svg?branch=master)](https://travis-ci.org/fastats/fastats)
-[![Coverage Status](https://coveralls.io/repos/github/fastats/fastats/badge.svg?branch=master)](https://coveralls.io/github/fastats/fastats?branch=master)
+[![codecov](https://codecov.io/gh/fastats/fastats/branch/master/graph/badge.svg)](https://codecov.io/gh/fastats/fastats)
+
 
 A pure python library for benchmarked, scalable numerics, built using [numba](http://numba.pydata.org/).
 

@@ -11,13 +11,13 @@ before_install:
   - pip install scikit-learn
   - pip install numba
   - pip install hypothesis
-  - pip install pytest pytest-cov
-  - pip install python-coveralls
-  - pip install coveralls
+  - pip install pytest
+  - pip install pytest-cov
+  - pip install codecov
   - pip install sphinx
   - pip install sphinx_rtd_theme
 script:
   - pytest
 #  - sphinx-build docs/source docs/build -W
 after_success:
-    - coveralls
+    - codecov
