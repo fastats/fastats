@@ -1,6 +1,7 @@
 # fastats
 [![Build Status](https://travis-ci.org/fastats/fastats.svg?branch=master)](https://travis-ci.org/fastats/fastats)
 [![codecov](https://codecov.io/gh/fastats/fastats/branch/master/graph/badge.svg)](https://codecov.io/gh/fastats/fastats)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2199521147834d58b9f0e8e155c97309)](https://www.codacy.com/app/dave.willmer/fastats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastats/fastats&amp;utm_campaign=Badge_Grade)
 
 
 A pure python library for benchmarked, scalable numerics, built using [numba](http://numba.pydata.org/).
