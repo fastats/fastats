@@ -2,7 +2,7 @@
 branch = True
 
 [report]
-fail_under = 98
+fail_under = 97
 skip_covered = True
 exclude_lines =
     if __name__ == .__main__.:
