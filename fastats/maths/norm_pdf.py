@@ -1,5 +1,5 @@
 
-from numpy import abs, sqrt, exp, pi
+from numpy import abs as npabs, sqrt, exp, pi
 
 
 def norm_pdf(x, mu, sigma):
@@ -20,7 +20,7 @@ def norm_pdf(x, mu, sigma):
     >>> norm_pdf(7, 5, 5) # doctest: +ELLIPSIS
     0.073654028060664...
     """
-    a = abs(sigma)
+    a = npabs(sigma)
     u = (x - mu) / a
     v = sqrt(2 * pi) * a
     y = (1 / v) * exp(-u * u / 2)

@@ -1,7 +1,6 @@
 
 from fastats.core.decorator import fs
 from tests import cube
-from numba import jit
 
 
 def child(x):

@@ -1,17 +1,17 @@
 from unittest import TestCase
 
+from pytest import approx
 import statsmodels.api as sm
 from sklearn import datasets
-
 import numpy as np
 
-from pytest import approx
-
 from fastats.maths import ols, ols_qr
-from fastats.maths.ols import (add_intercept, r_squared, sum_of_squared_residuals,
-                               fitted_values, residuals, adjusted_r_squared,
-                               standard_error, mean_standard_error_residuals,
-                               t_statistic)
+from fastats.maths.ols import (
+    add_intercept, r_squared, sum_of_squared_residuals,
+    fitted_values, residuals, adjusted_r_squared,
+    standard_error, mean_standard_error_residuals,
+    t_statistic
+)
 
 
 class BaseOLS(TestCase):
