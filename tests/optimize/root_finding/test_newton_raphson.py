@@ -1,6 +1,6 @@
 
-from numpy import cos, tan, isnan
-from pytest import approx, raises, warns
+from numpy import cos, tan
+from pytest import approx, raises
 
 from fastats.optimise.root_finding import newton_raphson
 

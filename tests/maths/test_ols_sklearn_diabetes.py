@@ -3,13 +3,8 @@ from math import sqrt
 from unittest import TestCase
 
 from sklearn import datasets, linear_model, metrics
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
-
 import numpy as np
-from scipy import linalg
 
-from pytest import approx
 
 from fastats.maths import ols, ols_qr
 
