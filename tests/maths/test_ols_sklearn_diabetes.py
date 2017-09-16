@@ -1,17 +1,17 @@
-
-from math import sqrt
 from unittest import TestCase
 
-from sklearn import datasets, linear_model, metrics
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures
+import statsmodels.api as sm
+from sklearn import datasets
 
 import numpy as np
-from scipy import linalg
 
 from pytest import approx
 
 from fastats.maths import ols, ols_qr
+from fastats.maths.ols import (add_intercept, r_squared, sum_of_squared_residuals,
+                               fitted_values, residuals, adjusted_r_squared,
+                               standard_error, mean_standard_error_residuals,
+                               t_statistic)
 
 
 class BaseOLS(TestCase):
@@ -51,6 +51,80 @@ class OLSQRTests(BaseOLS, SklearnDiabetesOLS):
     def setUp(self):
         super().setUp()
         self._func = ols_qr
+
+
+def test_add_intercept():
+
+    A = np.arange(21).reshape(7, 3)
+    output = add_intercept(A)
+    assert output.shape == (7, 4)
+
+    expected = sm.add_constant(A)
+    assert np.allclose(output, expected)
+
+
+def get_data_and_fit_statsmodel():
+    data_set = datasets.load_diabetes()
+    A, b = data_set.data, data_set.target
+    A = add_intercept(A)  # Note addition of intercept
+    model = sm.OLS(b, sm.add_constant(A)).fit()
+    return A, b, model
+
+
+def test_r_squared():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.rsquared
+    output = r_squared(A, b)
+    assert output == approx(expected)
+
+
+def test_adjusted_r_squared():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.rsquared_adj
+    output = adjusted_r_squared(A, b)
+    assert output == approx(expected)
+
+
+def test_sum_of_squared_residuals():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.ssr
+    output = sum_of_squared_residuals(A, b)
+    assert output == approx(expected)
+
+
+def test_fitted_values():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.fittedvalues
+    output = fitted_values(A, b)
+    assert np.allclose(output, expected)
+
+
+def test_residuals():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.resid
+    output = residuals(A, b)
+    assert np.allclose(output, expected)
+
+
+def test_standard_error():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.bse
+    output = standard_error(A, b)
+    assert np.allclose(output, expected)
+
+
+def test_mean_standard_error_residuals():
+    A, b, model = get_data_and_fit_statsmodel()
+    output = mean_standard_error_residuals(A, b)
+    expected = model.mse_resid
+    assert np.allclose(output, expected)
+
+
+def test_t_statistic():
+    A, b, model = get_data_and_fit_statsmodel()
+    expected = model.tvalues
+    output = t_statistic(A, b)
+    assert np.allclose(output, expected)
 
 
 if __name__ == '__main__':
