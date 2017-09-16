@@ -16,6 +16,7 @@ before_install:
   - pip install coveralls
   - pip install sphinx
   - pip install sphinx_rtd_theme
+  - pip install statsmodels
 script:
   - pytest
 #  - sphinx-build docs/source docs/build -W
