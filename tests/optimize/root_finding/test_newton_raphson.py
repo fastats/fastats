@@ -1,8 +1,11 @@
 
-from numpy import cos, tan
+from hypothesis import given, assume
+from hypothesis.strategies import floats
+from numpy import cos, tan, isnan
 from pytest import approx, raises
 
 from fastats.optimise.root_finding import newton_raphson
+from fastats.optimise.root_finding.newton_raphson import root
 
 
 def func(x):
@@ -31,6 +34,12 @@ def test_basic_sanity():
 
     assert newton_raphson(1, 1e-6) == 0.0
     assert func(0.5) == approx(-1.375)
+
+
+@given(floats())
+def test_default_root(n):
+    assume(not isnan(n))
+    assert root(n) == approx(n)
 
 
 def test_delta_stops_early():
