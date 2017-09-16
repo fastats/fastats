@@ -5,7 +5,7 @@ from fastats.maths.clip import clip
 from fastats.optimise.root_finding import newton_raphson
 
 __all__ = [
-    clip,
-    fs,
-    single_pass
+    'clip',
+    'fs',
+    'single_pass'
 ]
