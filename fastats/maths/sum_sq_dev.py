@@ -1,6 +1,5 @@
-
 import numpy as np
-from numpy import sum, power, abs, mean
+from numpy import power, mean
 
 
 def sum_sq_dev(x):
@@ -15,7 +14,13 @@ def sum_sq_dev(x):
     >>> sum_sq_dev(x) # doctest: +ELLIPSIS
     25681.60000...
     """
-    return sum(power(abs(x - mean(x)), 2))
+    population_mean = mean(x)
+    total = 0.0
+
+    for value in x:
+        total += power((value - population_mean), 2)
+
+    return total
 
 
 if __name__ == '__main__':
