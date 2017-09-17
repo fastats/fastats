@@ -61,17 +61,17 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   #  - "%CMD_IN_ENV% pip install -r dev-requirements.txt"
-  - "%CMD_IN_ENV% pip install numpy"
-  - "%CMD_IN_ENV% pip install scipy"
-  - "%CMD_IN_ENV% pip install sckikit-learn"
-  - "%CMD_IN_ENV% pip install numba"
-  - "%CMD_IN_ENV% pip install hypothesis"
-  - "%CMD_IN_ENV% pip install pytest"
-  - "%CMD_IN_ENV% pip install pytest-cov"
-  - "%CMD_IN_ENV% pip install codecov"
-  - "%CMD_IN_ENV% pip install sphinx"
-  - "%CMD_IN_ENV% pip install sphinx_rtd_theme"
-  - "%CMD_IN_ENV% pip install statsmodels"
+  - "pip install numpy"
+  - "pip install scipy"
+  - "pip install sckikit-learn"
+  - "pip install numba"
+  - "pip install hypothesis"
+  - "pip install pytest"
+  - "pip install pytest-cov"
+  - "pip install codecov"
+  - "pip install sphinx"
+  - "pip install sphinx_rtd_theme"
+  - "pip install statsmodels"
 
 #build_script:
 #  # Build the compiled extension - not necessary at the moment.
