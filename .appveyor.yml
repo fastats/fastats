@@ -10,18 +10,38 @@ environment:
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "32"
+      CONDA_PY: "35"
+      CONDA_NPY: "112"
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "64"
+      CONDA_PY: "35"
+      CONDA_NPY: "112"
 
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
+      CONDA_PY: "36"
+      CONDA_NPY: "112"
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
+      CONDA_PY: "36"
+      CONDA_NPY: "112"
+
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "32"
+      CONDA_PY: "36"
+      CONDA_NPY: "113"
+
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "64"
+      CONDA_PY: "36"
+      CONDA_NPY: "113"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
@@ -33,20 +53,24 @@ install:
         https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
-  - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
+#  - ECHO "Filesystem root:"
+#  - ps: "ls \"C:/\""
 
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+#  - ECHO "Installed SDKs:"
+#  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+#
+#  # Install Python (from the official .msi of http://python.org) and pip when
+#  # not already installed.
+#  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
 
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
+  # This installs conda as well as pip
+  - powershell .\\conda_install.ps1
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+#  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -61,10 +85,10 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   #  - "%CMD_IN_ENV% pip install -r dev-requirements.txt"
-  - "pip install numpy"
-  - "pip install scipy"
-  - "pip install sckikit-learn"
-  - "pip install numba"
+  - "conda install numpy"
+  - "conda install scipy"
+  - "conda install scikit-learn"
+  - "conda install numba"
   - "pip install hypothesis"
   - "pip install pytest"
   - "pip install pytest-cov"
@@ -79,7 +103,7 @@ install:
 
 test_script:
   # Run the project tests
-  - "%CMD_IN_ENV% pytest"
+  - "pytest"
 
 #after_test:
 #  # If tests are successful, create binary packages for the project.
