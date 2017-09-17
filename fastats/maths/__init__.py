@@ -9,6 +9,7 @@ from fastats.maths.ols import (
     standard_error, mean_standard_error_residuals,
     t_statistic, ols, ols_qr, total_sum_of_squares
 )
+from fastats.maths.rectify import relu, softplus
 from fastats.maths.sum_sq_dev import sum_sq_dev
 
 __all__ = [
@@ -27,5 +28,7 @@ __all__ = [
     'adjusted_r_squared',
     'standard_error',
     'mean_standard_error_residuals',
-    't_statistic'
+    't_statistic',
+    'relu',
+    'softplus',
 ]
