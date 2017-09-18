@@ -6,7 +6,7 @@ from numpy import exp
 def erf(x):
     """
     Error Function
-    
+
     Returns error function for an input np.array of floats (x) using
     Abramowitz and Stegun method (maximum error: 1.5e−7)
 

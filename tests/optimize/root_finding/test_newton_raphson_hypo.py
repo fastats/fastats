@@ -1,7 +1,7 @@
 
 from hypothesis import given, assume
 from hypothesis.strategies import (
-    tuples, integers, floats
+    integers, floats
 )
 from numpy import cos
 from pytest import approx
