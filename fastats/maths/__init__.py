@@ -1,4 +1,5 @@
 
+from fastats.maths.activations import relu, softplus
 from fastats.maths.deriv import deriv
 from fastats.maths.erf import erf
 from fastats.maths.logistic import logistic
@@ -27,5 +28,7 @@ __all__ = [
     'adjusted_r_squared',
     'standard_error',
     'mean_standard_error_residuals',
-    't_statistic'
+    't_statistic',
+    'relu',
+    'softplus',
 ]
