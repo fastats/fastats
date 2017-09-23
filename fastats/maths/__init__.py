@@ -1,4 +1,5 @@
 
+from fastats.maths.activations import relu, softplus
 from fastats.maths.deriv import deriv
 from fastats.maths.erf import erf
 from fastats.maths.logistic import logistic
@@ -9,7 +10,6 @@ from fastats.maths.ols import (
     standard_error, mean_standard_error_residuals,
     t_statistic, ols, ols_qr, total_sum_of_squares
 )
-from fastats.maths.rectify import relu, softplus
 from fastats.maths.sum_sq_dev import sum_sq_dev
 
 __all__ = [
