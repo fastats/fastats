@@ -10,7 +10,7 @@ from fastats.maths.ols import (
     add_intercept, r_squared, sum_of_squared_residuals,
     fitted_values, residuals, adjusted_r_squared,
     standard_error, mean_standard_error_residuals,
-    t_statistic
+    t_statistic, r_squared_no_intercept
 )
 
 
@@ -54,7 +54,6 @@ class OLSQRTests(BaseOLS, SklearnDiabetesOLS):
 
 
 def test_add_intercept():
-
     A = np.arange(21).reshape(7, 3)
     output = add_intercept(A)
     assert output.shape == (7, 4)
@@ -63,10 +62,13 @@ def test_add_intercept():
     assert np.allclose(output, expected)
 
 
-def get_data_and_fit_statsmodel():
+def get_data_and_fit_statsmodel(add_intercept_to_data_set=True):
     data_set = datasets.load_diabetes()
     A, b = data_set.data, data_set.target
-    A = add_intercept(A)  # Note addition of intercept
+
+    if add_intercept_to_data_set:
+        A = add_intercept(A)
+
     model = sm.OLS(b, sm.add_constant(A)).fit()
     return A, b, model
 
@@ -75,6 +77,13 @@ def test_r_squared():
     A, b, model = get_data_and_fit_statsmodel()
     expected = model.rsquared
     output = r_squared(A, b)
+    assert output == approx(expected)
+
+
+def test_r_squared_no_intercept():
+    A, b, model = get_data_and_fit_statsmodel(False)
+    expected = model.rsquared
+    output = r_squared_no_intercept(A, b)
     assert output == approx(expected)
 
 
