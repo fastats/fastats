@@ -1,5 +1,5 @@
 
-from contextlib import contextmanager, suppress
+from contextlib import contextmanager
 from functools import wraps
 from inspect import isfunction, isbuiltin
 
