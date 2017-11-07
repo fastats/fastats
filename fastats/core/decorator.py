@@ -1,7 +1,7 @@
 
 from contextlib import contextmanager, suppress
 from functools import wraps
-from inspect import isfunction
+from inspect import isfunction, isbuiltin
 
 from fastats.core.ast_transforms.convert_to_jit import (
     convert_to_jit
@@ -29,11 +29,7 @@ def fs(func):
 
     @wraps(func)
     def fs_wrapper(*args, **kwargs):
-        debug = kwargs.get('debug')
-        return_callable = kwargs.get('return_callable')
-
-        with suppress(KeyError):
-            del kwargs['return_callable']
+        return_callable = kwargs.pop('return_callable', None)
 
         if not kwargs:
             return _func(*args)
@@ -44,9 +40,16 @@ def fs(func):
 
             new_funcs = {}
             for v in kwargs.values():
-                if isfunction(v) and v.__name__ not in kwargs:
+                if v.__name__ in kwargs:
+                    continue
+
+                if isfunction(v):
                     new_funcs[v.__name__] = convert_to_jit(v)
-            kwargs = {k: convert_to_jit(v) for k, v in kwargs.items()}
+                elif isbuiltin(v):
+                    new_funcs[v.__name__] = v
+
+            kwargs = {k: convert_to_jit(v) if not isbuiltin(v) else v
+                      for k, v in kwargs.items()}
 
             processor = AstProcessor(_f, kwargs, replaced, new_funcs)
             proc = processor.process()
