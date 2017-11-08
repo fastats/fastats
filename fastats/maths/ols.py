@@ -96,8 +96,7 @@ def r_squared_no_intercept(A, b):
     prediction of 0 for all observations
     """
     fitted = fitted_values(A, b)
-    sst = total_sum_of_squares(A, b)
-    return (fitted.T @ fitted) / sst
+    return (fitted.T @ fitted) / (b.T @ b)
 
 
 def adjusted_r_squared(A, b):
