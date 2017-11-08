@@ -10,7 +10,8 @@ from fastats.maths.ols import (
     add_intercept, r_squared, sum_of_squared_residuals,
     fitted_values, residuals, adjusted_r_squared,
     standard_error, mean_standard_error_residuals,
-    t_statistic, r_squared_no_intercept
+    t_statistic, r_squared_no_intercept,
+    adjusted_r_squared_no_intercept
 )
 
 
@@ -111,6 +112,12 @@ class OLSModelWithoutIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         A, b, model = self.get_fixtures()
         expected = model.rsquared
         output = r_squared_no_intercept(A, b)  # this is a replica of statsmodels / R behaviour
+        assert output == approx(expected)
+
+    def test_adjusted_r_squared(self):
+        A, b, model = self.get_fixtures()
+        expected = model.rsquared_adj
+        output = adjusted_r_squared_no_intercept(A, b)
         assert output == approx(expected)
 
 
