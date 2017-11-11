@@ -88,14 +88,31 @@ def r_squared(A, b):
     return 1.0 - ssr / sst
 
 
+def r_squared_no_intercept(A, b):
+    """
+    The r-squared value (a.k.a. coefficient of determination) in the
+    case where A has no intercept, per statsmodels - compare the
+    slope-only model to a model that simply makes a constant
+    prediction of 0 for all observations
+    """
+    fitted = fitted_values(A, b)
+    return (fitted.T @ fitted) / (b.T @ b)
+
+
 def adjusted_r_squared(A, b):
     """
     The adjusted r-squared value
     """
-    ssr = sum_of_squared_residuals(A, b)
-    sst = total_sum_of_squares(A, b)
     n, k = A.shape
-    return 1.0 - (ssr / (n - k) / (sst / (n - 1)))
+    return 1 - (n - 1) / (n - k) * (1 - r_squared(A, b))
+
+
+def adjusted_r_squared_no_intercept(A, b):
+    """
+    The adjusted r-squared value in the case where no intercept term is present
+    """
+    n, k = A.shape
+    return 1 - n / (n - k) * (1 - r_squared_no_intercept(A, b))
 
 
 def fitted_values(A, b):
