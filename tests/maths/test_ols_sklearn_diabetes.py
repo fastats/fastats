@@ -10,7 +10,8 @@ from fastats.maths.ols import (
     add_intercept, r_squared, sum_of_squared_residuals,
     fitted_values, residuals, adjusted_r_squared,
     standard_error, mean_standard_error_residuals,
-    t_statistic
+    t_statistic, r_squared_no_intercept,
+    adjusted_r_squared_no_intercept
 )
 
 
@@ -53,78 +54,98 @@ class OLSQRTests(BaseOLS, SklearnDiabetesOLS):
         self._func = ols_qr
 
 
-def test_add_intercept():
+class OLSFitMeasuresTestMixin:
 
-    A = np.arange(21).reshape(7, 3)
-    output = add_intercept(A)
-    assert output.shape == (7, 4)
+    @staticmethod
+    def fit_statsmodels_ols(A, b):
+        return sm.OLS(b, A).fit()
 
-    expected = sm.add_constant(A)
-    assert np.allclose(output, expected)
+    def get_fixtures(self):
+        return self._predictors, self._targets, self._model
 
+    def test_sum_of_squared_residuals(self):
+        A, b, model = self.get_fixtures()
+        expected = model.ssr
+        output = sum_of_squared_residuals(A, b)
+        assert output == approx(expected)
 
-def get_data_and_fit_statsmodel():
-    data_set = datasets.load_diabetes()
-    A, b = data_set.data, data_set.target
-    A = add_intercept(A)  # Note addition of intercept
-    model = sm.OLS(b, sm.add_constant(A)).fit()
-    return A, b, model
+    def test_fitted_values(self):
+        A, b, model = self.get_fixtures()
+        expected = model.fittedvalues
+        output = fitted_values(A, b)
+        assert np.allclose(output, expected)
 
+    def test_residuals(self):
+        A, b, model = self.get_fixtures()
+        expected = model.resid
+        output = residuals(A, b)
+        assert np.allclose(output, expected)
 
-def test_r_squared():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.rsquared
-    output = r_squared(A, b)
-    assert output == approx(expected)
+    def test_standard_error(self):
+        A, b, model = self.get_fixtures()
+        expected = model.bse
+        output = standard_error(A, b)
+        assert np.allclose(output, expected)
 
+    def test_mean_standard_error_residuals(self):
+        A, b, model = self.get_fixtures()
+        output = mean_standard_error_residuals(A, b)
+        expected = model.mse_resid
+        assert np.allclose(output, expected)
 
-def test_adjusted_r_squared():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.rsquared_adj
-    output = adjusted_r_squared(A, b)
-    assert output == approx(expected)
-
-
-def test_sum_of_squared_residuals():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.ssr
-    output = sum_of_squared_residuals(A, b)
-    assert output == approx(expected)
-
-
-def test_fitted_values():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.fittedvalues
-    output = fitted_values(A, b)
-    assert np.allclose(output, expected)
-
-
-def test_residuals():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.resid
-    output = residuals(A, b)
-    assert np.allclose(output, expected)
+    def test_t_statistic(self):
+        A, b, model = self.get_fixtures()
+        expected = model.tvalues
+        output = t_statistic(A, b)
+        assert np.allclose(output, expected)
 
 
-def test_standard_error():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.bse
-    output = standard_error(A, b)
-    assert np.allclose(output, expected)
+class OLSModelWithoutIntercept(BaseOLS, OLSFitMeasuresTestMixin):
+
+    def setUp(self):
+        super().setUp()
+        self._targets = self._data.target
+        self._predictors = self._data.data
+        self._model = self.fit_statsmodels_ols(self._predictors, self._targets)
+
+    def test_r_squared(self):
+        A, b, model = self.get_fixtures()
+        expected = model.rsquared
+        output = r_squared_no_intercept(A, b)  # this is a replica of statsmodels / R behaviour
+        assert output == approx(expected)
+
+    def test_adjusted_r_squared(self):
+        A, b, model = self.get_fixtures()
+        expected = model.rsquared_adj
+        output = adjusted_r_squared_no_intercept(A, b)
+        assert output == approx(expected)
 
 
-def test_mean_standard_error_residuals():
-    A, b, model = get_data_and_fit_statsmodel()
-    output = mean_standard_error_residuals(A, b)
-    expected = model.mse_resid
-    assert np.allclose(output, expected)
+class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
 
+    def setUp(self):
+        super().setUp()
+        self._targets = self._data.target
+        self._predictors = sm.add_constant(self._data.data)
+        self._model = self.fit_statsmodels_ols(self._predictors, self._targets)
 
-def test_t_statistic():
-    A, b, model = get_data_and_fit_statsmodel()
-    expected = model.tvalues
-    output = t_statistic(A, b)
-    assert np.allclose(output, expected)
+    def test_add_intercept(self):
+        A = self._data.data
+        output = add_intercept(A)
+        expected = sm.add_constant(A)
+        assert np.allclose(output, expected)
+
+    def test_r_squared(self):
+        A, b, model = self.get_fixtures()
+        expected = model.rsquared
+        output = r_squared(A, b)
+        assert output == approx(expected)
+
+    def test_adjusted_r_squared(self):
+        A, b, model = self.get_fixtures()
+        expected = model.rsquared_adj
+        output = adjusted_r_squared(A, b)
+        assert output == approx(expected)
 
 
 if __name__ == '__main__':
