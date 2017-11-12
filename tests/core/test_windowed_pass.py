@@ -57,6 +57,29 @@ def test_windowed_pass_mean_size_10():
     assert res[-1] == approx(8938.5)
 
 
+def sum(x):
+    return np.sum(x)
+
+
+def test_windowed_pass_sum():
+    data = np.array(range(100), dtype='float')
+
+    res = windowed_pass(data, 3, value=sum)
+
+    assert np.isnan(res[0])
+    assert np.isnan(res[1])
+    assert res[2] == approx(3.0)
+    assert res[3] == approx(6.0)
+    assert res[4] == approx(9.0)
+    assert res[-1] == approx(294.0)
+
+    res5 = windowed_pass(data, 5, value=sum)
+
+    assert np.all(np.isnan(res5[:4]))
+    assert res5[5] == approx(15.0)
+    assert res5[-1] == approx(485.0)
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
