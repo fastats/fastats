@@ -33,6 +33,8 @@ def test_child_transform_square_to_quadruple():
     original = parent(2)
     assert original == 16
 
+    assert quad(2) == 16
+
     result = parent(2, child=quad)
     assert result == 256
 

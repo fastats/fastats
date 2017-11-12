@@ -116,6 +116,9 @@ def test_multi_column_support():
     def mean(x):
         return np.sum(x) / x.size
 
+    assert mean(data[0]) == 0.5
+    assert mean(data[4]) == 8.5
+
     result = single_pass(data, value=mean)
 
     # TODO : update internals to be able to
