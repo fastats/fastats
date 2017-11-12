@@ -80,6 +80,32 @@ def test_windowed_pass_sum():
     assert res5[-1] == approx(485.0)
 
 
+def nanmean(x):
+    return np.nanmean(x)
+
+
+def test_windowed_pass_nanmean():
+    raw = [1, 2, 3, np.nan, np.nan, 4, 5, 6, 7, np.nan]
+    data = np.array(raw, dtype='float')
+
+    res = windowed_pass(data, 5, value=nanmean)
+
+    assert np.all(np.isnan(res[:4]))
+    assert res[4] == approx(2.0)
+    assert res[5] == approx(3.0)
+    assert res[6] == approx(4.0)
+    assert res[7] == approx(5.0)
+    assert res[8] == approx(5.5)
+
+    res2 = windowed_pass(data, 2, value=nanmean)
+
+    assert np.isnan(res2[0])
+    assert res2[1] == approx(1.5)
+    assert res2[2] == approx(2.5)
+    assert res2[3] == approx(3.0)
+    assert res2[-1] == approx(7.0)
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
