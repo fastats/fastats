@@ -7,7 +7,6 @@ The code runs fine without any jit code,
 but fails when jitted.
 """
 
-from numba import jit
 import numpy as np
 
 from fastats import single_pass

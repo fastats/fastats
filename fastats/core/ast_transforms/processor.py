@@ -41,35 +41,34 @@ class AstProcessor:
         if self._debug:
             pprint(ast.dump(new_tree))
 
-        # Freevars required maintained by inner functions
-        old_freevars = self.top_level_func.__code__.co_freevars
-        code_obj = self.recompile(new_tree, '<fastats>', 'exec', globs=globs, freevars=old_freevars)
+        code_obj = recompile(new_tree, '<fastats>', 'exec')
 
         self.top_level_func.__code__ = code_obj
         return convert_to_jit(self.top_level_func)
 
-    def recompile(self, source, filename, mode, flags=0, privateprefix=None, freevars=(), globs=None):
-        """
-        This is based on an ActiveState recipe by Oren Tirosh:
-        http://code.activestate.com/recipes/578353-code-to-source-and-back/
 
-        Recompiles output back to a code object.
-        Source may also be preparsed AST.
-        """
-        node = source.body[0]
+def recompile(source, filename, mode, flags=0):
+    """
+    This is based on an ActiveState recipe by Oren Tirosh:
+    http://code.activestate.com/recipes/578353-code-to-source-and-back/
 
-        c0 = compile(source, filename, mode, flags, True)
+    Recompiles output back to a code object.
+    Source may also be preparsed AST.
+    """
+    node = source.body[0]
 
-        # This code object defines the function. Find the function's actual body code:
-        for c in c0.co_consts:
-            if not isinstance(c, CodeType):
-                continue
-            if c.co_name == node.name and c.co_firstlineno == node.lineno:
-                break
-        else:
-            raise TypeError('Function body code not found')
+    c0 = compile(source, filename, mode, flags, True)
 
-        return c
+    # This code object defines the function. Find the function's actual body code:
+    for c in c0.co_consts:
+        if not isinstance(c, CodeType):
+            continue
+        if c.co_name == node.name and c.co_firstlineno == node.lineno:
+            break
+    else:
+        raise TypeError('Function body code not found')
+
+    return c
 
 
 def uncompile(c):

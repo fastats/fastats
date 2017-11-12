@@ -61,7 +61,7 @@ class CallTransform(ast.NodeTransformer):
             new_func = self._params[name]
             self._replaced[name] = self._globals[name]
             self._globals[name] = convert_to_jit(self._globals[name])
-            self._globals[new_name] = convert_to_jit(self._params[name])
+            self._globals[new_name] = convert_to_jit(new_func)
 
             new_node = ast.Call(
                 func=ast.Name(id=new_name, ctx=ast.Load()),
