@@ -1,5 +1,7 @@
 
-import numpy as np
+from numpy import sum, sqrt
+
+from fastats.maths.pre_processing import standard_scale
 
 
 def pearson(x, y):
@@ -31,15 +33,30 @@ def pearson(x, y):
     x2 = x ** 2
     y2 = y ** 2
 
-    sum_x = np.sum(x)
-    sum_y = np.sum(y)
+    sum_x = sum(x)
+    sum_y = sum(y)
 
-    numer = n * np.sum(xy) - sum_x * sum_y
+    numer = n * sum(xy) - sum_x * sum_y
 
-    first = n * np.sum(x2) - sum_x ** 2
-    second = n * np.sum(y2) - sum_y ** 2
-    denom = np.sqrt(first * second)
+    first = n * sum(x2) - sum_x ** 2
+    second = n * sum(y2) - sum_y ** 2
+    denom = sqrt(first * second)
     return numer / denom
+
+
+def pearson_matrix(A):
+    """
+    Calculates the pearson r correlation to
+    measure the degree of the relationship
+    between pairs of columns of the supplied
+    matrix A.
+    """
+    assert A.ndim > 1
+    assert A.shape[1] > 1
+
+    n = A.shape[0]
+    A_std = standard_scale(A)
+    return (A_std.T @ A_std) / n
 
 
 if __name__ == '__main__':
