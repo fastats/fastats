@@ -1,5 +1,6 @@
 
 import ast
+from inspect import isbuiltin
 
 import numpy as np
 
@@ -74,7 +75,9 @@ class CallTransform(ast.NodeTransformer):
             from fastats.core.ast_transforms.processor import AstProcessor
             orig_inner_func = self._globals[node.func.id]
 
-            if not isinstance(orig_inner_func, np.ufunc):
+            not_ufunc = not isinstance(orig_inner_func, np.ufunc)
+            not_builtin = not isbuiltin(orig_inner_func)
+            if not_ufunc and not_builtin:
                 self._replaced[node.func.id] = orig_inner_func
                 proc = AstProcessor(
                     orig_inner_func, self._params,

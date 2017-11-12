@@ -28,11 +28,19 @@ def fs(func):
 
     @wraps(func)
     def fs_wrapper(*args, **kwargs):
+
         debug = kwargs.get('debug')
         return_callable = kwargs.get('return_callable')
 
         with suppress(KeyError):
             del kwargs['return_callable']
+
+        # This deliberately mutates the kwargs.
+        # We don't want to have a fs-decorated function
+        # as a kwarg to another, so we undecorate it first.
+        for k, v in kwargs.items():
+            if hasattr(v, 'undecorated'):
+                kwargs[k] = v.undecorated
 
         # TODO : ensure jit function returned
         if not kwargs:
@@ -41,7 +49,6 @@ def fs(func):
         with code_transform(_func, replaced) as _f:
             # TODO : remove fastats keywords such as 'debug'
             # before passing into AstProcessor
-
             new_funcs = {}
             for v in kwargs.values():
                 if isfunction(v) and v.__name__ not in kwargs:
@@ -64,4 +71,5 @@ def fs(func):
 
             return convert_to_jit(proc)(*args)
 
+    fs_wrapper.undecorated = _func
     return fs_wrapper

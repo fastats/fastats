@@ -41,12 +41,14 @@ class AstProcessor:
         if self._debug:
             pprint(ast.dump(new_tree))
 
-        code_obj = self.recompile(new_tree, '<fastats>', 'exec', globs=globs)
+        # Freevars required maintained by inner functions
+        old_freevars = self.top_level_func.__code__.co_freevars
+        code_obj = self.recompile(new_tree, '<fastats>', 'exec', globs=globs, freevars=old_freevars)
 
         self.top_level_func.__code__ = code_obj
         return convert_to_jit(self.top_level_func)
 
-    def recompile(self, source, filename, mode, flags=0, privateprefix=None, globs=None):
+    def recompile(self, source, filename, mode, flags=0, privateprefix=None, freevars=(), globs=None):
         """
         This is based on an ActiveState recipe by Oren Tirosh:
         http://code.activestate.com/recipes/578353-code-to-source-and-back/
@@ -67,29 +69,15 @@ class AstProcessor:
         else:
             raise TypeError('Function body code not found')
 
-        # Re-mangle private names:
-        if privateprefix is not None:
-            def fixnames(names):
-                isprivate = re.compile('^__.*(?<!__)$').match
-                return tuple(privateprefix + name if isprivate(name)
-                             else name for name in names)
-
-            c = CodeType(
-                c.co_argcount, c.co_nlocals, c.co_stacksize, c.co_flags,
-                c.co_code, c.co_consts, fixnames(c.co_names),
-                fixnames(c.co_varnames), c.co_filename, c.co_name,
-                c.co_firstlineno, c.co_lnotab, c.co_freevars, c.co_cellvars)
         return c
 
 
 def uncompile(c):
     """ uncompile(codeobj) -> [source, filename, mode, flags, firstlineno, privateprefix] """
-    # if c.co_flags & inspect.CO_NESTED or c.co_freevars:
-    #     raise Exception('nested functions not supported')
     if c.co_name == '<lambda>':
-        raise Exception('lambda functions not supported')
+        raise TypeError('lambda functions not supported')
     if c.co_filename == '<string>':
-        raise Exception('code without source file not supported')
+        raise ValueError('code without source file not supported')
 
     filename = inspect.getfile(c)
     try:
@@ -97,19 +85,10 @@ def uncompile(c):
     except IOError:
         raise Exception('source code not available')
     source = ''.join(lines)
-
-    # __X is mangled to _ClassName__X in methods. Find this prefix:
-    privateprefix = None
-    for name in c.co_names:
-        m = re.match('^(_[A-Za-z][A-Za-z0-9_]*)__.*$', name)
-        if m:
-            privateprefix = m.group(1)
-            break
-
-    return [source, filename, 'exec', c.co_flags, firstlineno, privateprefix]
+    return [source, filename, 'exec', c.co_flags, firstlineno]
 
 
-def parse_snippet(source, filename, mode, flags, firstlineno, privateprefix_ignored=None):
+def parse_snippet(source, filename, mode, flags, firstlineno):
     """ Like ast.parse, but accepts indented code snippet with a line number offset. """
     args = filename, mode, ast.PyCF_ONLY_AST, True
     prefix = '\n'

@@ -18,20 +18,18 @@ def quad(x):
     return x * x * x * x
 
 
-@fs
 def multi(x):
     a = first(x)
     b = second(a)
     return b
 
 
-@skip('Free vars error')
 def test_multiple_transforms_top_level():
     """
-    Having multiple nested functions appears
-    to be broken.
-    This should be n**6, but it won't even
-    compile.
+    This tests for the 'free vars' issue -
+    we had failures when the value= kwarg
+    was decorated with @fs, but if you remove
+    the decorator it's fine.
     """
     data = np.array([1, 2, 3])
     result = single_pass(data, value=multi)
