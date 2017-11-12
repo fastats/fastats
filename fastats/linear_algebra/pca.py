@@ -33,9 +33,7 @@ def pca(data, components=4):
     x = data - mu
     r = cov(x, rowvar=False)
     S, V = eigh(r)
-
-    idx = np.argsort(S)[::-1]
-    V = V[:, idx]
+    V = np.flip(V, 1)
 
     V = V[:, :components]
     trans = np.dot(V.T, x.T).T
