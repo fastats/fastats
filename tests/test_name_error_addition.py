@@ -59,6 +59,19 @@ def unit(x):
     return 1
 
 
+def test_python_functions():
+    """
+    This is useful to ensure nothing has changed
+    """
+    assert quint(1) == 1
+    assert quint(2) == 32
+    assert double(2) == 4
+    assert triple(2) == 6
+    assert triple_naive(5) == 15
+    assert triple_mul(6) == 18
+    assert unit(2) == 1
+
+
 def test_nested_function_valid():
     """
     Getting 1024 instead of 768 when

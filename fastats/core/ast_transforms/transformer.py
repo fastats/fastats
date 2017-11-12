@@ -89,11 +89,6 @@ class CallTransform(ast.NodeTransformer):
         ast.fix_missing_locations(node)
         return node
 
-    def modify_function_name(self, call_node):
-        new_name = self.new_name_from_call_name(call_node.func.id)
-        call_node.func.id = new_name
-        return call_node
-
     def new_name_from_call_name(self, call_name):
         func = self._params[call_name]
         return func.__name__

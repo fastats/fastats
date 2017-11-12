@@ -31,14 +31,19 @@ def test_nested_basic_sanity():
     it throws a NameError.
     """
     data = np.array([1, 2, 3], dtype='float32')
+    py_result = [half(x) for x in data]
+    expected_half = [0.5, 1.0, 1.5]
+    assert py_result == expected_half
 
-    # result_half = single_pass(data, value=half)
-    # expected_half = [0.5, 1.0, 1.5]
-    # assert np.allclose(expected_half, result_half)
+    result_half = single_pass(data, value=half)
+    assert np.allclose(expected_half, result_half)
+
+    expected_quarter = [0.25, 0.5, 0.75]
+    py_quarter = [quarter(x) for x in data]
+    assert py_quarter == expected_quarter
 
     result = single_pass(data, value=quarter)
-    expected = [0.25, 0.5, 0.75]
-    assert np.allclose(expected, result)
+    assert np.allclose(expected_quarter, result)
 
 
 if __name__ == '__main__':

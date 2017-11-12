@@ -24,12 +24,18 @@ def twice(x):
 def test_transform_func_calls_second_func():
     # Default iteration with no transforms
     data = np.array([1, 2, 3])
+    py_unit = [unit(x) for x in data]
+    assert py_unit == data.tolist()
+
     default = single_pass(data)
 
     # The default behaviour should not
     # change the values in the data array
     expected = np.array([1, 2, 3])
     assert np.allclose(expected, default)
+
+    py_twice = [twice(x) for x in data]
+    assert py_twice == (data * 2).tolist()
 
     # Now perform an iteration but change
     # the function for one that doubles.

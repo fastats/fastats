@@ -1,8 +1,6 @@
-from unittest import skip
 
 import numpy as np
 
-from fastats import fs
 from fastats import single_pass
 
 
@@ -12,10 +10,6 @@ def first(x):
 
 def second(x):
     return x * x * x
-
-
-def quad(x):
-    return x * x * x * x
 
 
 def multi(x):
@@ -32,6 +26,9 @@ def test_multiple_transforms_top_level():
     the decorator it's fine.
     """
     data = np.array([1, 2, 3])
+    py_result = [multi(x) for x in data]
+    assert py_result == [1, 64, 729]
+
     result = single_pass(data, value=multi)
 
     expected = np.array([1, 64, 729])
