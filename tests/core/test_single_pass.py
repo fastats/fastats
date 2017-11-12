@@ -1,9 +1,8 @@
 
 import math
 
-import numba
 import numpy as np
-from pytest import approx, raises
+from pytest import approx
 
 from fastats import single_pass
 
