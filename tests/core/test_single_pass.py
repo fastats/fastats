@@ -144,6 +144,10 @@ def test_multi_column_support():
     def mean_npy(x):
         return np.sum(x) / len(x)
 
+    assert mean_npy(data[0]) == approx(0.5)
+    assert mean_npy(data[1]) == approx(2.5)
+    assert mean_npy(data[4]) == approx(8.5)
+
     result_npy = single_pass(data, value=mean_npy)
 
     assert result_npy[0][0] == approx(0.5)
