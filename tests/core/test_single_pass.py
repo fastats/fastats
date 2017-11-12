@@ -128,19 +128,7 @@ def test_multi_column_support():
     assert result[3][0] == approx(6.5)
     assert result[4][0] == approx(8.5)
 
-    # TODO: is sum not supported?
-    # Getting numba TypingError - untyped
-    # global name 'sum'
-    with raises(numba.errors.TypingError):
-        def mean_py(x):
-            return sum(x) / len(x)
-
-        _ = single_pass(data, value=mean_py)
-
-        # assert result_py[0][0] == approx(0.5)
-        # assert result_py[4][0] == approx(8.5)
-
-    # But len(x) works fine...
+    # len(x) works fine...
     def mean_npy(x):
         return np.sum(x) / len(x)
 
