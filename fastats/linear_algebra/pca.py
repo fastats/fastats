@@ -32,7 +32,7 @@ def pca(data, components=4):
     # the input.
     x = data - mu
     r = cov(x, rowvar=False)
-    S, V = eigh(r)
+    _, V = eigh(r)
     V = np.flip(V, 1)
 
     V = V[:, :components]
