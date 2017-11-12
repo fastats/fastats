@@ -8,7 +8,8 @@ def convert_to_jit(func):
         return func
 
     _jit = jit(nopython=True, nogil=True)
-    return _jit(func)
+    rv = _jit(func)
+    return rv
 
 
 if __name__ == '__main__':

@@ -8,6 +8,7 @@ from types import CodeType
 
 from numba import jit
 
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.core.ast_transforms.copy_func import copy_func
 from fastats.core.ast_transforms.transformer import CallTransform
 
@@ -25,21 +26,22 @@ class AstProcessor:
         source = inspect.getsource(self.top_level_func)
         tree = ast.parse(source)
         globs = self.top_level_func.__globals__
+        globs['jit'] = jit
         t = CallTransform(self._overrides, globs, self._replaced, self._new_funcs)
         new_tree = t.visit(tree)
 
         # TODO remove the fs decorator from within the ast code
-        new_tree.body[0].decorator_list = []
+        new_tree.body[0].decorator_list = [ast.Name(id='jit', ctx=ast.Load())]
         ast.fix_missing_locations(new_tree)
         if self._debug:
             pprint(ast.dump(new_tree))
 
-        code_obj = self.recompile(new_tree, '<fastats>', 'exec')
+        code_obj = self.recompile(new_tree, '<fastats>', 'exec', globs=globs)
 
         self.top_level_func.__code__ = code_obj
-        return jit(self.top_level_func)
+        return convert_to_jit(self.top_level_func)
 
-    def recompile(self, source, filename, mode, flags=0, privateprefix=None):
+    def recompile(self, source, filename, mode, flags=0, privateprefix=None, globs=None):
         """
         This is based on an ActiveState recipe by Oren Tirosh:
         http://code.activestate.com/recipes/578353-code-to-source-and-back/
@@ -47,10 +49,9 @@ class AstProcessor:
         Recompiles output back to a code object.
         Source may also be preparsed AST.
         """
-        a = source
-        node = a.body[0]
+        node = source.body[0]
 
-        c0 = compile(a, filename, mode, flags, True)
+        c0 = compile(source, filename, mode, flags, True)
 
         # This code object defines the function. Find the function's actual body code:
         for c in c0.co_consts:

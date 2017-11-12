@@ -1,6 +1,8 @@
 
 import ast
 
+import numpy as np
+
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 
@@ -33,7 +35,7 @@ class CallTransform(ast.NodeTransformer):
         self._new_funcs = new_funcs
 
     def visit_Call(self, node):
-
+        node = self.generic_visit(node)
         if hasattr(node.func, 'attr'):
             # This will be hit where you have module
             # functions such as np.zeros_like.
@@ -54,23 +56,34 @@ class CallTransform(ast.NodeTransformer):
             # function globals, such as `range`
             return node
         elif name in self._params:
+            new_name = self.new_name_from_call_name(name)
+            new_func = self._params[name]
             self._replaced[name] = self._globals[name]
             self._globals[name] = convert_to_jit(self._globals[name])
-            node = ast.copy_location(self.modify_function_name(node), node)
+            self._globals[new_name] = convert_to_jit(self._params[name])
+
+            new_node = ast.Call(
+                func=ast.Name(id=new_name, ctx=ast.Load()),
+                args=node.args, keywords=[]
+            )
+            ast.copy_location(new_node, node)
+            ast.fix_missing_locations(new_node)
+            return new_node
         else:
             # Lazy import because it's circular.
             from fastats.core.ast_transforms.processor import AstProcessor
-
             orig_inner_func = self._globals[node.func.id]
-            self._replaced[node.func.id] = orig_inner_func
-            proc = AstProcessor(
-                orig_inner_func, self._params,
-                self._replaced, self._new_funcs
-            )
-            new_inner_func = proc.process()
-            self._globals[node.func.id] = convert_to_jit(new_inner_func)
+
+            if not isinstance(orig_inner_func, np.ufunc):
+                self._replaced[node.func.id] = orig_inner_func
+                proc = AstProcessor(
+                    orig_inner_func, self._params,
+                    self._replaced, self._new_funcs
+                )
+                new_inner_func = proc.process()
+                self._globals[node.func.id] = convert_to_jit(new_inner_func)
+
         ast.fix_missing_locations(node)
-        node = self.generic_visit(node)
         return node
 
     def modify_function_name(self, call_node):

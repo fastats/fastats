@@ -16,9 +16,8 @@ def code_transform(func, replaced):
     try:
         yield func
     finally:
-        for k, v in replaced.items():
-            func.__globals__[k] = v
-        replaced.clear()
+        # TODO : remove this context manager as it's now not needed?
+        pass
 
 
 def fs(func):
@@ -35,6 +34,7 @@ def fs(func):
         with suppress(KeyError):
             del kwargs['return_callable']
 
+        # TODO : ensure jit function returned
         if not kwargs:
             return _func(*args)
 
@@ -45,13 +45,23 @@ def fs(func):
             new_funcs = {}
             for v in kwargs.values():
                 if isfunction(v) and v.__name__ not in kwargs:
-                    new_funcs[v.__name__] = convert_to_jit(v)
-            kwargs = {k: convert_to_jit(v) for k, v in kwargs.items()}
+                    inner_replaced = {}
+                    with code_transform(v, inner_replaced) as g:
+                        processor = AstProcessor(g, kwargs, inner_replaced, new_funcs)
+                        proc = processor.process()
+                        new_funcs[v.__name__] = convert_to_jit(proc)
+
+            new_kwargs = {}
+            for k, v in kwargs.items():
+                if new_funcs.get(v.__name__):
+                    new_kwargs[k] = new_funcs[v.__name__]
+            kwargs.update(new_kwargs)
 
             processor = AstProcessor(_f, kwargs, replaced, new_funcs)
             proc = processor.process()
             if return_callable:
                 return convert_to_jit(proc)
+
             return convert_to_jit(proc)(*args)
 
     return fs_wrapper

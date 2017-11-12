@@ -1,3 +1,4 @@
+from unittest import skip
 
 from numpy import cos, tan, isnan
 from pytest import approx, raises, warns
@@ -86,6 +87,9 @@ def test_non_converging():
     """
     with raises(ZeroDivisionError): # Runtime Warning in python
         _ = newton_raphson(5.0, 1e-6, root=tan_func)
+
+    # with warns(RuntimeWarning): # Runtime Warning in python
+    #     _ = newton_raphson(5.0, 1e-6, root=tan_func)
 
 
 if __name__ == '__main__':
