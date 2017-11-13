@@ -23,7 +23,7 @@ def copy_func(f, new_funcs):
     >>> copy_func(np.sin, {})
     <ufunc 'sin'>
     """
-    if isinstance(f, np.ufunc):
+    if not hasattr(f, '__globals__'):
         return f
     globs = copy(f.__globals__)
     globs.update(new_funcs)

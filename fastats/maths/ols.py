@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import diag, sqrt, hstack, ones, eye
 from numpy.linalg import inv
 from scipy.linalg import qr, solve_triangular
@@ -16,7 +17,7 @@ def ols(A, b):
     0 = A.T*Ax - A.T*b, therefore
     x = A.T*b / A.T*A. QED.
     """
-    return inv(A.T @ A) @ A.T @ b
+    return np.linalg.inv(A.T @ A) @ A.T @ b
 
 
 def ols_qr(A, b):
@@ -46,7 +47,7 @@ def _hat(A):
     """
     The 'hat' matrix for an array A
     """
-    return A @ inv(A.T @ A) @ A.T
+    return A @ np.linalg.inv(A.T @ A) @ A.T
 
 
 def _m_matrix(A):
@@ -55,7 +56,7 @@ def _m_matrix(A):
     equal to the first dimension of the supplied array A
     """
     n = A.shape[0]
-    l = ones(n).reshape((n, 1))
+    l = np.ones(n).reshape((n, 1))
     return _hat(l)
 
 
@@ -64,7 +65,7 @@ def sum_of_squared_residuals(A, b):
     The sum of squared residuals
     """
     n = A.shape[0]
-    I = eye(n)
+    I = np.eye(n)
     H = _hat(A)
     return b.T @ (I - H) @ b
 
@@ -74,7 +75,7 @@ def total_sum_of_squares(A, b):
     The total sum of squares
     """
     n = A.shape[0]
-    I = eye(n)
+    I = np.eye(n)
     M = _m_matrix(A)
     return b.T @ (I - M) @ b
 
