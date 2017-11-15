@@ -3,8 +3,6 @@ from copy import copy
 import types
 import functools
 
-import numpy as np
-
 
 def copy_func(f, new_funcs):
     """
