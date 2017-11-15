@@ -73,8 +73,8 @@ def test_child_transform_square_to_zero():
 
 
 def test_problematic_child_transform_with_faked_child():
-    # maliciously faking a function's name will currently affect the result
-    # TODO this test captures current problematic behaviour and should be fixed
+    # function with a faked name should be respected as an override
+    # TODO this test captures current problematic behaviour which should be fixed
     assert child_faker.__name__ == child.__name__
 
     original = parent(1)
