@@ -33,13 +33,8 @@ def fs(func):
             # TODO : remove fastats keywords such as 'debug'
             # before passing into AstProcessor
 
-            new_funcs = {}
-            for v in kwargs.values():
-                if v.__name__ in kwargs:
-                    continue
-
-                new_funcs[v.__name__] = convert_to_jit(v)
-
+            new_funcs = {v.__name__: convert_to_jit(v) for v in kwargs.values()
+                         if v.__name__ not in kwargs}
             kwargs = {k: convert_to_jit(v) for k, v in kwargs.items()}
 
             processor = AstProcessor(_f, kwargs, replaced, new_funcs)
