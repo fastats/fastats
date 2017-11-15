@@ -86,10 +86,14 @@ def test_problematic_child_transform_with_faked_child():
     if result == 4:
         pytest.xfail("Known problem (function with faked name not respected as override)")
 
-    assert result == 42
+    # TODO remove the pragma once test is passing (masking unreachable code)
+    else:   # pragma: no cover
+        assert result == 42
 
-    final = parent(1)
-    assert final == 4
+        final = parent(1)
+        assert final == 4
+
+        pytest.fail("Unexpectedly passed (did you fix the code and forgot to update this test?)")
 
 
 if __name__ == '__main__':
