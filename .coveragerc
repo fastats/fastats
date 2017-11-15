@@ -7,3 +7,4 @@ skip_covered = True
 exclude_lines =
     if __name__ == .__main__.:
     if self._debug:
+    pragma: no cover

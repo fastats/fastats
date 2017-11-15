@@ -16,23 +16,25 @@ def test_doesnt_convert_math_builtins():
 
 def test_doesnt_convert_jitted_functions():
     @jit
-    def jit_func():
+    def jit_func():     # pragma: no cover
         return 5
 
     assert convert_to_jit(jit_func) is jit_func
+    assert jit_func() == 5
 
 
 def test_doesnt_convert_converted_functions():
-    def jit_func():
+    def jit_func():     # pragma: no cover
         return 5
 
     converted = convert_to_jit(jit_func)
 
     assert convert_to_jit(converted) is converted
+    assert converted() == 5
 
 
 def test_converts_simple_function():
-    def add(a, b):
+    def add(a, b):      # pragma: no cover
         return a + b
 
     jitted = convert_to_jit(add)
