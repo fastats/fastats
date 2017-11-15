@@ -56,7 +56,7 @@ def fs(func):
                     with code_transform(v, inner_replaced) as g:
                         processor = AstProcessor(g, kwargs, inner_replaced, new_funcs)
                         proc = processor.process()
-                        new_funcs[v.__name__] = convert_to_jit(proc)
+                        new_funcs[v.__name__] = proc
 
             new_kwargs = {}
             for k, v in kwargs.items():
@@ -67,9 +67,9 @@ def fs(func):
             processor = AstProcessor(_f, kwargs, replaced, new_funcs)
             proc = processor.process()
             if return_callable:
-                return convert_to_jit(proc)
+                return proc
 
-            return convert_to_jit(proc)(*args)
+            return proc(*args)
 
     fs_wrapper.undecorated = _func
     return fs_wrapper

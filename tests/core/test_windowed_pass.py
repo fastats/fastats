@@ -2,8 +2,8 @@
 import numpy as np
 from pytest import approx
 
-from fastats import windowed_pass
-from fastats.maths import ols
+from fastats import windowed_pass, windowed_pass_2d
+from fastats.maths import ols, r_squared
 
 
 def std(x):
@@ -24,6 +24,11 @@ def test_windowed_pass_basic_sanity():
     assert res[4] == approx(5.89915248)
     assert res[5] == approx(8.64869932)
     assert res[-1] == approx(274.36253389)
+
+    raw = windowed_pass(data, 5)
+    assert np.isnan(raw[3])
+    assert raw[4] == approx(0.0)
+    assert raw[50] == approx(2116.0)
 
 
 def mean(x):
@@ -143,6 +148,68 @@ def test_windowed_pass_ols_wrapped():
     assert res[4, 0] == approx(1.41176471)
     assert res[5, 0] == approx(1.42857143)
     assert res[6, 0] == approx(1.6)
+
+
+def test_windowed_pass_2d_basic_sanity():
+    data = np.array([[0.0, 1.0], [1.0, 2.0], [3.0, 4.0]])
+    result = windowed_pass_2d(data, 2)
+
+    assert np.isnan(result[0, 0])
+    assert np.isnan(result[0, 1])
+    assert result[1, 0] == approx(0.0)
+    assert result[1, 1] == approx(1.0)
+    assert result[2, 0] == approx(1.0)
+    assert result[2, 1] == approx(2.0)
+
+
+def ols_r_squared(x):
+    out = np.zeros(2)
+    a = x[:, :1]
+    b = x[:, 1:]
+    slope = ols(a, b)[0][0]
+    r2 = r_squared(a, b)[0][0]
+    out[0] = slope
+    out[1] = r2
+    return out
+
+
+def test_windowed_pass_ols_r_squared():
+    """
+    Returns a 2-column array the same size
+    as `data` with the OLS slope values
+    in the first column and the r^2 values
+    in the second.
+    """
+    data = np.array([
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [2, 3],
+        [1, 2],
+        [0, 1]
+    ], dtype='float')
+
+    raw = ols_r_squared(data)
+    assert raw[0] == approx(1.47368421)
+    assert raw[1] == approx(0.63157895)
+
+    res = windowed_pass(data, 3, value=ols_r_squared)
+
+    assert np.isnan(res[0, 0])
+    assert np.isnan(res[0, 1])
+    assert np.isnan(res[1, 0])
+    assert np.isnan(res[1, 1])
+    assert res[2, 0] == approx(1.6)
+    assert res[2, 1] == approx(0.4)
+    assert res[3, 0] == approx(1.42857143)
+    assert res[3, 1] == approx(0.78571429)
+    assert res[4, 0] == approx(1.41176471)
+    assert res[4, 1] == approx(0.82352941)
+    assert res[5, 0] == approx(1.42857143)
+    assert res[5, 1] == approx(0.78571429)
+    assert res[6, 0] == approx(1.6)
+    assert res[6, 1] == approx(0.4)
 
 
 if __name__ == '__main__':
