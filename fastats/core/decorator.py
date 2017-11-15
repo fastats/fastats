@@ -2,12 +2,8 @@
 from contextlib import contextmanager
 from functools import wraps
 
-from fastats.core.ast_transforms.convert_to_jit import (
-    convert_to_jit
-)
-from fastats.core.ast_transforms.processor import (
-    AstProcessor
-)
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+from fastats.core.ast_transforms.processor import AstProcessor
 
 
 @contextmanager
