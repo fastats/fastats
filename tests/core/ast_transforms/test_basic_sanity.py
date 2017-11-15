@@ -20,11 +20,11 @@ def quad(x):
     return cube(x) * x
 
 
-def zero(x):
+def zero(_):
     return 0
 
 
-def child_faker(x):
+def child_faker(_):
     return 42
 
 
