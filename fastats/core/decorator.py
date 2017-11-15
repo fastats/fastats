@@ -1,7 +1,6 @@
 
 from contextlib import contextmanager
 from functools import wraps
-from inspect import isfunction, isbuiltin
 
 from fastats.core.ast_transforms.convert_to_jit import (
     convert_to_jit
