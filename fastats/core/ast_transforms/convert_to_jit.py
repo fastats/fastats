@@ -1,13 +1,25 @@
 
+from inspect import isbuiltin, isfunction
+from types import MappingProxyType
+
 from numba import jit
 from numba.targets.registry import CPUDispatcher
 
 
+JIT_KWARGS = MappingProxyType({
+    'nopython': True, 'nogil': True
+})
+
+
 def convert_to_jit(func):
-    if isinstance(func, CPUDispatcher):
+    if isinstance(func, CPUDispatcher) or isbuiltin(func):
         return func
 
-    _jit = jit(nopython=True, nogil=True)
+    if not isfunction(func):
+        raise TypeError("Can't JIT a non-function object: {}".format(func))
+
+    _jit = jit(**JIT_KWARGS)
+
     return _jit(func)
 
 

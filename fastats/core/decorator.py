@@ -43,13 +43,9 @@ def fs(func):
                 if v.__name__ in kwargs:
                     continue
 
-                if isfunction(v):
-                    new_funcs[v.__name__] = convert_to_jit(v)
-                elif isbuiltin(v):
-                    new_funcs[v.__name__] = v
+                new_funcs[v.__name__] = convert_to_jit(v)
 
-            kwargs = {k: convert_to_jit(v) if not isbuiltin(v) else v
-                      for k, v in kwargs.items()}
+            kwargs = {k: convert_to_jit(v) for k, v in kwargs.items()}
 
             processor = AstProcessor(_f, kwargs, replaced, new_funcs)
             proc = processor.process()
