@@ -8,13 +8,13 @@ from pytest import raises
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 
-def test_doesnt_convert_math_builtins():
+def test_does_not_convert_math_builtins():
     for func in (math.atan2, math.atanh, math.degrees, math.exp, math.floor, math.log,
                  math.sin, math.sinh, math.tan, math.tanh):
         assert convert_to_jit(func) is func
 
 
-def test_doesnt_convert_jitted_functions():
+def test_does_not_convert_jitted_functions():
     @jit
     def jit_func():     # pragma: no cover
         return 5
@@ -23,7 +23,7 @@ def test_doesnt_convert_jitted_functions():
     assert jit_func() == 5
 
 
-def test_doesnt_convert_converted_functions():
+def test_does_not_convert_converted_functions():
     def jit_func():     # pragma: no cover
         return 5
 
