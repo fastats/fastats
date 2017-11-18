@@ -9,9 +9,9 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from fastats.maths.pre_processing import standard_scale, min_max_scale
 
 
-class RollingStatsTests:
+class SKLearnTestMixin:
 
-    def test_scaled_values(self):
+    def test_scaled_values_versus_sklearn(self):
         predictors = load_iris().data
         scaler = self._scaler()
 
@@ -20,23 +20,29 @@ class RollingStatsTests:
         assert np.allclose(expected, output)
 
 
-class StandardScaleTests(TestCase, RollingStatsTests):
+class StandardScaleTests(TestCase, SKLearnTestMixin):
 
     def setUp(self):
         super().setUp()
         self._func = standard_scale
         self._scaler = StandardScaler
 
-    def test_standard_scale_ddof_one(self):
+    def check_zscore(self, ddof):
         predictors = load_iris().data
         df = pd.DataFrame(predictors)
 
         def zscore(data):
-            return (data - data.mean()) / data.std(ddof=1)  # pandas default
+            return (data - data.mean()) / data.std(ddof=ddof)
 
         expected = df.apply(zscore)
-        output = self._func(predictors, ddof=1)
+        output = self._func(predictors, ddof=ddof)
         assert np.allclose(expected, output)
+
+    def test_standard_scale_ddof_zero(self):
+        self.check_zscore(ddof=0)
+
+    def test_standard_scale_ddof_one(self):
+        self.check_zscore(ddof=1)
 
     def test_standard_scale_raise_if_ddof_not_one_or_zero(self):
         predictors = load_iris().data
@@ -46,7 +52,7 @@ class StandardScaleTests(TestCase, RollingStatsTests):
                 _ = self._func(predictors, ddof=ddof)
 
 
-class MinMaxScaleTests(TestCase, RollingStatsTests):
+class MinMaxScaleTests(TestCase, SKLearnTestMixin):
 
     def setUp(self):
         super().setUp()

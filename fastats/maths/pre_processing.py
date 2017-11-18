@@ -3,13 +3,12 @@ from numpy import empty_like, mean, std, sqrt, min, max
 
 def standard_scale(data, ddof=0):
     """
-    Standardise data by removing the mean and scaling to unit variance.
+    Standardise data by removing the mean and scaling to unit variance,
+    equivalent to sklearn StandardScaler.
 
     The delta degrees of freedom (ddof) may be used to correct for bias
-    in the estimation of population variance; the default is 0 per sklearn
-    StandardScaler but may be set to 1 to apply Bessel's correction.
-
-    https://en.wikipedia.org/wiki/Bessel%27s_correction
+    in the estimation of population variance by applying Bessel's
+    correction: https://en.wikipedia.org/wiki/Bessel%27s_correction
     """
     if ddof not in (0, 1):
         raise ValueError('ddof must be either 0 or 1')
@@ -30,9 +29,9 @@ def standard_scale(data, ddof=0):
 
 def min_max_scale(data):
     """
-    Standardise data by scaling data points such that they lie in the range
-    0 to 1 by subtracting the minimum value and diving through by the
-    difference in maximum and minimum values.
+    Standardise data by scaling data points by the sample minimum and maximum
+    such that all data points lie in the range 0 to 1, equivalent to sklearn
+    MinMaxScaler.
     """
     n = data.shape[1]
     res = empty_like(data, dtype=float)
