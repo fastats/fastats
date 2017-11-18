@@ -1,5 +1,5 @@
 
-from numpy import sum, sqrt
+from numpy import column_stack
 
 from fastats.maths.pre_processing import standard_scale
 
@@ -27,29 +27,16 @@ def pearson(x, y):
     :return: a float representing the correlation
     """
     assert x.shape == y.shape
-
-    n = len(x)
-    xy = x * y
-    x2 = x ** 2
-    y2 = y ** 2
-
-    sum_x = sum(x)
-    sum_y = sum(y)
-
-    numer = n * sum(xy) - sum_x * sum_y
-
-    first = n * sum(x2) - sum_x ** 2
-    second = n * sum(y2) - sum_y ** 2
-    denom = sqrt(first * second)
-    return numer / denom
+    A = column_stack([x, y])
+    return pearson_pairwise(A).diagonal(1)
 
 
-def pearson_matrix(A):
+def pearson_pairwise(A):
     """
     Calculates the pearson r correlation to
     measure the degree of the relationship
     between pairs of columns of the supplied
-    matrix A.
+    matrix A (similar to pandas.DataFrame.corr)
     """
     assert A.ndim > 1
     assert A.shape[1] > 1

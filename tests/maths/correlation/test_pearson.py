@@ -2,9 +2,9 @@
 import numpy as np
 import pandas as pd
 from pytest import approx
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_iris, load_diabetes
 
-from fastats.maths.correlation import pearson, pearson_matrix
+from fastats.maths.correlation import pearson, pearson_pairwise
 
 
 def test_pearson_uwe_normal_hypervent():
@@ -22,14 +22,6 @@ def test_pearson_uwe_normal_hypervent():
     result = pearson(normal, hypervent)
     assert result == approx(0.966194346491)
 
-    data = np.stack([normal, hypervent]).T
-    output = pearson_matrix(data)
-    assert output.shape == (2, 2)
-    assert output[0][0] == approx(1)
-    assert output[0][1] == approx(0.966194346491)
-    assert output[1][0] == approx(0.966194346491)
-    assert output[1][1] == approx(1)
-
 
 def test_pearson_stats_howto():
     """
@@ -43,27 +35,12 @@ def test_pearson_stats_howto():
     result = pearson(age, glucose)
     assert result == approx(0.529808901890)
 
-    data = np.stack([age, glucose]).T
-    output = pearson_matrix(data)
-    assert output.shape == (2, 2)
-    assert output[0][0] == approx(1)
-    assert output[0][1] == approx(0.529808901890)
-    assert output[1][0] == approx(0.529808901890)
-    assert output[1][1] == approx(1)
-
 
 def test_pearson_nan_result():
     x = np.array([1, 2, 3, 4], dtype='float')
     y = np.array([2, 3, 4, 3], dtype='float')
 
     assert pearson(x, y) == approx(0.6324555320)
-    data = np.stack([x, y]).T
-    output = pearson_matrix(data)
-    assert output.shape == (2, 2)
-    assert output[0][0] == approx(1)
-    assert output[0][1] == approx(0.6324555320)
-    assert output[1][0] == approx(0.6324555320)
-    assert output[1][1] == approx(1)
 
     x[0] = np.nan
     assert np.isnan(pearson(x, y))
@@ -76,11 +53,22 @@ def test_pearson_nan_result():
     assert pearson(x, y) == approx(0.6324555320)
 
 
-def test_pearson_matrix():
-    data = load_iris().data
-    expected = pd.DataFrame(data).corr(method='pearson').values
-    output = pearson_matrix(data)
+def assert_output_matches_pandas(A):
+    """
+    This is a check of the pairwise Pearson correlation against
+    pandas DataFrame corr for an input dataset A.
+    """
+    expected = pd.DataFrame(A).corr(method='pearson').values
+    output = pearson_pairwise(A)
     assert np.allclose(expected, output)
+
+
+def test_pearson_pairwise_iris():
+    assert_output_matches_pandas(load_iris().data)
+
+
+def test_pearson_pairwise_diabetes():
+    assert_output_matches_pandas(load_diabetes().data)
 
 
 if __name__ == '__main__':
