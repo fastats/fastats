@@ -1,7 +1,7 @@
 
 from numpy import column_stack
 
-from fastats.maths.pre_processing import standard_scale
+from fastats.utilities.pre_processing import standard_scale
 
 
 def pearson(x, y):

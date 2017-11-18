@@ -6,7 +6,7 @@ from pytest import raises
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from fastats.maths.pre_processing import standard_scale, min_max_scale
+from fastats.utilities.pre_processing import standard_scale, min_max_scale
 
 
 class SKLearnTestMixin:
