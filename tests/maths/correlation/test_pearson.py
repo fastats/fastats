@@ -1,7 +1,6 @@
-
 import numpy as np
 import pandas as pd
-from pytest import approx
+from pytest import approx, mark
 from sklearn.datasets import load_iris, load_diabetes
 
 from fastats.maths.correlation import pearson, pearson_pairwise
@@ -53,7 +52,8 @@ def test_pearson_nan_result():
     assert pearson(x, y) == approx(0.6324555320)
 
 
-def assert_output_matches_pandas(A):
+@mark.parametrize('A', [load_iris().data, load_diabetes().data], ids=['iris', 'diabetes'])
+def test_pearson_pairwise_versus_pandas(A):
     """
     This is a check of the pairwise Pearson correlation against
     pandas DataFrame corr for an input dataset A.
@@ -61,14 +61,6 @@ def assert_output_matches_pandas(A):
     expected = pd.DataFrame(A).corr(method='pearson').values
     output = pearson_pairwise(A)
     assert np.allclose(expected, output)
-
-
-def test_pearson_pairwise_iris():
-    assert_output_matches_pandas(load_iris().data)
-
-
-def test_pearson_pairwise_diabetes():
-    assert_output_matches_pandas(load_diabetes().data)
 
 
 if __name__ == '__main__':
