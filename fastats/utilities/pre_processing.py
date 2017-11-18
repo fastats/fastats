@@ -1,4 +1,6 @@
-from numpy import empty_like, mean, std, sqrt, min, max
+from numpy import empty_like, mean, std, sqrt
+from numpy import min as np_min
+from numpy import max as np_max
 
 
 def standard_scale(data, ddof=0):
@@ -38,7 +40,7 @@ def min_max_scale(data):
 
     for i in range(n):
         data_i = data[:, i]
-        res[:, i] = (data_i - min(data_i)) / (max(data_i) - min(data_i))
+        res[:, i] = (data_i - np_min(data_i)) / (np_max(data_i) - np_min(data_i))
 
     return res
 
