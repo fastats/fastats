@@ -60,7 +60,7 @@ def test_child_transform_square_to_zero():
     original = parent(2)
     assert original == 16
 
-    assert zero("ignored") == 0
+    assert zero('ignored') == 0
 
     result = parent(2, child=zero)
     assert result == 0
@@ -73,20 +73,23 @@ def test_child_transform_square_to_zero():
 
 
 def test_problematic_child_transform_with_faked_child():
-    # function with a faked name should be respected as an override
-    # TODO this test captures current problematic behaviour which should be fixed
+    # Because of the intricacies of the AST rewrite
+    # (global namespace per transformed function), it's hard
+    # to make sure we're resilient to function name faking.
+    #
+    # This is a known shortcoming of our approach
+    # - you're welcome to fix it!
+
     assert child_faker.__name__ == child.__name__
 
     original = parent(1)
     assert original == 4
 
-    assert child_faker("ignored") == 42
+    assert child_faker('ignored') == 42
 
     result = parent(1, child=child_faker)
     if result == 4:
-        pytest.xfail("Known problem (function with faked name not respected as override)")
-
-    # TODO remove the pragma once test is passing (masking unreachable code)
+        pytest.xfail("Expected failure (function with faked name won't be respected as override)")
     else:   # pragma: no cover
         assert result == 42
 
