@@ -7,22 +7,22 @@ environment:
 
   matrix:
 
-    - MINICONDA: "C:\\Python36\\Miniconda36"  # 32 bit
+    - MINICONDA: "C:\\Miniconda36"  # 32 bit
       CONDA_ENV_NAME: test_py_36_32bit_numpy_112
       CONDA_PYTHON: "36"
       CONDA_NUMPY: "numpy=1.12"
 
-    - MINICONDA: "C:\\Python36\\Miniconda36-x64"
+    - MINICONDA: "C:\\Miniconda36-x64"
       CONDA_ENV_NAME: test_py_36_64bit_numpy_112
       CONDA_PYTHON: "36"
       CONDA_NUMPY: "numpy=1.12"
 
-    - MINICONDA: "C:\\Python36\\Miniconda36"
+    - MINICONDA: "C:\\Miniconda36"
       CONDA_ENV_NAME: test_py_36_32bit_numpy_113
       CONDA_PYTHON: "36"
       CONDA_NUMPY: "numpy=1.13"
 
-    - MINICONDA: "C:\\Python36\\Miniconda36-x64"
+    - MINICONDA: "C:\\Miniconda36-x64"
       CONDA_ENV_NAME: test_py_36_64bit_numpy_113
       CONDA_PYTHON: "36"
       CONDA_NUMPY: "numpy=1.13"
