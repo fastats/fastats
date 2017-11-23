@@ -61,7 +61,7 @@ install:
   - "pip install sphinx"
   - "pip install sphinx_rtd_theme"
   - "pip install statsmodels"
-  - "pip install http"  # for uploading test report xml
+  - "pip install httpie"  # for uploading test report xml
 
 # Ignore the MSBuild nonsense
 build: off
