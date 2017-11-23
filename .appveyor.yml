@@ -61,6 +61,7 @@ install:
   - "pip install sphinx"
   - "pip install sphinx_rtd_theme"
   - "pip install statsmodels"
+  - "pip install http"  # for uploading test report xml
 
 # Ignore the MSBuild nonsense
 build: off
@@ -72,9 +73,4 @@ test_script:
 after_test:
   # Upload test report
   # See: https://www.appveyor.com/docs/running-tests/#uploading-xml-test-results
-  - ps: $wc = New-Object 'System.Net.WebClient'
-        $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\pytest_report.xml))
-
-artifacts:
-  # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  - "http -f POST https://ci.appveyor.com/api/testresults/xunit/%APPVEYOR_JOB_ID% pytest_report.xml@pytest_report.xml"
