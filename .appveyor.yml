@@ -52,7 +52,7 @@ install:
   - "conda -v --version"
 
   # Create the env
-  - "conda create -v -n %CONDA_ENV_NAME% %CONDA_PYTHON%"
+  - "conda create -y -v -n %CONDA_ENV_NAME% %CONDA_PYTHON%"
 
   # Activate the env
   - "activate %CONDA_ENV_NAME%"
@@ -64,10 +64,10 @@ install:
   # Install dependencies
   # TODO: should move to common yaml file in repo
 
-  - "conda install %CONDA_NUMPY%"
-  - "conda install scipy"
-  - "conda install scikit-learn"
-  - "conda install numba"
+  - "conda install -y %CONDA_NUMPY%"
+  - "conda install -y scipy"
+  - "conda install -y scikit-learn"
+  - "conda install -y numba"
   - "pip install hypothesis"
   - "pip install pytest"
   - "pip install pytest-cov"
