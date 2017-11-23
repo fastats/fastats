@@ -41,11 +41,21 @@ install:
   # Prepend miniconda binaries to the %PATH%
   - "SET PATH=%MINICONDA%\\Scripts;%PATH%"
 
+  # Echo the PATH
+  - "ECHO PATH IS:"
+  - "ECHO %PATH%"
+
+  # TODO DEBUG Show what's in the miniconda dir
+  - "DIR %MINICONDA%"
+
   # Make sure we can use conda
   - "conda -vv --version"
 
   # Create the env
   - "conda create -vv -n %CONDA_ENV_NAME% %CONDA_PYTHON%"
+
+  # Activate the env
+  - "activate %CONDA_ENV_NAME%"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
