@@ -73,4 +73,4 @@ test_script:
 after_test:
   # Upload test report
   # See: https://www.appveyor.com/docs/running-tests/#uploading-xml-test-results
-  - "http -f POST https://ci.appveyor.com/api/testresults/xunit/%APPVEYOR_JOB_ID% pytest_report.xml@pytest_report.xml"
+  - "http -f POST https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID% pytest_report.xml@pytest_report.xml"
