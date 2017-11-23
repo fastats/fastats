@@ -41,13 +41,6 @@ install:
   # Prepend miniconda binaries to the %PATH%
   - "SET PATH=%MINICONDA%\\Scripts;%PATH%"
 
-  # Echo the PATH
-  - "ECHO PATH IS:"
-  - "ECHO %PATH%"
-
-  # TODO DEBUG Show what's in the miniconda dir
-  - "DIR %MINICONDA%"
-
   # Make sure we can use conda
   - "conda -v --version"
 
@@ -75,6 +68,9 @@ install:
   - "pip install sphinx"
   - "pip install sphinx_rtd_theme"
   - "pip install statsmodels"
+
+# Ignore the MSBuild nonsense
+build: off
 
 test_script:
   # Run the project tests
