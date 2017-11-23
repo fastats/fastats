@@ -7,15 +7,8 @@ environment:
 
   matrix:
 
-    - MINICONDA: "C:\\Miniconda36"  # 32 bit
-      CONDA_ENV_NAME: test_py_36_32bit_numpy_112
-      CONDA_PYTHON: "python=3.6"
-      CONDA_NUMPY: "numpy=1.12"
-
-    - MINICONDA: "C:\\Miniconda36-x64"
-      CONDA_ENV_NAME: test_py_36_64bit_numpy_112
-      CONDA_PYTHON: "python=3.6"
-      CONDA_NUMPY: "numpy=1.12"
+    # Currently using numpy 1.13 because of other dependencies
+    # (e.g. you would install 1.12 but it would be upgraded by conda/pip)
 
     - MINICONDA: "C:\\Miniconda36"
       CONDA_ENV_NAME: test_py_36_32bit_numpy_113
@@ -74,7 +67,13 @@ build: off
 
 test_script:
   # Run the project tests
-  - "pytest"
+  - "pytest --junit-xml pytest_report.xml"
+
+after_test:
+  # Upload test report
+  # See: https://www.appveyor.com/docs/running-tests/#uploading-xml-test-results
+  - ps: $wc = New-Object 'System.Net.WebClient'
+        $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\pytest_report.xml))
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
