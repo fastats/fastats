@@ -1,5 +1,5 @@
 
-from numpy import column_stack
+import numpy as np
 
 from fastats.utilities.pre_processing import standard_scale
 
@@ -27,8 +27,21 @@ def pearson(x, y):
     :return: a float representing the correlation
     """
     assert x.shape == y.shape
-    A = column_stack([x, y])
-    return pearson_pairwise(A).diagonal(1)
+
+    n = len(x)
+    xy = x * y
+    x2 = x ** 2
+    y2 = y ** 2
+
+    sum_x = np.sum(x)
+    sum_y = np.sum(y)
+
+    numer = n * np.sum(xy) - sum_x * sum_y
+
+    first = n * np.sum(x2) - sum_x ** 2
+    second = n * np.sum(y2) - sum_y ** 2
+    denom = np.sqrt(first * second)
+    return numer / denom
 
 
 def pearson_pairwise(A):

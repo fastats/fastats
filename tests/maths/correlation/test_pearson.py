@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 from pytest import approx, mark
-from sklearn.datasets import load_iris, load_diabetes
 
 from fastats.maths.correlation import pearson, pearson_pairwise
+from tests.data.datasets import SKLeanDataSets
 
 
 def test_pearson_uwe_normal_hypervent():
@@ -21,6 +21,9 @@ def test_pearson_uwe_normal_hypervent():
     result = pearson(normal, hypervent)
     assert result == approx(0.966194346491)
 
+    A = np.stack([normal, hypervent]).T
+    assert pearson_pairwise(A).diagonal(1) == approx(0.966194346491)
+
 
 def test_pearson_stats_howto():
     """
@@ -33,6 +36,9 @@ def test_pearson_stats_howto():
 
     result = pearson(age, glucose)
     assert result == approx(0.529808901890)
+
+    A = np.stack([age, glucose]).T
+    assert pearson_pairwise(A).diagonal(1) == approx(0.529808901890)
 
 
 def test_pearson_nan_result():
@@ -52,14 +58,14 @@ def test_pearson_nan_result():
     assert pearson(x, y) == approx(0.6324555320)
 
 
-@mark.parametrize('A', [load_iris().data, load_diabetes().data], ids=['iris', 'diabetes'])
+@mark.parametrize('A', SKLeanDataSets(), ids=lambda d: d.DESCR.split()[0])
 def test_pearson_pairwise_versus_pandas(A):
     """
     This is a check of the pairwise Pearson correlation against
     pandas DataFrame corr for an input dataset A.
     """
-    expected = pd.DataFrame(A).corr(method='pearson').values
-    output = pearson_pairwise(A)
+    expected = pd.DataFrame(A.data).corr(method='pearson').values
+    output = pearson_pairwise(A.data)
     assert np.allclose(expected, output)
 
 

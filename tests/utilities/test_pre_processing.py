@@ -3,10 +3,11 @@ from unittest import TestCase
 import numpy as np
 import pandas as pd
 from pytest import raises
+from scipy.stats import rankdata
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from fastats.utilities.pre_processing import standard_scale, min_max_scale
+from fastats.utilities.pre_processing import standard_scale, min_max_scale, rank_data
 
 
 class SKLearnTestMixin:
@@ -58,6 +59,19 @@ class MinMaxScaleTests(TestCase, SKLearnTestMixin):
         super().setUp()
         self._func = min_max_scale
         self._scaler = MinMaxScaler
+
+
+def test_rank_data():
+    data = load_iris().data
+
+    # rank the data all at once
+    output = rank_data(data)
+
+    # check each column versus scipy equivalent
+    for i in range(data.shape[1]):
+        feature = data[:, i]
+        expected = rankdata(feature)
+    assert np.allclose(expected, output[:, i])
 
 
 if __name__ == '__main__':
