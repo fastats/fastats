@@ -58,7 +58,7 @@ def test_spearman_rgs():
     assert spearman_pairwise(A).diagonal(1) == approx(0.9757, abs=1e-4)
 
 
-@mark.parametrize('A', SKLeanDataSets(), ids=lambda d: d.DESCR.split()[0])
+@mark.parametrize('A', SKLeanDataSets(), ids=SKLeanDataSets.describe)
 def test_spearman_pairwise_versus_pandas(A):
     """
     This is a check of the pairwise Spearman correlation against

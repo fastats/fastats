@@ -58,7 +58,7 @@ def test_pearson_nan_result():
     assert pearson(x, y) == approx(0.6324555320)
 
 
-@mark.parametrize('A', SKLeanDataSets(), ids=lambda d: d.DESCR.split()[0])
+@mark.parametrize('A', SKLeanDataSets(), ids=SKLeanDataSets.describe)
 def test_pearson_pairwise_versus_pandas(A):
     """
     This is a check of the pairwise Pearson correlation against

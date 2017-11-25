@@ -10,3 +10,7 @@ class SKLeanDataSets:
         cancer = datasets.load_breast_cancer()
         linnerud = datasets.load_linnerud()
         return iter((iris, diabetes, boston, cancer, linnerud))
+
+    @staticmethod
+    def describe(data_set):
+        return data_set.DESCR.split()[0]
