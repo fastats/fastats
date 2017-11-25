@@ -16,7 +16,7 @@ def spearman(x, y):
     See the test_spearman unit-tests for an
     example.
 
-    The provided dataset must have no ties.
+    The provided inputs must have no ties.
 
     Example
     -------
