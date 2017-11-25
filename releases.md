@@ -7,6 +7,7 @@
 - correlation : Spearman and Pearson correlation coefficient functions
 - pca : Principal Component Analysis, returning the transformed data, not eigenvalues
 or eigenvectors.
+- Added Windows CI builds: #23
 
 #### Bug fixes
 
