@@ -58,9 +58,9 @@ def rank_data(A):
     A = A.astype(np_float64)  # may result in spurious ties
 
     res = empty_like(A)
-    m = A.shape[0]
+    m, n = A.shape
 
-    for i in range(A.shape[1]):
+    for i in range(n):
         data_i = A[:, i]
         data_i_std = empty_like(data_i, dtype=np_int32)
         sort_order = argsort(data_i)
