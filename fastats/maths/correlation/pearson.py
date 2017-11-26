@@ -1,6 +1,8 @@
 
 import numpy as np
 
+from fastats.scaling import standard
+
 
 def pearson(x, y):
     """
@@ -40,6 +42,21 @@ def pearson(x, y):
     second = n * np.sum(y2) - sum_y ** 2
     denom = np.sqrt(first * second)
     return numer / denom
+
+
+def pearson_pairwise(A):
+    """
+    Calculates the pearson r correlation to
+    measure the degree of the relationship
+    between pairs of columns of the supplied
+    matrix A (similar to pandas.DataFrame.corr)
+    """
+    assert A.ndim > 1
+    assert A.shape[1] > 1
+
+    n = A.shape[0]
+    A_std = standard(A)
+    return (A_std.T @ A_std) / n
 
 
 if __name__ == '__main__':

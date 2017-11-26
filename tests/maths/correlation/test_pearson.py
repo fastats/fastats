@@ -1,8 +1,9 @@
-
 import numpy as np
-from pytest import approx
+import pandas as pd
+from pytest import approx, mark
 
-from fastats.maths.correlation import pearson
+from fastats.maths.correlation import pearson, pearson_pairwise
+from tests.data.datasets import SKLearnDataSets
 
 
 def test_pearson_uwe_normal_hypervent():
@@ -20,6 +21,9 @@ def test_pearson_uwe_normal_hypervent():
     result = pearson(normal, hypervent)
     assert result == approx(0.966194346491)
 
+    A = np.stack([normal, hypervent]).T
+    assert pearson_pairwise(A).diagonal(1) == approx(0.966194346491)
+
 
 def test_pearson_stats_howto():
     """
@@ -32,6 +36,9 @@ def test_pearson_stats_howto():
 
     result = pearson(age, glucose)
     assert result == approx(0.529808901890)
+
+    A = np.stack([age, glucose]).T
+    assert pearson_pairwise(A).diagonal(1) == approx(0.529808901890)
 
 
 def test_pearson_nan_result():
@@ -49,6 +56,18 @@ def test_pearson_nan_result():
 
     y[0] = 2.0
     assert pearson(x, y) == approx(0.6324555320)
+
+
+@mark.parametrize('A', SKLearnDataSets)
+def test_pearson_pairwise_versus_pandas(A):
+    """
+    This is a check of the pairwise Pearson correlation against
+    pandas DataFrame corr for an input dataset A.
+    """
+    data = A.value.data
+    expected = pd.DataFrame(data).corr(method='pearson').values
+    output = pearson_pairwise(data)
+    assert np.allclose(expected, output)
 
 
 if __name__ == '__main__':
