@@ -14,6 +14,8 @@ def standard_scale(A, ddof=0):
     in the estimation of population variance by applying Bessel's
     correction: https://en.wikipedia.org/wiki/Bessel%27s_correction
     """
+    assert A.ndim > 1
+
     if ddof not in (0, 1):
         raise ValueError('ddof must be either 0 or 1')
 
@@ -37,12 +39,15 @@ def min_max_scale(A):
     such that all data points lie in the range 0 to 1, equivalent to sklearn
     MinMaxScaler.
     """
+    assert A.ndim > 1
+
     n = A.shape[1]
     res = empty_like(A, dtype=float)
 
     for i in range(n):
         data_i = A[:, i]
-        res[:, i] = (data_i - np_min(data_i)) / (np_max(data_i) - np_min(data_i))
+        data_min = np_min(data_i)
+        res[:, i] = (data_i - data_min) / (np_max(data_i) - data_min)
 
     return res
 
@@ -56,7 +61,6 @@ def rank_data(A):
     assert A.ndim > 1
 
     A = A.astype(np_float64)  # may result in spurious ties
-
     res = empty_like(A)
     m, n = A.shape
 

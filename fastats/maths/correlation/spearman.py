@@ -1,8 +1,8 @@
 
 import numpy as np
 
-from fastats.utilities.pre_processing import rank_data
 from fastats.maths.correlation.pearson import pearson_pairwise
+from fastats.scaling.scaling import rank_data
 
 
 def spearman(x, y):
@@ -47,7 +47,7 @@ def spearman_pairwise(A):
     Calculates the Spearman rank correlation
     coefficient between pairs of columns of
     the supplied matrix A (similar to
-    pandas.DataFrame.corr).
+    pandas.DataFrame.corr(method='spearman').
 
     Ties are dealt with using the 'average'
     method, as described in rank_data.
