@@ -24,15 +24,7 @@ def test_standard_scale_versus_sklearn(A):
 
 
 @mark.parametrize('A', SKLearnDataSets)
-def test_min_max_scale_versus_sklearn(A):
-    data = A.value.data
-    expected = MinMaxScaler().fit_transform(data)
-    output = min_max(data)
-    assert np.allclose(expected, output)
-
-
-@mark.parametrize('A', SKLearnDataSets)
-def test_standard_scale_with_bessel_correction(A):
+def test_standard_scale_with_bessel_correction_versus_sklearn(A):
     data = A.value.data
     df = pd.DataFrame(data)
 
@@ -42,6 +34,14 @@ def test_standard_scale_with_bessel_correction(A):
     expected = df.apply(zscore).values
 
     output = standard(data, ddof=1)
+    assert np.allclose(expected, output)
+
+
+@mark.parametrize('A', SKLearnDataSets)
+def test_min_max_scale_versus_sklearn(A):
+    data = A.value.data
+    expected = MinMaxScaler().fit_transform(data)
+    output = min_max(data)
     assert np.allclose(expected, output)
 
 
