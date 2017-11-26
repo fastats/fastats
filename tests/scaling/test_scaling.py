@@ -70,4 +70,4 @@ def test_rank_scale_versus_scipy(A):
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

@@ -156,4 +156,4 @@ def test_multi_column_support():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

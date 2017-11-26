@@ -1,3 +1,4 @@
+
 from numpy import diag, sqrt, hstack, ones, eye
 from numpy.linalg import inv
 from scipy.linalg import qr, solve_triangular
@@ -168,4 +169,4 @@ def t_statistic(A, b):
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

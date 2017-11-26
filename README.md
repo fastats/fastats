@@ -77,15 +77,10 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 #### Contributing
 
-All contributions are welcome :)
+Please make sure you've read the contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 
-If you would like to contribute anything, open a PR (issues are turned off):
+In short, we use PRs for everything.
 
-- To report a bug, open a PR with a unittest that fails.
-- To request an API change/new functionality, open a PR with a failing unittest showing your preferred API.
-- To submit a fix, open a PR with passing unittests + doctests. Doctests should be minimal, and serve as API docs for the most common use cases, unittests should be exhaustive.
-
-Simples :)
 
 #### Sponsors
 

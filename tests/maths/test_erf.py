@@ -35,4 +35,4 @@ def test_erf_reconcile_to_scipy():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

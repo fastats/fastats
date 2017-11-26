@@ -101,4 +101,4 @@ def test_problematic_child_transform_with_faked_child():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])
