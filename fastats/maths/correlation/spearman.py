@@ -2,7 +2,7 @@
 import numpy as np
 
 from fastats.maths.correlation.pearson import pearson_pairwise
-from fastats.scaling.scaling import rank_data
+from fastats.scaling.scaling import rank_scale
 
 
 def spearman(x, y):
@@ -55,7 +55,7 @@ def spearman_pairwise(A):
     assert A.ndim > 1
     assert A.shape[1] > 1
 
-    A_std = rank_data(A)
+    A_std = rank_scale(A)
     return pearson_pairwise(A_std)
 
 

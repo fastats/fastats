@@ -4,8 +4,15 @@ from pytest import mark
 from scipy.stats import rankdata
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from fastats.scaling.scaling import standard_scale, min_max_scale, rank_data
+from fastats.scaling.scaling import standard_scale, min_max_scale, rank_scale, scale
 from tests.data.datasets import SKLearnDataSets
+
+
+def test_scale_no_op():
+    data = np.arange(100, dtype=float)
+    data[13] = np.nan
+    output = scale(data)
+    assert np.allclose(data, output, equal_nan=True)
 
 
 @mark.parametrize('A', SKLearnDataSets)
@@ -39,11 +46,11 @@ def test_standard_scale_with_bessel_correction(A):
 
 
 @mark.parametrize('A', SKLearnDataSets)
-def test_rank_data_versus_scipy(A):
+def test_rank_scale_versus_scipy(A):
     data = A.value.data
 
     # rank the data all at once
-    output = rank_data(data)
+    output = rank_scale(data)
 
     # check each column versus scipy equivalent
     for i in range(data.shape[1]):

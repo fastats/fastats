@@ -5,6 +5,13 @@ from numpy import int32 as np_int32
 from numpy import float64 as np_float64
 
 
+def scale(A):
+    """
+    A no-op data scaling transformation
+    """
+    return A
+
+
 def standard_scale(A, ddof=0):
     """
     Standardise data by removing the mean and scaling to unit variance,
@@ -52,7 +59,7 @@ def min_max_scale(A):
     return res
 
 
-def rank_data(A):
+def rank_scale(A):
     """
     Rank supplied data column-wise.  Ties are dealt with using
     the average method whereby the average of the ranks that would
