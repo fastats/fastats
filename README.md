@@ -8,7 +8,7 @@ A pure python library for benchmarked, scalable numerics, built using [numba](ht
 
 ---
 
-### **This is pre-release software, there are no packages published yet.**
+### WARNING: **This is pre-release software, there are no packages published yet.**
 
 ## Aims/Reasoning
 
@@ -22,7 +22,9 @@ To fix (1) we need better algorithms, code which vectorises to SIMD instructions
 
 To fix (2) we need to focus on simpler code which is easier to debug.
 
-fastats (ie, fast-stats) tries to help with both of these by using [numba](http://numba.pydata.org/) from [Continuum Analytics](https://www.continuum.io/) to JIT compile pure python code to vectorised native code, whilst being trivial to run in pure python mode for debugging.
+fastats (ie, fast-stats) tries to help with both of these by using [numba](http://numba.pydata.org/)
+from [Anaconda](https://www.anaconda.com/) to JIT compile pure Python code to
+vectorised native code, whilst being trivial to run in pure Python mode for debugging.
 
 ## Usage
 
@@ -74,18 +76,20 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 - Python >= 3.5
 - Numba >= 0.33
 
+Note: `fastats` is currently pre-release software.
+Requirements are not fixed yet, it's possible we'll require Python >= 3.6.
+
+##### Test requirements
+
+For test requirements, take a look at [.travis.yml](.travis.yml) or [.appveyor.yml](.appveyor.yml).
+
 
 #### Contributing
 
-All contributions are welcome :)
+Please make sure you've read the contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 
-If you would like to contribute anything, open a PR (issues are turned off):
+In short, we use PRs for everything.
 
-- To report a bug, open a PR with a unittest that fails.
-- To request an API change/new functionality, open a PR with a failing unittest showing your preferred API.
-- To submit a fix, open a PR with passing unittests + doctests. Doctests should be minimal, and serve as API docs for the most common use cases, unittests should be exhaustive.
-
-Simples :)
 
 #### Sponsors
 

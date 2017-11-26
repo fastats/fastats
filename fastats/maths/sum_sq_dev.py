@@ -1,3 +1,4 @@
+
 import numpy as np
 from numpy import power, mean
 
@@ -25,4 +26,4 @@ def sum_sq_dev(x):
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])
