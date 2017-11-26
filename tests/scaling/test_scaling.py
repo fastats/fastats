@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from pytest import mark
+from pytest import mark, raises
 from scipy.stats import rankdata
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
@@ -35,6 +35,14 @@ def test_standard_scale_with_bessel_correction_versus_sklearn(A):
 
     output = standard(data, ddof=1)
     assert np.allclose(expected, output)
+
+
+def test_standard_scale_raises_if_ddof_ne_0_or_1():
+    data = np.arange(20, dtype=float).reshape(2, 10)
+
+    for ddof in -1, 2:
+        with raises(ValueError):
+            _ = standard(data, ddof=ddof)
 
 
 @mark.parametrize('A', SKLearnDataSets)
