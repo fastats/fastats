@@ -61,23 +61,27 @@ def test_basic_sanity_local_nested_func():
     assert square(3) == 9
 
 
-def test_math_function_supported():
+def test_math_tanh_function_supported():
     data = np.arange(0.1, 1.0, 0.1, dtype='float32')
 
-    # TODO : get this working without the wrapper
-    # function. Currently doesn't work due to
-    # function not being found.
-    def tanh(x):
-        return math.tanh(x)
-
-    assert tanh(0.5) == approx(math.tanh(0.5))
-
-    result = single_pass(data, value=tanh)
+    result = single_pass(data, value=math.tanh)
 
     assert result[0] == approx(0.099668)
     assert result[1] == approx(0.19737533)
     assert result[2] == approx(0.29131263)
     assert sum(result) == approx(3.9521739)
+
+
+def test_math_sin_function_supported():
+    data = np.pi * np.array([0.25, 0.5, 0.75], dtype='float32')
+
+    result = single_pass(data, value=math.sin)
+    half_sqrt2 = math.sqrt(2) / 2
+
+    assert result[0] == approx(half_sqrt2)
+    assert result[1] == approx(1.0)
+    assert result[2] == approx(half_sqrt2)
+    assert sum(result) == approx(2 * half_sqrt2 + 1)
 
 
 def test_nested_math_function_supported():

@@ -1,14 +1,9 @@
 
-from contextlib import contextmanager, suppress
+from contextlib import contextmanager
 from functools import wraps
-from inspect import isfunction
 
-from fastats.core.ast_transforms.convert_to_jit import (
-    convert_to_jit
-)
-from fastats.core.ast_transforms.processor import (
-    AstProcessor
-)
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+from fastats.core.ast_transforms.processor import AstProcessor
 
 
 @contextmanager
@@ -29,11 +24,7 @@ def fs(func):
 
     @wraps(func)
     def fs_wrapper(*args, **kwargs):
-        debug = kwargs.get('debug')
-        return_callable = kwargs.get('return_callable')
-
-        with suppress(KeyError):
-            del kwargs['return_callable']
+        return_callable = kwargs.pop('return_callable', None)
 
         if not kwargs:
             return _func(*args)
@@ -42,10 +33,8 @@ def fs(func):
             # TODO : remove fastats keywords such as 'debug'
             # before passing into AstProcessor
 
-            new_funcs = {}
-            for v in kwargs.values():
-                if isfunction(v) and v.__name__ not in kwargs:
-                    new_funcs[v.__name__] = convert_to_jit(v)
+            new_funcs = {v.__name__: convert_to_jit(v) for v in kwargs.values()
+                         if v.__name__ not in kwargs}
             kwargs = {k: convert_to_jit(v) for k, v in kwargs.items()}
 
             processor = AstProcessor(_f, kwargs, replaced, new_funcs)

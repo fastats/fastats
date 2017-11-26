@@ -169,4 +169,3 @@ def t_statistic(A, b):
 if __name__ == '__main__':
     import pytest
     pytest.main()
-
