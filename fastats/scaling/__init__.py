@@ -1,10 +1,10 @@
 
-from fastats.scaling.scaling import standard_scale, min_max_scale, rank_scale, scale
+from fastats.scaling.scaling import standard, min_max, rank, scale
 
 
 __all__ = [
-    'standard_scale',
-    'min_max_scale',
-    'rank_scale',
+    'standard',
+    'min_max',
+    'rank',
     'scale',
 ]

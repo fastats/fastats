@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from fastats.scaling.scaling import standard_scale
+from fastats.scaling.scaling import standard
 
 
 def pearson(x, y):
@@ -55,7 +55,7 @@ def pearson_pairwise(A):
     assert A.shape[1] > 1
 
     n = A.shape[0]
-    A_std = standard_scale(A)
+    A_std = standard(A)
     return (A_std.T @ A_std) / n
 
 

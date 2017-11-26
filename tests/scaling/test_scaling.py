@@ -4,7 +4,7 @@ from pytest import mark
 from scipy.stats import rankdata
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from fastats.scaling.scaling import standard_scale, min_max_scale, rank_scale, scale
+from fastats.scaling.scaling import standard, min_max, rank, scale
 from tests.data.datasets import SKLearnDataSets
 
 
@@ -19,7 +19,7 @@ def test_scale_no_op():
 def test_standard_scale_versus_sklearn(A):
     data = A.value.data
     expected = StandardScaler().fit_transform(data)
-    output = standard_scale(data)
+    output = standard(data)
     assert np.allclose(expected, output)
 
 
@@ -27,7 +27,7 @@ def test_standard_scale_versus_sklearn(A):
 def test_min_max_scale_versus_sklearn(A):
     data = A.value.data
     expected = MinMaxScaler().fit_transform(data)
-    output = min_max_scale(data)
+    output = min_max(data)
     assert np.allclose(expected, output)
 
 
@@ -41,7 +41,7 @@ def test_standard_scale_with_bessel_correction(A):
 
     expected = df.apply(zscore).values
 
-    output = standard_scale(data, ddof=1)
+    output = standard(data, ddof=1)
     assert np.allclose(expected, output)
 
 
@@ -50,7 +50,7 @@ def test_rank_scale_versus_scipy(A):
     data = A.value.data
 
     # rank the data all at once
-    output = rank_scale(data)
+    output = rank(data)
 
     # check each column versus scipy equivalent
     for i in range(data.shape[1]):

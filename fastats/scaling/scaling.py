@@ -12,7 +12,7 @@ def scale(A):
     return A
 
 
-def standard_scale(A, ddof=0):
+def standard(A, ddof=0):
     """
     Standardise data by removing the mean and scaling to unit variance,
     equivalent to sklearn StandardScaler.
@@ -40,7 +40,7 @@ def standard_scale(A, ddof=0):
         return res * sqrt((m - 1) / m)
 
 
-def min_max_scale(A):
+def min_max(A):
     """
     Standardise data by scaling data points by the sample minimum and maximum
     such that all data points lie in the range 0 to 1, equivalent to sklearn
@@ -59,7 +59,7 @@ def min_max_scale(A):
     return res
 
 
-def rank_scale(A):
+def rank(A):
     """
     Rank supplied data column-wise.  Ties are dealt with using
     the average method whereby the average of the ranks that would
