@@ -43,20 +43,20 @@ Simples :)
 
 We tend to follow [PEP8][pep8] for Python code style, with a few exceptions:
 
-- all `.py` files should begin with a blank line (blame @dwillmer for this)
-- one-letter and upper-case variable names might be acceptable where they make sense, especially in
-  linear algebra functions dealing with matrices
+- All `.py` files should begin with a blank line (blame @dwillmer for this).
+- One-letter and upper-case variable names might be acceptable where they make sense, especially in
+  linear algebra functions dealing with matrices.
 
 ### Before submitting your code for PR:
 
 - Make sure all your `.py` files always end with a blank line (this is good practice,
-  also for other file formats)
-- Make sure your source files are `UTF-8` encoded
-- Make sure you have tests (test coverage is automatically enforced on every PR)
+  also for other file formats).
+- Make sure your source files are `UTF-8` encoded.
+- Make sure you have tests (test coverage is automatically enforced on every PR).
 
 #### Tests
 
-- Doctests should be minimal, and serve as API docs for the most common use cases
+- Doctests should be minimal, and serve as API docs for the most common use cases.
   - For doctests, you should place this at the bottom of your module:
 
   ```python
@@ -67,7 +67,7 @@ We tend to follow [PEP8][pep8] for Python code style, with a few exceptions:
   ```
   This ensures that you can "run" every doctest in the module ad-hoc.
 
-- Unittests should be exhaustive and should reside in the `tests` directory
+- Unittests should be exhaustive and should reside in the `tests` directory.
 
 
 [bad_issues]: https://gist.github.com/ryanflorence/8a62abea562ca2896dee
