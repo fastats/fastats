@@ -1,16 +1,12 @@
+from enum import Enum
+
 from sklearn import datasets
 
 
-class SKLeanDataSets:
-
-    def __iter__(self):
-        iris = datasets.load_iris()
-        diabetes = datasets.load_diabetes()
-        boston = datasets.load_boston()
-        cancer = datasets.load_breast_cancer()
-        linnerud = datasets.load_linnerud()
-        return iter((iris, diabetes, boston, cancer, linnerud))
-
-    @staticmethod
-    def describe(data_set):
-        return data_set.DESCR.split()[0]
+class SKLearnDataSets(Enum):
+    BOSTON = datasets.load_boston()
+    CANCER = datasets.load_breast_cancer()
+    DIABETES = datasets.load_diabetes()
+    LINNERUD = datasets.load_linnerud()
+    IRIS = datasets.load_iris()
+    WINE = datasets.load_wine()

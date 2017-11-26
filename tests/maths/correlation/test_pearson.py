@@ -3,7 +3,7 @@ import pandas as pd
 from pytest import approx, mark
 
 from fastats.maths.correlation import pearson, pearson_pairwise
-from tests.data.datasets import SKLeanDataSets
+from tests.data.datasets import SKLearnDataSets
 
 
 def test_pearson_uwe_normal_hypervent():
@@ -58,14 +58,15 @@ def test_pearson_nan_result():
     assert pearson(x, y) == approx(0.6324555320)
 
 
-@mark.parametrize('A', SKLeanDataSets(), ids=SKLeanDataSets.describe)
+@mark.parametrize('A', SKLearnDataSets)
 def test_pearson_pairwise_versus_pandas(A):
     """
     This is a check of the pairwise Pearson correlation against
     pandas DataFrame corr for an input dataset A.
     """
-    expected = pd.DataFrame(A.data).corr(method='pearson').values
-    output = pearson_pairwise(A.data)
+    data = A.value.data
+    expected = pd.DataFrame(data).corr(method='pearson').values
+    output = pearson_pairwise(data)
     assert np.allclose(expected, output)
 
 

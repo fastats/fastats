@@ -4,7 +4,7 @@ import pandas as pd
 from pytest import approx, mark
 
 from fastats.maths.correlation import spearman, spearman_pairwise
-from tests.data.datasets import SKLeanDataSets
+from tests.data.datasets import SKLearnDataSets
 
 
 def test_spearman_basic_sanity():
@@ -58,14 +58,15 @@ def test_spearman_rgs():
     assert spearman_pairwise(A).diagonal(1) == approx(0.9757, abs=1e-4)
 
 
-@mark.parametrize('A', SKLeanDataSets(), ids=SKLeanDataSets.describe)
+@mark.parametrize('A', SKLearnDataSets)
 def test_spearman_pairwise_versus_pandas(A):
     """
     This is a check of the pairwise Spearman correlation against
     pandas DataFrame corr for an input dataset A.
     """
-    expected = pd.DataFrame(A.data).corr(method='spearman').values
-    output = spearman_pairwise(A.data)
+    data = A.value.data
+    expected = pd.DataFrame(data).corr(method='spearman').values
+    output = spearman_pairwise(data)
     assert np.allclose(expected, output)
 
 

@@ -8,7 +8,7 @@ from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 from fastats.utilities.pre_processing import standard_scale, min_max_scale, rank_data
-from tests.data.datasets import SKLeanDataSets
+from tests.data.datasets import SKLearnDataSets
 
 
 class SKLearnTestMixin:
@@ -62,9 +62,9 @@ class MinMaxScaleTests(TestCase, SKLearnTestMixin):
         self._scaler = MinMaxScaler
 
 
-@mark.parametrize('A', SKLeanDataSets(), ids=SKLeanDataSets.describe)
+@mark.parametrize('A', SKLearnDataSets)
 def test_rank_data(A):
-    data = A.data
+    data = A.value.data
 
     # rank the data all at once
     output = rank_data(data)
