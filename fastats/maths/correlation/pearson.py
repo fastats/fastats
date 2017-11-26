@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from fastats.scaling.scaling import standard
+from fastats.scaling import standard
 
 
 def pearson(x, y):

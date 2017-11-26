@@ -55,8 +55,8 @@ def spearman_pairwise(A):
     assert A.ndim > 1
     assert A.shape[1] > 1
 
-    A_std = rank(A)
-    return pearson_pairwise(A_std)
+    A_rank = rank(A)
+    return pearson_pairwise(A_rank)
 
 
 if __name__ == '__main__':

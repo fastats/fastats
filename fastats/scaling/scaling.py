@@ -1,8 +1,9 @@
+
 from numpy import empty_like, mean, std, sqrt, argsort, ones, nonzero, empty
+from numpy import float64 as np_float64
+from numpy import int32 as np_int32
 from numpy import max as np_max
 from numpy import min as np_min
-from numpy import int32 as np_int32
-from numpy import float64 as np_float64
 
 
 def scale(A):
