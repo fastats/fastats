@@ -1,10 +1,10 @@
 
 from unittest import TestCase
 
-from pytest import approx
-import statsmodels.api as sm
-from sklearn import datasets
 import numpy as np
+import statsmodels.api as sm
+from pytest import approx
+from sklearn import datasets
 
 from fastats.maths import ols, ols_qr, ols_cholesky, ols_svd
 from fastats.maths.ols import (
