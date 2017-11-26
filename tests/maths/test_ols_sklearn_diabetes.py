@@ -1,11 +1,12 @@
+
 from unittest import TestCase
 
-from pytest import approx
-import statsmodels.api as sm
-from sklearn import datasets
 import numpy as np
+import statsmodels.api as sm
+from pytest import approx
+from sklearn import datasets
 
-from fastats.maths import ols, ols_qr
+from fastats.maths import ols, ols_qr, ols_cholesky, ols_svd
 from fastats.maths.ols import (
     add_intercept, r_squared, sum_of_squared_residuals,
     fitted_values, residuals, adjusted_r_squared,
@@ -52,6 +53,18 @@ class OLSQRTests(BaseOLS, SklearnDiabetesOLS):
     def setUp(self):
         super().setUp()
         self._func = ols_qr
+
+
+class OLSCholeskyTests(BaseOLS, SklearnDiabetesOLS):
+    def setUp(self):
+        super().setUp()
+        self._func = ols_cholesky
+
+
+class OLSSVDTests(BaseOLS, SklearnDiabetesOLS):
+    def setUp(self):
+        super().setUp()
+        self._func = ols_svd
 
 
 class OLSFitMeasuresTestMixin:

@@ -1,7 +1,7 @@
 
 from numpy import diag, sqrt, hstack, ones, eye
 from numpy.linalg import inv
-from scipy.linalg import qr, solve_triangular
+from scipy.linalg import qr, solve_triangular, cholesky, svd
 
 
 def ols(A, b):
@@ -31,6 +31,42 @@ def ols_qr(A, b):
     """
     Q, R = qr(A, mode='economic')
     return solve_triangular(R, Q.T @ b)
+
+
+def ols_cholesky(A, b):
+    """
+    Ordinary Least-Squares Regression Coefficients
+    Estimation.
+
+    If (A.T @ A) @ x = A.T @ b and A is full rank
+    then there exists an upper triangular matrix
+    R such that:
+
+    (R.T @ R) @ x = A.T @ b
+    R.T @ w = A.T @ b
+    R @ x = w
+
+    Find R using Cholesky decomposition.
+    """
+    R = cholesky(A.T @ A)
+    w = solve_triangular(R, A.T @ b, trans='T')
+    return solve_triangular(R, w)
+
+
+def ols_svd(A, b):
+    """
+    Ordinary Least-Squares Regression Coefficients
+    Estimation.
+
+    A @ x = b
+    A = U @ Σ @ Vh (singular value decomposition of A)
+    Σ @ Vh @ x = U.T @ b
+    Σ @ w = U.T @ b
+    x = Vh.T @ w
+    """
+    U, sigma, Vh = svd(A, full_matrices=False)
+    w = (U.T @ b) / sigma
+    return Vh.T @ w
 
 
 def add_intercept(A):
