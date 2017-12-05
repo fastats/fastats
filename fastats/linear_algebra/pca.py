@@ -1,13 +1,13 @@
 
-import numpy as np
-from numpy import cov
-from scipy.linalg import eigh
+from numpy.linalg import eigh
+
+from fastats.scaling import demean
 
 
 def pca(data, components=4):
     """
-    Principal Component Analysis using raw numpy
-    and scipy calls, returning the transformed data.
+    Principal Component Analysis, returning
+    the transformed data.
 
     This does not scale the data.
 
@@ -25,18 +25,13 @@ def pca(data, components=4):
            [ 0.        ],
            [-5.19615242]])
     """
-    mu = data.mean(axis=0)
+    demeaned_data = demean(data)
+    cov = demeaned_data.T @ demeaned_data
+    _, V = eigh(cov)  # returned in increasing eigenvalue order
 
-    # Have a think about this - this effectively copies
-    # the input just to demean. If we don't, we modify
-    # the input.
-    x = data - mu
-    r = cov(x, rowvar=False)
-    _, V = eigh(r)
-    V = np.flip(V, 1)
+    V = V.T[::-1].T[:, :components]
 
-    V = V[:, :components]
-    trans = np.dot(V.T, x.T).T
+    trans = (V.T @ demeaned_data.T).T
     return trans
 
 

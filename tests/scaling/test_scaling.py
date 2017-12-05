@@ -5,7 +5,7 @@ from pytest import mark, raises
 from scipy.stats import rankdata
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from fastats.scaling.scaling import standard, min_max, rank, scale
+from fastats.scaling.scaling import standard, min_max, rank, scale, demean
 from tests.data.datasets import SKLearnDataSets
 
 
@@ -66,6 +66,14 @@ def test_rank_scale_versus_scipy(A):
         feature = data[:, i]
         expected = rankdata(feature)
         assert np.allclose(expected, output[:, i])
+
+
+@mark.parametrize('A', SKLearnDataSets)
+def test_demean(A):
+    data = A.value.data
+    expected = data - data.mean(axis=0)
+    output = demean(data)
+    assert np.allclose(expected, output)
 
 
 if __name__ == '__main__':
