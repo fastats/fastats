@@ -1,8 +1,29 @@
+# Fastats
 
+Fastats is designed to allow extremely high performance numerical code
+that only requires knowledge of python.
+
+It achieves this through:
+
+- Passing functions as arguments into [numba](http://numba.pydata.org).
+- A core library of numerical functions that compose easily.
+
+[Numba](http://numba.pydata.org) is an excellent library which JIT compiles
+numerical python functions down to native code. It also makes concurrency
+easy, and therefore is amazingly useful for numerical programming.
+
+With fastats, functions can be wrapped with the `@fs` decorator which transforms
+the function to allow any keyword arguments to be passed; these keyword arguments
+specify the functions to be replaced within the original code.
+
+When you specify a keyword argument, the code is transformed into AST form,
+and is then re-built with the specified functions replaced. This leads to
+extremely fast execution times (due to `numba`), and extremely fast development
+times (due to AST replacement of functions).
 
 # How do the AST Transforms work?
 
-Imagine a nested code such as a very simple Newton-Raphson solver:
+Imagine a nested function such as a very simple Newton-Raphson solver:
 
 ::
 
@@ -34,9 +55,9 @@ to do the following:
     def my_func(x, y):
         return x**2 + y**2
 
-    my_solve = newton_raphson(, 0.001, root=my_func)
+    my_solver = newton_raphson(, 0.001, root=my_func)
 
-    my_solve(3, 4)
+    my_solver(3, 4)
 
 `my_func` is the function for which we would like to find the roots. It takes two arguments,
 `x` and `y`, one of which will be kept constant whilst the other is varied to find the root.
@@ -98,3 +119,22 @@ To increate precision (at the expense of calculation time), you could use `erfc1
 
 These `ast-modification` semantics therefore allow you to use any pure python numerical
 code, regardless of whether the original author allowed arbitrary functions to be passed in.
+
+# Why are we re-writing functions that already exist in numpy/scipy/etc?
+
+One of the major advantages of numba is that the JIT compilation will be
+optimized for the specific hardware you are running on. The traditional
+python system of writing a C or Cython routine and then pre-compiling it
+will not be optimised for specific hardware.
+
+Over the last few years, the SIMD registers in CPUs have grown to 512-bits,
+which numba/fastats code will be able to take advantage of. Older builds of
+numpy/scipy will not.
+
+This library therefore attempts to move as much logic into small reusable
+python functions which can be compiled as required using numba. We do not
+use pre-compiled code.
+
+This system also allows us to have lower or higher precision variants of
+functions if we want to control the runtime and/or accuracy. With compiled
+code this adds a huge overhead to the codebase.
