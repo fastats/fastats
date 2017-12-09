@@ -16,10 +16,10 @@ def pca(data, components=4):
 
     >>> import numpy as np
     >>> x = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    >>> pca(x, components=1)
+    >>> np.abs(pca(x, components=1))
     array([[ 5.19615242],
            [ 0.        ],
-           [-5.19615242]])
+           [ 5.19615242]])
     """
     demeaned_data = demean(data)
     cov = demeaned_data.T @ demeaned_data
