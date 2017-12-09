@@ -30,8 +30,6 @@ def double(x):
 
 
 def triple(x):
-    # TODO : investigate double(x) + x failure.
-    # return 3 * x
     return double(x) + x
 
 
