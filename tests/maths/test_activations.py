@@ -53,4 +53,4 @@ def test_softplus_with_nan_and_inf():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

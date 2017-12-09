@@ -1,14 +1,10 @@
 
-from contextlib import contextmanager, suppress
+from contextlib import contextmanager
 from functools import wraps
 from inspect import isfunction
 
-from fastats.core.ast_transforms.convert_to_jit import (
-    convert_to_jit
-)
-from fastats.core.ast_transforms.processor import (
-    AstProcessor
-)
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+from fastats.core.ast_transforms.processor import AstProcessor
 
 
 @contextmanager
@@ -28,12 +24,8 @@ def fs(func):
 
     @wraps(func)
     def fs_wrapper(*args, **kwargs):
-
         debug = kwargs.get('debug')
-        return_callable = kwargs.get('return_callable')
-
-        with suppress(KeyError):
-            del kwargs['return_callable']
+        return_callable = kwargs.pop('return_callable', None)
 
         # This deliberately mutates the kwargs.
         # We don't want to have a fs-decorated function

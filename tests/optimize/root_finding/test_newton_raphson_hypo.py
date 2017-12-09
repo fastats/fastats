@@ -18,6 +18,7 @@ def less_or_equal(x, compared_to, rel=1e-6):
             or ((x - compared_to) == approx(0.0, rel=rel))
             or (x == approx(x, rel=rel)))
 
+
 nr_func = newton_raphson(1, 1e-6, root=func, return_callable=True)
 
 
@@ -39,6 +40,7 @@ def test_minimal(x):
 def cos_func(x):
     return cos(x) - 2 * x
 
+
 nr_cos = newton_raphson(0.5, 1e-6, root=cos_func, return_callable=True)
 
 
@@ -50,4 +52,4 @@ def test_cos_minus_2x(x):
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

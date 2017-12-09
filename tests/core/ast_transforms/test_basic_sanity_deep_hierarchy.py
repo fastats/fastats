@@ -129,4 +129,4 @@ def test_multiple_ast_replacements():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

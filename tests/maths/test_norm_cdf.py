@@ -19,4 +19,4 @@ def test_norm_cdf_dartmouth():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

@@ -8,7 +8,8 @@ from fastats.maths.ols import (
     add_intercept, r_squared, sum_of_squared_residuals,
     fitted_values, residuals, adjusted_r_squared,
     standard_error, mean_standard_error_residuals,
-    t_statistic, ols, ols_qr, total_sum_of_squares
+    t_statistic, ols, ols_qr, total_sum_of_squares,
+    ols_cholesky, ols_svd
 )
 from fastats.maths.sum_sq_dev import sum_sq_dev
 
@@ -31,4 +32,6 @@ __all__ = [
     't_statistic',
     'relu',
     'softplus',
+    'ols_cholesky',
+    'ols_svd'
 ]

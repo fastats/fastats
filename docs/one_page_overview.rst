@@ -94,7 +94,7 @@ To increate precision (at the expense of calculation time), you could use `erfc1
 ::
     from fastats.core.erfc import erfc16
 
-    my_solve = newton_raphson(, 0.001, root=my_func, deriv=my_deric, erfc=erfc16)
+    my_solve = newton_raphson(, 0.001, root=my_func, deriv=my_deriv, erfc=erfc16)
 
 These `ast-modification` semantics therefore allow you to use any pure python numerical
 code, regardless of whether the original author allowed arbitrary functions to be passed in.
