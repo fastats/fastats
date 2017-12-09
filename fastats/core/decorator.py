@@ -12,7 +12,6 @@ def fs(func):
 
     @wraps(func)
     def fs_wrapper(*args, **kwargs):
-        debug = kwargs.get('debug')
         return_callable = kwargs.pop('return_callable', None)
 
         # This deliberately mutates the kwargs.
