@@ -8,6 +8,7 @@
 - pca : Principal Component Analysis, returning the transformed data, not eigenvalues
 or eigenvectors.
 - Added Windows CI builds: #23
+- LU Decomposition
 
 #### Bug fixes
 
