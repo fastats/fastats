@@ -28,7 +28,7 @@ def standard(A, ddof=0):
         raise ValueError('ddof must be either 0 or 1')
 
     n = A.shape[1]
-    res = empty_like(A, dtype=float)
+    res = empty_like(A, dtype=np_float64)
 
     for i in range(n):
         data_i = A[:, i]
@@ -50,7 +50,7 @@ def min_max(A):
     assert A.ndim > 1
 
     n = A.shape[1]
-    res = empty_like(A, dtype=float)
+    res = empty_like(A, dtype=np_float64)
 
     for i in range(n):
         data_i = A[:, i]
@@ -95,6 +95,22 @@ def rank(A):
         count[-1] = m
 
         res[:, i] = (count[dense] + count[dense - 1] + 1) / 2.0
+
+    return res
+
+
+def demean(A):
+    """
+    Subtract the mean from the supplied data column-wise.
+    """
+    assert A.ndim > 1
+
+    n = A.shape[1]
+    res = empty_like(A, dtype=np_float64)
+
+    for i in range(n):
+        data_i = A[:, i]
+        res[:, i] = data_i - mean(data_i)
 
     return res
 

@@ -1,66 +1,33 @@
 
-from numba import jit
 import numpy as np
+from numba import jit
+from pytest import mark
 from sklearn.decomposition import PCA
-from sklearn.datasets import (
-    load_iris, load_diabetes, load_wine
-)
 
 from fastats.linear_algebra import pca
+from tests.data.datasets import SKLearnDataSets
 
 
-def test_pca_sklearn_iris():
-    iris = load_iris()
-
-    sk_pca = PCA(n_components=2)
-    sk_pca.fit(iris.data)
-    sk2 = sk_pca.transform(iris.data)
-
-    data2 = pca(iris.data, components=2)
-
-    assert np.allclose(np.abs(sk2), np.abs(data2))
-
-    sk_pca = PCA(n_components=4)
-    sk_pca.fit(iris.data)
-    sk4 = sk_pca.transform(iris.data)
-
-    data4 = pca(iris.data, components=4)
-
-    assert np.allclose(np.abs(sk4), np.abs(data4))
+def check_versus_sklearn(data, fn):
+    for n in range(1, data.shape[1] + 1):
+        sk_pca = PCA(n_components=n)
+        sk_pca.fit(data)
+        expected = sk_pca.transform(data)
+        output = fn(data, components=n)
+        assert np.allclose(np.abs(expected), np.abs(output))  # vector could legitimately be in 'opposite' direction
 
 
-def test_pca_sklearn_diabetes():
-    diab = load_diabetes()
-
-    sk_pca = PCA(n_components=2)
-    sk_pca.fit(diab.data)
-    sk2 = sk_pca.transform(diab.data)
-
-    data2 = pca(diab.data, components=2)
-
-    assert np.allclose(np.abs(sk2), np.abs(data2))
-
-    sk_pca = PCA(n_components=4)
-    sk_pca.fit(diab.data)
-    sk4 = sk_pca.transform(diab.data)
-
-    data4 = pca(diab.data, components=4)
-
-    assert np.allclose(np.abs(sk4), np.abs(data4))
+@mark.parametrize('A', SKLearnDataSets)
+def test_pca_sklearn(A):
+    data = A.value.data
+    check_versus_sklearn(data, pca)
 
 
-def test_pca_jit_sklearn_wine():
-    wine = load_wine()
-
+@mark.parametrize('A', SKLearnDataSets)
+def test_pca_jit_sklearn(A):
+    data = A.value.data
     pca_jit = jit(pca)
-
-    sk_pca = PCA(n_components=2)
-    sk_pca.fit(wine.data)
-    sk2 = sk_pca.transform(wine.data)
-
-    data2 = pca_jit(wine.data, components=2)
-
-    assert np.allclose(np.abs(sk2), np.abs(data2))
+    check_versus_sklearn(data, pca_jit)
 
 
 if __name__ == '__main__':

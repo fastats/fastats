@@ -1,5 +1,5 @@
 
-from fastats.scaling.scaling import standard, min_max, rank, scale
+from fastats.scaling.scaling import standard, min_max, rank, scale, demean
 
 
 __all__ = [
@@ -7,4 +7,5 @@ __all__ = [
     'min_max',
     'rank',
     'scale',
+    'demean'
 ]
