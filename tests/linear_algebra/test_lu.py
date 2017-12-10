@@ -1,15 +1,15 @@
 
 from unittest import TestCase
 
-from numba import jit
 import numpy as np
 from numpy.testing import assert_allclose
 from pytest import approx
 
-from fastats.linear_algebra import lu
+from fastats.linear_algebra import lu, lu_inplace
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 
-lu_jit = jit(nopython=True, nogil=True)(lu)
+lu_jit = convert_to_jit(lu)
 
 
 class LUDecompValidator:
@@ -27,18 +27,22 @@ class LUDecompValidator:
         L = np.zeros_like(self._A)
         U = np.zeros_like(self._A)
 
-        lu(self._A, L, U)
+        lu_inplace(self._A, L, U)
 
         assert L.tolist() == self.L
         assert U.tolist() == self.U
-
         assert_allclose(L @ U, self._A)
 
-    def test_lu_outputs_numba(self):
-        L = np.zeros_like(self._A)
-        U = np.zeros_like(self._A)
+        raw_L, raw_U = lu(self._A)
 
-        lu_jit(self._A, L, U)
+        assert raw_L.tolist() == self.L
+        assert raw_U.tolist() == self.U
+
+        assert_allclose(raw_L @ raw_U, self._A)
+
+    def test_lu_outputs_numba(self):
+
+        L, U = lu_jit(self._A)
 
         assert L.tolist() == self.L
         assert U.tolist() == self.U
