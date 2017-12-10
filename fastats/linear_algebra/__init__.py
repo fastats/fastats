@@ -4,6 +4,6 @@ from fastats.linear_algebra.pca import pca
 
 __all__ = [
     'lu',
-    'lu_inplace'
+    'lu_inplace',
     'pca',
 ]
