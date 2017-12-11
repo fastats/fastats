@@ -127,6 +127,16 @@ def test_standard_scale_parallel_with_bessel_correction_versus_sklearn(A):
     assert np.allclose(expected, output)
 
 
+def test_standard_scale_parallel_raises_if_ddof_ne_0_or_1():
+    data = np.arange(20, dtype=float).reshape(2, 10)
+
+    standard_jit = njit(standard_parallel, parallel=True)
+
+    for ddof in -1, 2:
+        with raises(ValueError):
+            _ = standard_jit(data, ddof=ddof)
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
