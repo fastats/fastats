@@ -1,11 +1,11 @@
 
 New Feature
 
-- [ ] Clean code (small functions, proper variable names, PEP8 etc)
+- [ ] Code conforms to style guide
 - [ ] Doctests
 - [ ] Unit-tests
 - [ ] Documentation
-- [ ] New line item in releases.md
+- [ ] New line item in [releases.md](releases.md)
 - [ ] Info added to `literature` folder
 
 Bug Report
