@@ -1,3 +1,6 @@
+# We want the tests to run on every PR
+skip_branch_with_pr: false
+
 environment:
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
