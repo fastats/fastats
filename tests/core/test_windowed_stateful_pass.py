@@ -77,9 +77,16 @@ def rolling_mean(x, val_in, val_out, state):
 def test_windowed_stateful_pass_rolling_mean():
     data = np.array([1, 2, 3, 5, 8, 13], dtype='float')
 
+    # testing rolling_mean state handling
     empty_state = np.empty(0, dtype=data.dtype)
-    mean_result = rolling_mean(data, 0, 0, empty_state)
-    assert mean_result == (data.mean(), np.array(data.sum()))
+
+    mean, state = rolling_mean(data[:-1], 0, 0, empty_state)
+    expected_state = np.array(data[:-1].sum())
+    assert mean, state == (data[:-1].mean(), expected_state)
+
+    mean2, state2 = rolling_mean(data[1:], 13, 1, state)
+    expected_state_2 = np.array(data[1:].sum())
+    assert mean2, state2 == (data[1:].mean(), expected_state_2)
 
     ret = windowed_stateful_pass(data, 2, value=rolling_mean)
 
