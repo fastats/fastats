@@ -37,4 +37,4 @@ def test_multiple_transforms_top_level():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

@@ -48,4 +48,4 @@ def test_transform_func_calls_second_func():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])
