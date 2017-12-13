@@ -46,6 +46,8 @@ def test_child_transform_square_to_quadruple():
     original = parent(2)
     assert original == 16
 
+    assert quad(2) == 16
+
     result = parent(2, child=quad)
     assert result == 256
 
@@ -88,15 +90,10 @@ def test_problematic_child_transform_with_faked_child():
     assert child_faker('ignored') == 42
 
     result = parent(1, child=child_faker)
-    if result == 4:
-        pytest.xfail("Expected failure (function with faked name won't be respected as override)")
-    else:   # pragma: no cover
-        assert result == 42
+    assert result == 42
 
-        final = parent(1)
-        assert final == 4
-
-        pytest.fail("Unexpectedly passed (did you fix the code and forgot to update this test?)")
+    final = parent(1)
+    assert final == 4
 
 
 if __name__ == '__main__':

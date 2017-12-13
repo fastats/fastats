@@ -2,7 +2,6 @@
 import math
 
 import numpy as np
-from numpy import sum as nsum
 from pytest import approx
 
 from fastats import single_pass
@@ -117,8 +116,12 @@ def test_multi_column_support():
     """
     data = np.array(range(10), dtype='float').reshape((5, 2))
 
+    # Calculate mean with pure numpy calls...
     def mean(x):
-        return np.sum(x) / len(x)
+        return np.sum(x) / x.size
+
+    assert mean(data[0]) == 0.5
+    assert mean(data[4]) == 8.5
 
     result = single_pass(data, value=mean)
 
@@ -131,18 +134,9 @@ def test_multi_column_support():
     assert result[3][0] == approx(6.5)
     assert result[4][0] == approx(8.5)
 
-    # TODO: is sum not supported?
-    #
-    # def mean_py(x):
-    #     return sum(x) / len(x)
-    #
-    # result_py = single_pass(data, value=mean_py)
-    #
-    # assert result_py[0][0] == approx(0.5)
-    # assert result_py[4][0] == approx(8.5)
-
+    # len(x) works fine...
     def mean_npy(x):
-        return nsum(x) / len(x)
+        return np.sum(x) / len(x)
 
     assert mean_npy(data[0]) == approx(0.5)
     assert mean_npy(data[1]) == approx(2.5)
