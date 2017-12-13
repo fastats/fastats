@@ -6,7 +6,7 @@ New Feature
 - [ ] Unit-tests
 - [ ] Documentation
 - [ ] New line item in [releases.md](releases.md)
-- [ ] Info added to `literature` folder
+- [ ] Info added to `literature` directory
 
 Bug Report
 
