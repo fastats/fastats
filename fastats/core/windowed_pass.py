@@ -59,8 +59,8 @@ def windowed_pass_2d(x, win):
     result = np.full_like(x, np.nan)
     for i in range(win, x.shape[0]+1):
         res = value(x[i-win:i])
-        for j in range(len(res)):
-            result[i-1, j] = res[j]
+        for j, j_val in enumerate(res):
+            result[i-1, j] = j_val
     return result
 
 
