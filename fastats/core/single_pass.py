@@ -4,7 +4,7 @@ import numpy as np
 from fastats.core.decorator import fs
 
 
-def value(x):  # pragma: no cover
+def value(x):
     return x
 
 
