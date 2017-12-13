@@ -96,6 +96,9 @@ def test_non_converging():
     with raises(ZeroDivisionError): # Runtime Warning in python
         _ = newton_raphson(5.0, 1e-6, root=tan_func)
 
+    # with warns(RuntimeWarning): # Runtime Warning in python
+    #     _ = newton_raphson(5.0, 1e-6, root=tan_func)
+
 
 if __name__ == '__main__':
     import pytest

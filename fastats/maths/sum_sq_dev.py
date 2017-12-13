@@ -1,5 +1,4 @@
 
-import numpy as np
 from numpy import power, mean
 
 
@@ -10,6 +9,7 @@ def sum_sq_dev(x):
     :param x: Numpy array
     :return: Scalar of type `x.dtype`
 
+    >>> import numpy as np
     >>> x = np.array([205.,195.,210.,340.,299.,
     ...               230.,270.,243.,340.,240.])
     >>> sum_sq_dev(x) # doctest: +ELLIPSIS

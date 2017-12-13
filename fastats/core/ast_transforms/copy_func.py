@@ -15,7 +15,14 @@ def copy_func(f, new_funcs):
     True
     >>> f(1, 2, 3) == g(1, 2, 3)
     True
+    >>> import numpy as np
+    >>> isinstance(np.sin, np.ufunc)
+    True
+    >>> copy_func(np.sin, {})
+    <ufunc 'sin'>
     """
+    if not hasattr(f, '__globals__'):
+        return f
     globs = copy(f.__globals__)
     globs.update(new_funcs)
     g = types.FunctionType(
@@ -24,3 +31,8 @@ def copy_func(f, new_funcs):
     g = functools.update_wrapper(g, f)
     g.__kwdefaults__ = f.__kwdefaults__
     return g
+
+
+if __name__ == '__main__':
+    import pytest
+    pytest.main([__file__])
