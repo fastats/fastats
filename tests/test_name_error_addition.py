@@ -74,6 +74,7 @@ def test_python_functions():
     assert triple_naive(5) == 15
     assert triple_mul(6) == 18
     assert unit(2) == 1
+    assert parent(2) == 243
 
 
 def test_nested_function_valid():
