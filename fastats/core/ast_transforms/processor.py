@@ -23,13 +23,22 @@ class AstProcessor:
         self._debug = self._overrides.get('debug')
 
     def process(self):
+        source = inspect.getsource(self.top_level_func)
+
+        # `ast.parse` can throw an IndentationError if passed
+        # standalone nested function. In this case we take the
+        # more expensive code path through `uncompile`.
         try:
-            source = inspect.getsource(self.top_level_func)
             tree = ast.parse(source)
         except IndentationError:
             data = uncompile(self.top_level_func.__code__)
             tree = parse_snippet(*data)
 
+        # We have to dynamically add the jit to nested functions
+        # in order to get `nopython` mode working correctly. As
+        # a result we always need `jit` in globals.
+        # This can be removed if/when numba supports nested functions
+        # in nopython mode by default.
         globs = self.top_level_func.__globals__
         globs['jit'] = jit
         t = CallTransform(self._overrides, globs, self._replaced, self._new_funcs)
@@ -81,8 +90,8 @@ def uncompile(c):
     filename = inspect.getfile(c)
     try:
         lines, firstlineno = inspect.getsourcelines(c)
-    except IOError:
-        raise Exception('source code not available')
+    except IOError as err:
+        raise Exception('source code not available') from err
     source = ''.join(lines)
     return [source, filename, 'exec', c.co_flags, firstlineno]
 

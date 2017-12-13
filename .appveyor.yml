@@ -1,0 +1,79 @@
+# We want the tests to run on every PR
+skip_branch_with_pr: false
+
+environment:
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+
+  matrix:
+
+    # Currently using numpy 1.13 because of other dependencies
+    # (e.g. you would install 1.12 but it would be upgraded by conda/pip)
+
+    - MINICONDA: "C:\\Miniconda36"
+      CONDA_ENV_NAME: test_py_36_32bit_numpy_113
+      CONDA_PYTHON: "python=3.6"
+      CONDA_NUMPY: "numpy=1.13"
+
+    - MINICONDA: "C:\\Miniconda36-x64"
+      CONDA_ENV_NAME: test_py_36_64bit_numpy_113
+      CONDA_PYTHON: "python=3.6"
+      CONDA_NUMPY: "numpy=1.13"
+
+install:
+  # If there is a newer build queued for the same PR, cancel this one.
+  # The AppVeyor 'rollout builds' option is supposed to serve the same
+  # purpose but it is problematic because it tends to cancel builds pushed
+  # directly to master instead of just PR builds (or the converse).
+  # credits: JuliaLang developers.
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+
+  # Prepend miniconda binaries to the %PATH%
+  - "SET PATH=%MINICONDA%\\Scripts;%PATH%"
+
+  # Make sure we can use conda
+  - "conda -v --version"
+
+  # Create the env
+  - "conda create -y -v -n %CONDA_ENV_NAME% %CONDA_PYTHON%"
+
+  # Activate the env
+  - "activate %CONDA_ENV_NAME%"
+
+  # Check that we have the expected version and architecture for Python
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+
+  # Install dependencies
+  # TODO: should move to common yaml file in repo
+
+  - "conda install -y %CONDA_NUMPY%"
+  - "conda install -y scipy"
+  - "conda install -y scikit-learn"
+  - "conda install -y numba"
+  - "pip install hypothesis"
+  - "pip install pytest"
+  - "pip install pytest-cov"
+  - "pip install codecov"
+  - "pip install sphinx"
+  - "pip install sphinx_rtd_theme"
+  - "pip install statsmodels"
+  - "pip install httpie"  # for uploading test report xml
+
+# Ignore the MSBuild nonsense
+build: off
+
+test_script:
+  # Run the project tests
+  - "pytest --junit-xml pytest_report.xml"
+
+after_test:
+  # Upload test report
+  # See: https://www.appveyor.com/docs/running-tests/#uploading-xml-test-results
+  - "http -f POST https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID% pytest_report.xml@pytest_report.xml"

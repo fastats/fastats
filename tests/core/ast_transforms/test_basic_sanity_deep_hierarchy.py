@@ -30,8 +30,6 @@ def double(x):
 
 
 def triple(x):
-    # TODO : investigate double(x) + x failure.
-    # return 3 * x
     return double(x) + x
 
 
@@ -129,4 +127,4 @@ def test_multiple_ast_replacements():
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])

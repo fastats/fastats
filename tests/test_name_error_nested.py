@@ -23,12 +23,14 @@ def quarter(x):
 def test_nested_basic_sanity():
     """
     Some trivially nested functions started
-    throwing name errors.
-    Just using single_pass(value=half) works
-    fine, the value() function gets correctly
-    replace with the half() function, however
-    single_pass(value=quarter) doesn't work,
-    it throws a NameError.
+    throwing name errors, this test ensures we
+    don't suffer from the same problems in the
+    future.
+    Just using single_pass(value=half) worked
+    fine, the value() function was correctly
+    replaced with the half() function, however
+    single_pass(value=quarter) didn't work,
+    it threw a NameError.
     """
     data = np.array([1, 2, 3], dtype='float32')
     py_result = [half(x) for x in data]

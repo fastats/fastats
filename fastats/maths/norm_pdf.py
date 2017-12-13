@@ -28,5 +28,5 @@ def norm_pdf(x, mu, sigma):
 
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+    import pytest
+    pytest.main([__file__])

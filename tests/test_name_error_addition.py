@@ -9,7 +9,11 @@ of the jit decorator caused the issues.
 Do not change the hierarchy below - it's set up to
 test some very specific edge cases:
 
--
+- Highly nested functions passed as kwargs to a fastats
+@fs function. Previously these would error as they
+would not jit properly.
+- Ensures nested and non-nested kwarg functions all
+behave the same.
 """
 from fastats import fs
 

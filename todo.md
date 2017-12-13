@@ -12,8 +12,6 @@ core
 
 
 optimize.root_finding
-- Bisection
-- Newton-Raphson
 - Secant
 - Fixed-point iteration
 - Newton-Krylov (scalable NR)
@@ -22,6 +20,7 @@ optimize.root_finding
 
 
 optimise
+- simplex
 - mean_variance
 
 
@@ -30,10 +29,8 @@ kalman
 - ekf
 - ukf
 
+
 time_series
 - ewma
 - expanding
 - rolling
-
-
-RoadMap
