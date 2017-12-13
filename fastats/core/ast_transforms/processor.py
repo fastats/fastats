@@ -1,7 +1,6 @@
 
 import ast
 import inspect
-import re
 from inspect import signature
 from pprint import pprint
 from types import CodeType
