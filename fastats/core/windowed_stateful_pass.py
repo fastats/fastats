@@ -4,8 +4,8 @@ import numpy as np
 from fastats.core.decorator import fs
 
 
-def value(x):
-    return x[0]
+def value(x, val_in, val_out, state):
+    return val_in
 
 
 @fs
