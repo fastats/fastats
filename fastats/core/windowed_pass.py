@@ -72,4 +72,4 @@ def windowed_stateful_pass(x, win):
 
 if __name__ == '__main__':
     import pytest
-    pytest.main()
+    pytest.main([__file__])
