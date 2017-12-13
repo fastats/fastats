@@ -9,7 +9,7 @@ def value(x):
 
 
 @fs
-def single_pass(x):
+def single_pass(x):  # pragma: no cover
     """
     Performs a single iteration over the first
     dimension of `x`.

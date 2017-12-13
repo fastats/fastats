@@ -6,7 +6,7 @@ from fastats import windowed_stateful_pass
 
 
 def test_windowed_stateful_pass_respects_value():
-    def double(x, val_in, val_out, state):
+    def double(x, val_in, val_out, state):  # pragma: no cover
         return val_in * 2, state
 
     data = np.array(range(101), dtype='float') ** 3
@@ -17,7 +17,7 @@ def test_windowed_stateful_pass_respects_value():
 
 
 def test_windowed_stateful_pass_val_out():
-    def out_flip(x, val_in, val_out, state):
+    def out_flip(x, val_in, val_out, state):  # pragma: no cover
         return val_out * -1, state
 
     data = np.array(range(95), dtype='float') ** 3
@@ -28,7 +28,7 @@ def test_windowed_stateful_pass_val_out():
 
 
 def test_windowed_stateful_pass_constant():
-    def mean_range(x, val_in, val_out, state):
+    def mean_range(x, val_in, val_out, state):  # pragma: no cover
         state = np.empty(5, dtype=x.dtype)
         state[:] = [1, 2, 3, 4, 5]
 
@@ -42,7 +42,7 @@ def test_windowed_stateful_pass_constant():
 
 
 def test_windowed_stateful_pass_rolling_mean():
-    def rolling_mean(x, val_in, val_out, state):
+    def rolling_mean(x, val_in, val_out, state):  # pragma: no cover
         if state.size == 0:
             window_sum = np.sum(x)
             state = np.array([window_sum])

@@ -4,12 +4,12 @@ import numpy as np
 from fastats.core.decorator import fs
 
 
-def value(x, val_in, val_out, state):
+def value(x, val_in, val_out, state):  # pragma: no cover
     return val_in
 
 
 @fs
-def windowed_stateful_pass(x, win):
+def windowed_stateful_pass(x, win):  # pragma: no cover
     """
     Performs a *stateful* rolling (windowed)
     iteration over the first dimension of `x`.
