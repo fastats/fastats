@@ -5,11 +5,11 @@ from fastats.core.decorator import fs
 
 
 def value(x, val_in, val_out, state):  # pragma: no cover
-    return val_in
+    return val_in, state
 
 
 @fs
-def windowed_stateful_pass(x, win):  # pragma: no cover
+def windowed_stateful_pass(x, win):
     """
     Performs a *stateful* rolling (windowed)
     iteration over the first dimension of `x`.
@@ -28,12 +28,19 @@ def windowed_stateful_pass(x, win):  # pragma: no cover
     coming "in" to the window and already thrown
     "out" of the window in each iteration.
 
-    The state starts off as empty array, then each
-    successful return from the ``value`` function
-    sets the state by returning it along the
-    window's value.  This means that the function
-    has exclusive control over the ``state``'s
-    contents.
+    The state starts off as an empty array, then
+    the first return from the ``value`` function
+    sets the state by returning it along with the
+    window's value.  The function is free to
+    modify the state array in each iteration.
+
+    In the first iteration, you should pre-allocate
+    the state array to fit all the state variables
+    you will need in subsequent iterations.  Due
+    to optimizations made here, only first state
+    return will be respected. All subsequent
+    iterations can modify the array, but their
+    state return value will be ignored.
 
     Example
     -------
@@ -52,13 +59,14 @@ def windowed_stateful_pass(x, win):  # pragma: no cover
     result = np.full_like(x, np.nan)
     state = np.empty(0, dtype=result.dtype)
 
-    # must call value to get the state
     val_in = x[win-1]
     val_out = np.nan
+    # must call the value func to set the state
     result[win-1], state = value(x[0:win], val_in, val_out, state)
 
-    # subsequent iterations can ignore state assignment
-    # (without this, numba won't optimize out the assignment)
+    # subsequent iterations ignore state returns
+    # (without this, numba won't optimize out the assignment
+    #  and this will be slow)
     for i in range(win+1, x.shape[0]+1):
         start = i - win
         in_idx = i - 1

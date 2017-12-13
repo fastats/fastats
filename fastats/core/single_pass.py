@@ -4,12 +4,12 @@ import numpy as np
 from fastats.core.decorator import fs
 
 
-def value(x):
+def value(x):  # pragma: no cover
     return x
 
 
 @fs
-def single_pass(x):  # pragma: no cover
+def single_pass(x):
     """
     Performs a single iteration over the first
     dimension of `x`.

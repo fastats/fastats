@@ -58,6 +58,18 @@ def test_windowed_stateful_pass_rolling_mean():
     assert_allclose(ret[1:], np.array([1.5, 2.5, 4.0, 6.5, 10.5]))
 
 
+def test_windowed_stateful_pass_callable():
+    def triple(x, val_in, val_out, state):  # pragma: no cover
+        return val_in * 3, state
+
+    call = windowed_stateful_pass(value=triple, return_callable=True)
+
+    data = np.array([2, 4, 6], dtype='float')
+    ret = call(data, 2)
+
+    assert_allclose(ret, [np.nan, 12, 18])
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
