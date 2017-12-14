@@ -11,6 +11,7 @@ or eigenvectors.
 - Added Windows CI builds: #23
 - LU Decomposition
 - binary_search : Root finding using the bisection method
+- Pseudo-inverse implementation
 
 #### Bug fixes
 
