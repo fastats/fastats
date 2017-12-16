@@ -1,6 +1,7 @@
 
 import numpy as np
 import pandas as pd
+import sys
 from numba import njit
 from pytest import mark, raises
 from scipy.stats import rankdata
@@ -78,12 +79,18 @@ def test_demean(A):
     assert np.allclose(expected, output)
 
 
-# ---------------------------------
-# explicitly parallel version tests
-# ---------------------------------
-demean_parallel_jit = njit(demean_parallel, parallel=True)
-min_max_parallel_jit = njit(min_max_parallel, parallel=True)
-standard_parallel_jit = njit(standard_parallel, parallel=True)
+# ----------------------------------------------------------------
+# explicitly parallel algorithm tests
+# ----------------------------------------------------------------
+
+if sys.platform == 'win32':
+    parallel = False  # parallel not supported on 32 bit platforms
+else:
+    parallel = True
+
+demean_parallel_jit = njit(demean_parallel, parallel=parallel)
+min_max_parallel_jit = njit(min_max_parallel, parallel=parallel)
+standard_parallel_jit = njit(standard_parallel, parallel=parallel)
 
 
 @mark.parametrize('A', SKLearnDataSets)
