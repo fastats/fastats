@@ -81,12 +81,11 @@ def test_demean(A):
 
 # ----------------------------------------------------------------
 # explicitly parallel algorithm tests
+#
+# Note: parallel not supported on 32bit platforms
 # ----------------------------------------------------------------
 
-if sys.platform == 'win32':
-    parallel = False  # parallel not supported on 32 bit platforms
-else:
-    parallel = True
+parallel = not (sys.platform == 'win32')
 
 demean_parallel_jit = njit(demean_parallel, parallel=parallel)
 min_max_parallel_jit = njit(min_max_parallel, parallel=parallel)
