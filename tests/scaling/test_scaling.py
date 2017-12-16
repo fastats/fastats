@@ -132,7 +132,13 @@ def test_standard_scale_parallel_with_bessel_correction_versus_sklearn(A):
 
     expected = df.apply(zscore).values
 
-    for fn in standard_parallel, standard_parallel_jit:
+    # Issues seen here running standard_parallel_jit using
+    # numba 0.35 on OS X.
+    # The standard parallel variant works fine, but the
+    # jit version is returning garbage float values for
+    # some (not all) data sets.
+    # Looks very much like a threading issue.
+    for fn in (standard_parallel, standard_parallel_jit):
         output = fn(data, ddof=1)
         assert np.allclose(expected, output)
 
