@@ -19,6 +19,6 @@ before_install:
   - pip install statsmodels
 script:
   - pytest
-#  - sphinx-build docs/source docs/build -W
+  - sphinx-build docs/source docs/build -W
 after_success:
     - codecov
