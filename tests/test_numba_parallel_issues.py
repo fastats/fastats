@@ -12,7 +12,7 @@ import numpy as np
 parallel = not (sys.platform == 'win32')
 
 
-@jit(nopython=True, parallel=True)
+@jit(nopython=True, parallel=parallel)
 def get(n):
     return np.ones((n,1), dtype=np.float64)
 
