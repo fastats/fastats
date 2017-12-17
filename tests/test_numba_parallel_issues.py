@@ -12,9 +12,11 @@ import numpy as np
 parallel = not (sys.platform == 'win32')
 
 
-@jit(nopython=True, parallel=parallel)
 def get(n):
     return np.ones((n,1), dtype=np.float64)
+
+
+get_jit = jit(nopython=True, parallel=parallel)(get)
 
 
 @given(integers(min_value=10, max_value=100000))
@@ -30,8 +32,8 @@ def test_all_ones(x):
     so we've taken the minimal repro from that issue
     and are using it as a unit-test here.
     """
-    result = get(x)
-    expected = np.ones((x, 1), dtype=np.float64)
+    result = get_jit(x)
+    expected = get(x)
     assert np.allclose(expected, result)
 
 
