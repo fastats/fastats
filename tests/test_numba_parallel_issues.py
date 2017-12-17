@@ -1,9 +1,15 @@
 
+import sys
+
 from hypothesis import given
 from hypothesis.strategies import integers
 
 from numba import jit
 import numpy as np
+
+
+# Parallel not supported on 32-bit Windows
+parallel = not (sys.platform == 'win32')
 
 
 @jit(nopython=True, parallel=True)
