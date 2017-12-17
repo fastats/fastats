@@ -6,15 +6,14 @@ import statsmodels.api as sm
 from pytest import approx
 from sklearn import datasets
 
-from fastats.maths import ols, ols_qr, ols_cholesky, ols_svd
-from fastats.maths.ols import (
-    add_intercept, r_squared, sum_of_squared_residuals,
-    fitted_values, residuals, adjusted_r_squared,
-    standard_error, mean_standard_error_residuals,
-    t_statistic, r_squared_no_intercept,
-    adjusted_r_squared_no_intercept
+from fastats.linear_algebra import (
+    ols, ols_cholesky, ols_qr, ols_svd,
+    add_intercept, adjusted_r_squared,
+    adjusted_r_squared_no_intercept, fitted_values,
+    mean_standard_error_residuals, r_squared,
+    r_squared_no_intercept, residuals, standard_error,
+    sum_of_squared_residuals, t_statistic
 )
-
 
 class BaseOLS(TestCase):
     def setUp(self):
