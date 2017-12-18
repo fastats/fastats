@@ -35,11 +35,11 @@ def standard(A, ddof=0):
         data_i = A[:, i]
         res[:, i] = (data_i - mean(data_i)) / std(data_i)
 
-    if ddof == 0:
-        return res
-    elif ddof == 1:
+    if ddof == 1:
         m = A.shape[0]
-        return res * sqrt((m - 1) / m)
+        res *= sqrt((m - 1) / m)
+
+    return res
 
 
 def min_max(A):
@@ -145,11 +145,11 @@ def standard_parallel(A, ddof=0):
         data_i = A[:, i]
         res[:, i] = (data_i - mean(data_i)) / std(data_i)
 
-    if ddof == 0:
-        return res
-    elif ddof == 1:
+    if ddof == 1:
         m = A.shape[0]
-        return res * sqrt((m - 1) / m)
+        res *= sqrt((m - 1) / m)
+
+    return res
 
 
 def min_max_parallel(A):
