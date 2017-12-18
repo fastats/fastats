@@ -16,6 +16,7 @@ before_install:
   - pip install codecov
   - pip install sphinx
   - pip install sphinx_rtd_theme
+  - pip install numpydoc
   - pip install statsmodels
 script:
   - pytest

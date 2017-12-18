@@ -145,6 +145,9 @@ resulting iteration will then occur at native speeds, not bottlenecked by python
 
 .. note:: The `fastats` ethos of allowing extremely fast development as well as execution time implies that we need to help stop developers/data scientists writing their own iteration code. It's far safer to use a pre-built and well-tested function for iteration, especially where explicit indexing is used. `single_pass` facilitates this as it requires no knowledge of any indexing issues, and is also faster than most/all other methods - it is therefore the recommended way to apply any operation to an array.
 
+.. automodule:: fastats.core.single_pass
+    :members:
+
 windowed_pass
 ^^^^^^^^^^^^^
 
@@ -210,6 +213,15 @@ This works because the return value from the `windowed_pass` function is always 
 with the raw input data in two columns, we can support two return values from the inner jitted function. This is however quite
 restrictive, and we will improve this in a future release.
 
+.. automodule:: fastats.core.windowed_pass
+    :members:
+
+windowed_stateful_pass
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: fastats.core.windowed_stateful_pass
+    :members:
+
 Early JIT compilation without execution - `return_callable`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -244,64 +256,26 @@ The definition of `single_pass` does not take any keyword arguments, or specify 
 decorator and therefore substitutes all occurences of `value` for `mean` in its own function body, and in the function
 bodies of any of its child functions.
 
+.. automodule:: fastats.core.decorator
+    :members:
+
 fastats.linear_algebra
 ----------------------
 
-LU Decomposition
-^^^^^^^^^^^^^^^^
+.. automodule:: fastats.linear_algebra
+    :members:
 
-LU Decomposition can be performed using::
+fastats.maths
+-------------
 
-    from fastats.linear_algebra import lu
-
-    L, U = lu(my_array)
-
-This is generally faster than the pre-existing numpy variants.
-
-OLS - Least Squares Regression
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-There are four well-known ways of estimating linear regression coefficients using linear_algebra:
-
-* Naive OLS
-* QR Decomposition
-* Cholesky decomposition
-* Singular Value Decomposition (SVD)
-
-We provide high-performance implementations of each, which can be swapped out easily to take advantage of different
-performance characteristics.
-
-PCA - Principal Component Analysis
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The `fastats` version of PCA just returns the transformed data, but you can specify the number of components to return::
-
-    from fastats.linear_algebra import pca
-
-    result = pca(data, components=1)
+.. automodule:: fastats.maths
+    :members:
 
 fastats.optimise
 ----------------
 
-Within the `fastats.optimise` package there are two root finding algorithms:
-
-* Binary search
-* Newton-Raphson
-
-Both are `@fs` decorated functions that allow function substitution, but are specifically optimised
-for `numba`_.
-
-Binary search
-^^^^^^^^^^^^^
-
-Binary search, also known as the `bisection` method, repeatedly takes the midpoint of an interval, and continues on the half
-in which the root of the function must lie.
-
-
-Newton-Raphson
-^^^^^^^^^^^^^^
-
-TODO
+.. automodule:: fastats.optimise
+    :members:
 
 
 Technical Details
