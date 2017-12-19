@@ -7,6 +7,9 @@
 
 A pure python library for benchmarked, scalable numerics, built using [numba](https://numba.pydata.org/).
 
+[Fastats mailing list](https://groups.google.com/forum/#!forum/fastats)
+
+
 ---
 
 ### WARNING: **This is pre-release software, there are no packages published yet.**

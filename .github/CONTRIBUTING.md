@@ -24,9 +24,12 @@ $ git checkout -b my_awesome_branch upstream/master
 
 ## Issues
 
-Issues are turned off forever.  We prefer Pull Requests for everything.
+Issues are turned off forever. We prefer Pull Requests for everything.
 
 There's many reasons for this, [this gist][bad_issues] from Ryan Florence details them nicely.
+
+If you have questions about using the library, please feel free to ask
+questions on the [fastats mailing list](https://groups.google.com/forum/#!forum/fastats)
 
 
 ## Reporting bugs and requesting changes
