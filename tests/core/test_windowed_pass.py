@@ -115,8 +115,8 @@ def test_windowed_pass_nanmean():
 
 
 def ols_wrap(x):
-    a = x[:,:1]
-    b = x[:,1:]
+    a = x[:, :1]
+    b = x[:, 1:]
     return ols(a, b)[0][0]
 
 
