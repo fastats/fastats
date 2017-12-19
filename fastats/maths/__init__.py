@@ -12,7 +12,6 @@ __all__ = [
     'logistic',
     'norm_pdf',
     'sum_sq_dev',
-    'add_intercept',
     'relu',
     'softplus',
 ]
