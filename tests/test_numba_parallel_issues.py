@@ -13,7 +13,7 @@ parallel = not (sys.platform == 'win32')
 
 
 def get(n):
-    return np.ones((n,1), dtype=np.float64)
+    return np.ones((n, 1), dtype=np.float64)
 
 
 get_jit = jit(nopython=True, parallel=parallel)(get)
