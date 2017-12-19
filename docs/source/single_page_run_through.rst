@@ -62,7 +62,7 @@ specify the functions to be replaced within the original code.
 
 When you specify a keyword argument, the code is transformed into AST form,
 and is then re-built with the specified functions replaced. This leads to
-extremely fast execution times (due to `numba`), and extremely fast development
+extremely fast execution times (due to `numba`_), and extremely fast development
 times (due to AST replacement of functions).
 
 
@@ -70,7 +70,7 @@ Performance Comparison
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Here we use the data from the introductory code block above - a numpy array of 1 million float64's. The test machine is
-a 2015 Macbook Pro, Intel Core i7, 16Gb RAM:
+a 2015 Macbook Pro, Intel Core i7, 16GB RAM:
 
 +---------------+------------------------------------+----------------------------+
 |System         | Code                               | Result                     |
@@ -103,7 +103,7 @@ a 2015 Macbook Pro, Intel Core i7, 16Gb RAM:
 |               || %timeit my_func(data)             | 1.48 ms ± 22.4 µs per loop |
 +---------------+------------------------------------+----------------------------+
 
-As you can see, without resorting to C/Cython or other native code, fastats allows you to apply arbitrary python
+As you can see, without resorting to C/Cython or other native code, fastats allows you to apply arbitrary Python
 functions at native speeds.
 
 
@@ -116,7 +116,7 @@ single_pass
 ^^^^^^^^^^^
 
 We have already used the `single_pass` function in the introductory example above. In a simplistic sense, this is
-equivalent to the following python code::
+equivalent to the following Python code::
 
     def single_pass(x, value=None):
         result = np.zeros_like(x)
@@ -234,7 +234,7 @@ For example::
     rolling_ols = windowed_pass(x, 10, value=ols_wrap, return_callable=True)
 
 After this, you can call the `rolling_ols` function without incurring another AST transform and JIT compilation cycle.
-The result is just a normal python function, so you call it with its expected arguments::
+The result is just a normal Python function, so you call it with its expected arguments::
 
     result = rolling_ols(x, 10)
     large_window_result = rolling_ols(x, 250)
@@ -320,7 +320,7 @@ to do the following::
 `x` and `y`, one of which will be kept constant whilst the other is varied to find the root.
 
 When `newton_raphson` is called, it takes the `root=my_func` kwarg, and inspects the signature
-of `my_func`. It finds that my_func takes 2 arguments `x` and `y`, and expects the first argument
+of `my_func`. It finds that `my_func` takes 2 arguments `x` and `y`, and expects the first argument
 (`x` in this case) to be the parameter that is modified by the algorithm to find the root.
 
 As a result, we need to be able to pass `y` from the top level caller all the way down to the
@@ -370,7 +370,7 @@ If you are happy with 8 decimal places, you can speed up calculations by passing
 
     my_solve = newton_raphson(, 0.000, root=my_func, erfc=erfc8)
 
-To increate precision (at the expense of calculation time), you could use `erfc16`::
+To increase precision (at the expense of calculation time), you could use `erfc16`::
 
     from fastats.core.erfc import erfc16
 
@@ -382,9 +382,9 @@ code, regardless of whether the original author allowed arbitrary functions to b
 Why are we re-writing functions that already exist in numpy/scipy/etc?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-One of the major advantages of numba is that the JIT compilation will be
+One of the major advantages of `numba`_ is that the JIT compilation will be
 optimized for the specific hardware you are running on. The traditional
-python system of writing a C or Cython routine and then pre-compiling it
+Python system of writing a C or Cython routine and then pre-compiling it
 will not be optimised for specific hardware.
 
 Over the last few years, the SIMD registers in CPUs have grown to 512-bits,
