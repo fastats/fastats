@@ -1,8 +1,10 @@
 
+
 from unittest import TestCase
 
 import numpy as np
 import statsmodels.api as sm
+from numba import njit
 from pytest import approx, mark
 from sklearn import datasets
 
@@ -203,15 +205,17 @@ def test_ols_drop_missing_versus_statsmodels():
     b[13] = np.nan
     b[140] = np.nan
 
-    # pre-process to drop missing and the fit OLS; check versus statsmodels
-    output = ols(*drop_missing(A, b))
-    expected = sm.OLS(b, A, missing='drop').fit().params
-    assert np.allclose(output, expected)
+    # test both pure Python and JIT compiled versions
+    drop_missing_jit = njit(drop_missing)
 
-    # check fitted values
-    output = fitted_values(*drop_missing(A, b))
-    expected = sm.OLS(b, A, missing='drop').fit().fittedvalues
-    assert np.allclose(output, expected)
+    for fn in drop_missing, drop_missing_jit:
+        sm_model = sm.OLS(b, A, missing='drop').fit()
+
+        output = ols(*fn(A, b))
+        assert np.allclose(output, sm_model.params)
+
+        output = fitted_values(*fn(A, b))
+        assert np.allclose(output, sm_model.fittedvalues)
 
 
 @mark.xfail(reason='Perfect multicollinearity')
