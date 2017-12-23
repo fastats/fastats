@@ -203,11 +203,14 @@ def test_ols_drop_missing_versus_statsmodels():
     b[13] = np.nan
     b[140] = np.nan
 
-    # pre-process to drop missing and the fit OLS
+    # pre-process to drop missing and the fit OLS; check versus statsmodels
     output = ols(*drop_missing(A, b))
-
-    # check versus statsmodels
     expected = sm.OLS(b, A, missing='drop').fit().params
+    assert np.allclose(output, expected)
+
+    # check fitted values
+    output = fitted_values(*drop_missing(A, b))
+    expected = sm.OLS(b, A, missing='drop').fit().fittedvalues
     assert np.allclose(output, expected)
 
 
