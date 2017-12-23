@@ -93,7 +93,7 @@ def _m_matrix(A):
     equal to the first dimension of the supplied array A
     """
     n = A.shape[0]
-    l = np.ones(n).reshape((n, 1))
+    l = np.ones(n).reshape(n, 1)
     return _hat(l)
 
 
@@ -202,6 +202,33 @@ def t_statistic(A, b):
     betas = ols(A, b)
     se = standard_error(A, b)
     return betas / se
+
+
+def drop_missing(A, b):
+    """
+    Returns a filtration of A (features) and b (targets) where all
+    values are not NaN, with the intention that OLS can then be
+    performed on dense / 'complete' observations.
+
+    This is analogous to the statsmodels missing='drop' mechanism.
+    """
+    m = A.shape[0]
+    assert m == len(b)
+
+    A_bar = np.empty_like(A)
+    b_bar = np.empty_like(b)
+
+    ctr = 0
+
+    for i in range(m):
+        feature_row = A[i, :]
+        target = b[i]
+        if np.all(~np.isnan(feature_row)) and ~np.isnan(target):
+            A_bar[ctr, :] = feature_row
+            b_bar[ctr] = target
+            ctr += 1
+
+    return A_bar[:ctr, :], b_bar[:ctr]
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import numpy as np
 import statsmodels.api as sm
-from pytest import approx
+from pytest import approx, mark
 from sklearn import datasets
 
 from fastats.linear_algebra import (
@@ -12,8 +12,9 @@ from fastats.linear_algebra import (
     adjusted_r_squared_no_intercept, fitted_values,
     mean_standard_error_residuals, r_squared,
     r_squared_no_intercept, residuals, standard_error,
-    sum_of_squared_residuals, t_statistic
+    sum_of_squared_residuals, t_statistic, drop_missing
 )
+
 
 class BaseOLS(TestCase):
     def setUp(self):
@@ -158,6 +159,86 @@ class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         expected = model.rsquared_adj
         output = adjusted_r_squared(A, b)
         assert output == approx(expected)
+
+
+def test_drop_missing():
+
+    A = np.array([[1.1, 1.2, 1.3],
+                  [1.2, 1.0, 1.3],
+                  [1.6, np.nan, 2.0],  # <- expect to be dropped
+                  [4.5, 4.2, 4.3],
+                  [4.4, 4.0, 4.2]])
+
+    b = np.array([1.0,
+                  6.0,
+                  2.0,
+                  3.0,
+                  np.nan])  # <- expect to be dropped
+
+    A_bar, b_bar = drop_missing(A, b)
+
+    expected_A_bar = np.array([[1.1, 1.2, 1.3],
+                               [1.2, 1.0, 1.3],
+                               [4.5, 4.2, 4.3]])
+
+    expected_b_bar = np.array([1.0,
+                               6.0,
+                               3.0])
+
+    assert np.allclose(A_bar, expected_A_bar)
+    assert np.allclose(b_bar, expected_b_bar)
+
+
+def test_ols_drop_missing_versus_statsmodels():
+
+    dataset = datasets.load_iris()
+    A = dataset.data
+    b = dataset.target.astype(np.float64)
+
+    # insert some NaNs into the features
+    A[1, 2] = np.nan
+    A[20, 3] = np.nan
+
+    # insert some NaNs into the targets
+    b[13] = np.nan
+    b[140] = np.nan
+
+    # pre-process to drop missing and the fit OLS
+    output = ols(*drop_missing(A, b))
+
+    # check versus statsmodels
+    expected = sm.OLS(b, A, missing='drop').fit().params
+    assert np.allclose(output, expected)
+
+
+@mark.xfail(reason='Perfect multicollinearity')
+def test_ols_fails_as_features_perfect_multicollinear():
+
+    A = np.array([[1, 1, 2],
+                  [1, 2, 4],
+                  [2, 3, 6],
+                  [3, 4, 8]])
+    #                    \____ this feature is 2 * previous feature
+
+    b = np.array([0, 1, 2, 2])
+
+    output = ols(A, b)
+    assert output is not None
+
+
+@mark.xfail(reason='Feature all zero')
+def test_ols_fails_as_feature_all_zero():
+
+    A = np.array([[1, 1, 0],
+                  [1, 2, 0],
+                  [2, 3, 0],
+                  [3, 4, 0]])
+    #                    \____ all feature values zero
+
+    b = np.array([0, 1, 2, 2])
+
+    output = ols(A, b)
+    assert output is not None
 
 
 if __name__ == '__main__':
