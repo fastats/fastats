@@ -15,7 +15,7 @@ lu_jit = convert_to_jit(lu)
 class LUDecompValidator:
     """
     This is a mixin class which tests both
-    the raw python and the jit-compiled
+    the raw Python and the jit-compiled
     version of the `lu()` function.
     """
     A, L, U = None, None, None
