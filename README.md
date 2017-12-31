@@ -78,7 +78,7 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 Python >= 3.6 only.
 
-See [setup.py](fastats/setup.py) - `install_requires` for installation requirements.
+See [setup.py](setup.py) - `install_requires` for installation requirements.
 
 The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
 development requirements.
