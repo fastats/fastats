@@ -5,7 +5,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2199521147834d58b9f0e8e155c97309)](https://www.codacy.com/app/dave.willmer/fastats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastats/fastats&amp;utm_campaign=Badge_Grade)
 
 
-A pure python library for benchmarked, scalable numerics, built using [numba](https://numba.pydata.org/).
+A pure Python library for benchmarked, scalable numerics, built using [numba](https://numba.pydata.org/).
 
 [Fastats mailing list](https://groups.google.com/forum/#!forum/fastats)
 
