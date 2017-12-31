@@ -49,6 +49,7 @@ install:
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
   # Install dependencies using pip
+  - "pip install numpy"   # fix statsmodels install failing on windows when no numpy installed yet
   - "pip install -e .[ci_test]"
 
 # Ignore the MSBuild nonsense

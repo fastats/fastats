@@ -76,11 +76,14 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 #### Requirements
 
-- Python >= 3.5
-- Numba >= 0.33
+Python >= 3.6 only.
 
-Note: `fastats` is currently pre-release software.
-Requirements are not fixed yet, it's possible we'll require Python >= 3.6.
+See [setup.py](fastats/setup.py) - `install_requires` for installation requirements.
+
+The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
+development requirements.
+
+**Note**: `fastats` is currently pre-release software and has not been published yet.
 
 ##### Test requirements
 
