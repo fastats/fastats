@@ -206,13 +206,34 @@ def t_statistic(A, b):
 
 def f_statistic(A, b):
     """
-    f_statistic for the model, in the case where an intercept is
-    present in the features, A.
+    f_statistic for the model, in the case where
+    an intercept is present in the provided features, A.
     """
     n, m = A.shape
-    ssr = sum_of_squared_residuals(A, b)
+
     sst = total_sum_of_squares(A, b)
-    return ((sst - ssr) / (m - 1)) / (ssr / (n - m))
+    ssr = sum_of_squared_residuals(A, b)
+
+    mse_model = (sst - ssr) / (m - 1)
+    mse_resid = ssr / (n - m)
+
+    return mse_model / mse_resid
+
+
+def f_statistic_no_intercept(A, b):
+    """
+    f_statistic for the model, in the case where
+    no intercept is present in the provided features, A.
+    """
+    n, m = A.shape
+
+    fitted = fitted_values(A, b)
+    ssr = sum_of_squared_residuals(A, b)
+
+    mse_model = fitted @ fitted.T / m
+    mse_resid = ssr / (n - m)
+
+    return mse_model / mse_resid
 
 
 if __name__ == '__main__':
