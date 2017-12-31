@@ -204,6 +204,17 @@ def t_statistic(A, b):
     return betas / se
 
 
+def f_statistic(A, b):
+    """
+    f_statistic for the model, in the case where an intercept is
+    present in the features, A.
+    """
+    n, m = A.shape
+    ssr = sum_of_squared_residuals(A, b)
+    sst = total_sum_of_squares(A, b)
+    return ((sst - ssr) / (m - 1)) / (ssr / (n - m))
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
