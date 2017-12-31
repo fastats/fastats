@@ -51,7 +51,7 @@ Some of the tests require extra libraries that are not required for normal
 installation.
 
 One way to develop `fastats` code is to work in a virtual environment and
-install `[all]` requirements bundle:
+install `[dev]` requirements bundle:
 
 ```bash
 $ pwd
@@ -59,7 +59,7 @@ $ pwd
 $ python3 -m pip install virtualenv --user
 $ python3 -m virtualenv venv
 $ . venv/bin/activate
-$ pip install -e .[all]
+$ pip install -e .[dev]
 ```
 
 Such install will ensure that all requirements are met, and that the changes
