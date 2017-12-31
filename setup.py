@@ -91,8 +91,8 @@ setup_kwargs = dict(
 
 # CI-specific test utilities, e.g. travis, appveyor
 setup_kwargs['extras_require']['ci_test'] = (
-    setup_kwargs['tests_require'] +
-    [
+    setup_kwargs['tests_require']
+    + [
         'codecov',
         'httpie',
     ]
@@ -101,8 +101,8 @@ setup_kwargs['extras_require']['ci_test'] = (
 # All ("development") requirements, including docs generation and tests,
 # but no CI-specific ones
 setup_kwargs['extras_require']['dev'] = (
-    setup_kwargs['tests_require'] +
-    setup_kwargs['extras_require']['doc']
+    setup_kwargs['tests_require']
+    + setup_kwargs['extras_require']['doc']
 )
 
 
