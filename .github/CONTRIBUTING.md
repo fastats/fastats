@@ -65,6 +65,14 @@ $ pip install -e .[dev]
 Such install will ensure that all requirements are met, and that the changes
 to `fastats` code are immediately visible.
 
+#### IDEs
+
+Advanced IDEs, such as PyCharm, will allow you to create the virtualenv
+using GUI and pointing the project interpreter at it.  All you have to do then
+is fire up the terminal in the IDE, ensure you're in venv and run
+`pip install -e .[dev]`.  This should enable things like
+`right-click -> run py.test` etc.
+
 
 #### windows
 
