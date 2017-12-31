@@ -66,6 +66,16 @@ Such install will ensure that all requirements are met, and that the changes
 to `fastats` code are immediately visible.
 
 
+#### windows
+
+If you're on windows, the procedure should be analogous - except
+`activate` is a script that can be called directly.
+
+One problem that we've seen on windows is that `statsmodels` won't install
+unless `numpy` is installed first.  The solution is to run `pip install numpy`
+before `pip install -e .[dev]`.
+
+
 ## Code style
 
 We tend to follow [PEP8][pep8] for Python code style, with a few exceptions:
