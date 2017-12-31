@@ -16,12 +16,10 @@ environment:
     - MINICONDA: "C:\\Miniconda36"
       CONDA_ENV_NAME: test_py_36_32bit_numpy_113
       CONDA_PYTHON: "python=3.6"
-      CONDA_NUMPY: "numpy=1.13"
 
     - MINICONDA: "C:\\Miniconda36-x64"
       CONDA_ENV_NAME: test_py_36_64bit_numpy_113
       CONDA_PYTHON: "python=3.6"
-      CONDA_NUMPY: "numpy=1.13"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
@@ -50,21 +48,8 @@ install:
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
-  # Install dependencies
-  # TODO: should move to common yaml file in repo
-
-  - "conda install -y %CONDA_NUMPY%"
-  - "conda install -y scipy"
-  - "conda install -y scikit-learn"
-  - "conda install -y numba"
-  - "pip install hypothesis"
-  - "pip install pytest"
-  - "pip install pytest-cov"
-  - "pip install codecov"
-  - "pip install sphinx"
-  - "pip install sphinx_rtd_theme"
-  - "pip install statsmodels"
-  - "pip install httpie"  # for uploading test report xml
+  # Install dependencies using pip
+  - "pip install -e .[ci_test]"
 
 # Ignore the MSBuild nonsense
 build: off

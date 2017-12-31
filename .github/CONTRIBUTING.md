@@ -8,7 +8,7 @@ If you would like to contribute anything, fork the repo and open a Pull Request 
 
 The best way to ensure that git history is not jumbled up too much is to add an `upstream` remote:
 
-```
+```bash
 $ git clone ...your_fastats_fork_url...
 $ cd fastats
 $ git remote add upstream https://github.com/fastats/fastats
@@ -16,7 +16,7 @@ $ git remote add upstream https://github.com/fastats/fastats
 
 Then you can fetch from `upstream` remote and create new features on your fork easily:
 
-```
+```bash
 $ git fetch upstream
 $ git checkout -b my_awesome_branch upstream/master
 ```
@@ -40,6 +40,30 @@ questions on the [fastats mailing list](https://groups.google.com/forum/#!forum/
 - To submit a fix, open a PR with passing unittests + doctests.
 
 Simples :)
+
+
+## Installing requirements for development
+
+To ease dependency management, we rely on `setup.py` script to contain the
+requirements.
+
+Some of the tests require extra libraries that are not required for normal
+installation.
+
+One way to develop `fastats` code is to work in a virtual environment and
+install `[all]` requirements bundle:
+
+```bash
+$ pwd
+/your/github/checkout/of/fastats
+$ python3 -m pip install virtualenv --user
+$ python3 -m virtualenv venv
+$ . venv/bin/activate
+$ pip install -e .[all]
+```
+
+Such install will ensure that all requirements are met, and that the changes
+to `fastats` code are immediately visible.
 
 
 ## Code style
