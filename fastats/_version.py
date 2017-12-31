@@ -1,3 +1,4 @@
+
 # This is the authoritative version number which should be used everywhere,
 # including setup, packaging, documentation generation etc.
 #
