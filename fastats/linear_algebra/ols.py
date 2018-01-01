@@ -4,6 +4,8 @@ from numpy import diag, sqrt, hstack, ones, eye
 from numpy.linalg import inv
 from scipy.linalg import qr, solve_triangular, cholesky, svd
 
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+
 
 def ols(A, b):
     """
@@ -204,6 +206,31 @@ def t_statistic(A, b):
     return betas / se
 
 
+def valid_observations(A, b):
+    """
+    Returns an np.array of ints which represent the index of all
+    dense / 'complete' observations (i.e. all rows where features
+    and target are not NaN).
+    """
+    m = A.shape[0]
+    assert m == len(b)
+
+    res = np.empty_like(b, dtype=np.int32)
+    ctr = 0
+
+    for i in range(m):
+        feature_row = A[i, :]
+        target = b[i]
+        if np.all(~np.isnan(feature_row)) and ~np.isnan(target):
+            res[ctr] = i
+            ctr += 1
+
+    return res[:ctr]
+
+
+valid_observations_jit = convert_to_jit(valid_observations)
+
+
 def drop_missing(A, b):
     """
     Returns a filtration of A (features) and b (targets) where all
@@ -212,23 +239,8 @@ def drop_missing(A, b):
 
     This is analogous to the statsmodels missing='drop' mechanism.
     """
-    m = A.shape[0]
-    assert m == len(b)
-
-    A_bar = np.empty_like(A)
-    b_bar = np.empty_like(b)
-
-    ctr = 0
-
-    for i in range(m):
-        feature_row = A[i, :]
-        target = b[i]
-        if np.all(~np.isnan(feature_row)) and ~np.isnan(target):
-            A_bar[ctr, :] = feature_row
-            b_bar[ctr] = target
-            ctr += 1
-
-    return A_bar[:ctr, :], b_bar[:ctr]
+    valid = valid_observations_jit(A, b)
+    return np.take(A, valid, axis=0), np.take(b, valid)
 
 
 if __name__ == '__main__':

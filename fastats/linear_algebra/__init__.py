@@ -29,5 +29,5 @@ __all__ = [
     'standard_error',
     'mean_standard_error_residuals',
     't_statistic',
-    'drop_missing'
+    'drop_missing',
 ]
