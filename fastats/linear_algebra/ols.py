@@ -202,7 +202,7 @@ def mean_standard_error_model(A, b):
 
 def mean_standard_error_model_no_intercept(A, b):
     """
-    Mean squared error the model, in the case that A has no
+    Mean squared error the model in the case where A has no
     intercept and the model is slope-only. This is the explained
     sum of squares divided by the model degrees of freedom.
     """
@@ -246,7 +246,7 @@ def f_statistic(A, b):
 
 def f_statistic_no_intercept(A, b):
     """
-    F-statistic of the fully specified model, in the case where
+    F-statistic of the fully specified model in the case where
     A has no intercept (a slope-only model).
 
     Calculated as the mean squared error of the model divided
