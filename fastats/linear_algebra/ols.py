@@ -186,6 +186,34 @@ def mean_standard_error_residuals(A, b):
     return ssr / (n - k)
 
 
+def mean_standard_error_model(A, b):
+    """
+    Mean squared error the model. This is the explained
+    sum of squares divided by the model degrees of freedom.
+    """
+    k = A.shape[1]
+
+    sst = total_sum_of_squares(A, b)
+    ssr = sum_of_squared_residuals(A, b)
+    sse = sst - ssr
+
+    return sse / (k - 1)
+
+
+def mean_standard_error_model_no_intercept(A, b):
+    """
+    Mean squared error the model, in the case that A has no
+    intercept and the model is slope-only. This is the explained
+    sum of squares divided by the model degrees of freedom.
+    """
+    k = A.shape[1]
+
+    fitted = fitted_values(A, b)
+    sse = fitted @ fitted.T
+
+    return sse / k
+
+
 def standard_error(A, b):
     """
     The standard errors of the parameter estimates.
@@ -206,33 +234,26 @@ def t_statistic(A, b):
 
 def f_statistic(A, b):
     """
-    f_statistic for the model, in the case where
-    an intercept is present in the provided features, A.
+    F-statistic of the fully specified model.
+
+    Calculated as the mean squared error of the model divided
+    by the mean squared error of the residuals.
     """
-    n, m = A.shape
-
-    sst = total_sum_of_squares(A, b)
-    ssr = sum_of_squared_residuals(A, b)
-
-    mse_model = (sst - ssr) / (m - 1)
-    mse_resid = ssr / (n - m)
-
+    mse_model = mean_standard_error_model(A, b)
+    mse_resid = mean_standard_error_residuals(A, b)
     return mse_model / mse_resid
 
 
 def f_statistic_no_intercept(A, b):
     """
-    f_statistic for the model, in the case where
-    no intercept is present in the provided features, A.
+    F-statistic of the fully specified model, in the case where
+    A has no intercept (a slope-only model).
+
+    Calculated as the mean squared error of the model divided
+    by the mean squared error of the residuals.
     """
-    n, m = A.shape
-
-    fitted = fitted_values(A, b)
-    ssr = sum_of_squared_residuals(A, b)
-
-    mse_model = fitted @ fitted.T / m
-    mse_resid = ssr / (n - m)
-
+    mse_model = mean_standard_error_model_no_intercept(A, b)
+    mse_resid = mean_standard_error_residuals(A, b)
     return mse_model / mse_resid
 
 
