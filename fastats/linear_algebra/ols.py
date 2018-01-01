@@ -77,7 +77,7 @@ def add_intercept(A):
     """
     n = A.shape[0]
     intercept = ones(n).reshape(n, 1)
-    return hstack([intercept, A])
+    return hstack((intercept, A))
 
 
 def _hat(A):
@@ -93,7 +93,7 @@ def _m_matrix(A):
     equal to the first dimension of the supplied array A
     """
     n = A.shape[0]
-    l = np.ones(n).reshape((n, 1))
+    l = np.ones(n).reshape(n, 1)
     return _hat(l)
 
 
