@@ -18,6 +18,22 @@ def test_inv_mathwords_2_by_2():
     assert np.allclose(A @ output, np.eye(2))
 
 
+def test_inv_mathwords_3_by_3():
+
+    # http://www.mathwords.com/i/inverse_of_a_matrix.htm
+    A = np.array([[1, 2, 3],
+                  [0, 4, 5],
+                  [1, 0, 6]])
+
+    A_inv = np.array([[24, -12, -2],
+                      [ 5,   3, -5],
+                      [-4,   2,  4]]) * 1 / 22
+
+    output = inv(A)
+    assert np.allclose(A_inv, output)
+    assert np.allclose(A @ output, np.eye(3))
+
+
 def test_inv_imperial_3_by_3():
 
     # http: // wwwf.imperial.ac.uk / metric / metric_public / matrices / inverses / inverses2.html
@@ -58,9 +74,6 @@ def test_matrix_minor():
     #                   eliminate this column (idx = 1)
 
     output = matrix_minor(A, 2, 1)
-
-    print(output)
-
     expected = np.array([[3, 14, 10, 12],
                          [8, 4, 16, 5]])
 

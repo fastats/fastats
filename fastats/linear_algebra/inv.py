@@ -39,10 +39,13 @@ def det(A):
 
 @njit
 def inv(A):
+    """
+    Adjoint method.
+
+    A_inv = (cofactor matrix of A).T / (det A)
+    """
 
     m, n = A.shape
-
-    determinant = det(A)
     cofactors = np.empty_like(A, dtype=np.float64)
 
     if m == 2:
@@ -56,9 +59,7 @@ def inv(A):
                 minor = matrix_minor(A, r, c)
                 cofactors[r, c] = ((-1) ** (r + c)) * det(minor)
 
-        cofactors = cofactors.T
-
-    return cofactors / determinant
+    return cofactors.T / det(A)
 
 
 if __name__ == '__main__':
