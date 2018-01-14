@@ -1,5 +1,6 @@
 
 from fastats.linear_algebra.lu import lu, lu_inplace
+from fastats.linear_algebra.inv import inv, matrix_minor
 from fastats.linear_algebra.ols import (
     ols, ols_cholesky, ols_qr, ols_svd, r_squared,
     sum_of_squared_residuals, fitted_values, residuals,
@@ -28,4 +29,6 @@ __all__ = [
     'standard_error',
     'mean_standard_error_residuals',
     't_statistic',
+    'inv',
+    'matrix_minor'
 ]
