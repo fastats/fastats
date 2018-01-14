@@ -5,7 +5,10 @@ from numba import njit
 
 @njit
 def matrix_minor(A, remove_row_idx, remove_col_idx):
-
+    """
+    Returns a square matrix, cut down from A by removing
+    one of its rows and one of its columns.
+    """
     m = A.shape[0] - 1
     n = A.shape[1] - 1
     res = np.empty(shape=(m, n))
@@ -23,7 +26,9 @@ def matrix_minor(A, remove_row_idx, remove_col_idx):
 
 @njit
 def det(A):
-
+    """
+    Returns the determinant of A.
+    """
     m, n = A.shape
     assert m == n
 

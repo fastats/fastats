@@ -35,6 +35,22 @@ def test_inv_mathwords_3_by_3():
     assert np.allclose(A @ output, np.eye(3))
 
 
+def test_inv_mathcentre_3_by_3():
+
+    # http://www.mathcentre.ac.uk/resources/uploaded/sigma-matrices11-2009-1.pdf
+    A = np.array([[ 7, 2,  1],
+                  [ 0, 3, -1],
+                  [-3, 4, -2]])
+
+    A_inv = np.array([[-2,   8, -5],
+                      [ 3, -11,  7],
+                      [ 9, -34, 21]])
+
+    output = inv(A)
+    assert np.allclose(A_inv, output)
+    assert np.allclose(A @ output, np.eye(3))
+
+
 def test_inv_imperial_3_by_3():
 
     # http: // wwwf.imperial.ac.uk / metric / metric_public / matrices / inverses / inverses2.html
