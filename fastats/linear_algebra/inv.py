@@ -27,7 +27,9 @@ def det(A):
     m, n = A.shape
     assert m == n
 
-    if m == 2:
+    if m == 1:
+        determinant = A[0][0]
+    elif m == 2:
         determinant = A[0][0] * A[1][1] - A[0][1] * A[1][0]
     else:
         determinant = 0
@@ -40,26 +42,21 @@ def det(A):
 @njit
 def inv(A):
     """
-    Adjoint method.
+    Returns the inverse of A using the adjoint method.
 
-    A_inv = (cofactor matrix of A).T / (det A)
+    adjoint A = (cofactor matrix of A).T
+    A_inv = (adjoint A) / (det A)
     """
-
     m, n = A.shape
     cofactors = np.empty_like(A, dtype=np.float64)
 
-    if m == 2:
-        cofactors[0][0] = A[1][1]
-        cofactors[0][1] = A[0][1] * -1
-        cofactors[1][0] = A[1][0] * -1
-        cofactors[1][1] = A[0][0]
-    else:
-        for r in range(n):
-            for c in range(m):
-                minor = matrix_minor(A, r, c)
-                cofactors[r, c] = ((-1) ** (r + c)) * det(minor)
+    for r in range(n):
+        for c in range(m):
+            minor = matrix_minor(A, r, c)
+            cofactors[r, c] = ((-1) ** (r + c)) * det(minor)
 
-    return cofactors.T / det(A)
+    adjoint = cofactors.T
+    return adjoint / det(A)
 
 
 if __name__ == '__main__':
