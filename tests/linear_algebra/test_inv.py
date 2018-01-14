@@ -1,4 +1,5 @@
 
+from pytest import mark
 import numpy as np
 
 from fastats.linear_algebra import inv, matrix_minor
@@ -63,6 +64,17 @@ def test_inv_5_by_5_numpy():
     output = inv(A)
     assert np.allclose(A_inv, output)
     assert np.allclose(A @ output, np.eye(5))
+
+
+@mark.parametrize('n', range(2, 11))
+def test_inv_basic_sanity(n):
+    scalar = 4
+    A = np.eye(n) * scalar
+
+    A_inv = np.eye(n) * 1 / scalar
+    output = inv(A)
+    assert np.allclose(A_inv, output)
+    assert np.allclose(A @ output, np.eye(n))
 
 
 def test_matrix_minor():
