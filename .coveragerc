@@ -1,5 +1,7 @@
 [run]
 branch = True
+omit =
+    setup.py
 
 [report]
 fail_under = 98

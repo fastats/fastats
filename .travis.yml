@@ -5,18 +5,8 @@ os:
 python:
   - 3.6
   - 3.6-dev
-before_install:
-  - pip install numpy
-  - pip install scipy
-  - pip install scikit-learn
-  - pip install numba
-  - pip install hypothesis
-  - pip install pytest
-  - pip install pytest-cov
-  - pip install codecov
-  - pip install sphinx
-  - pip install sphinx_rtd_theme
-  - pip install statsmodels
+install:
+  - pip install -e .[ci_test,doc]
 script:
   - pytest
 #  - sphinx-build docs/source docs/build -W
