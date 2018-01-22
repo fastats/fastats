@@ -78,6 +78,7 @@ setup_kwargs = dict(
         'pytest-cov',
         'scikit-learn',
         'statsmodels',
+        'setuptools',   # for pkg_resources
     ],
 
     extras_require={
