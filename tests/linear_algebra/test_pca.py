@@ -19,13 +19,13 @@ def check_versus_sklearn(data, fn):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_pca_sklearn(A):
-    data = A.value.data
+    data = A.value
     check_versus_sklearn(data, pca)
 
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_pca_jit_sklearn(A):
-    data = A.value.data
+    data = A.value
     pca_jit = jit(pca)
     check_versus_sklearn(data, pca_jit)
 

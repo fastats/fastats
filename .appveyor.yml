@@ -9,7 +9,6 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-
     - MINICONDA: "C:\\Miniconda36"
       CONDA_ENV_NAME: test_py_36_32bit
       CONDA_PYTHON: "python=3.6"
