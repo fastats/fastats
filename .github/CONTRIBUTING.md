@@ -102,14 +102,21 @@ We tend to follow [PEP8][pep8] for Python code style, with a few exceptions:
 #### Tests
 
 - Doctests should be minimal, and serve as API docs for the most common use cases.
+
   - For doctests, you should place this at the bottom of your module (followed by a blank line, ofc):
 
-  ```python
-  if __name__ == '__main__':
-      import pytest
-      pytest.main([__file__])
-  ```
-  This ensures that you can "run" every doctest in the module ad-hoc.
+    ```python
+    if __name__ == '__main__':
+        import pytest
+        pytest.main([__file__])
+    ```
+      
+    This ensures that you can "run" every doctest in the module ad-hoc.
+  
+  - Note that some doctests require special setup / options that are provided by pytest.
+    Because of this, they won't work on their own.
+    
+    See the `conftest.py` and `pytest.ini` files for more details.
 
 - Unittests should be exhaustive and should reside in the `tests` directory.
 
