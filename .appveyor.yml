@@ -10,16 +10,21 @@ environment:
 
   matrix:
 
-    # Currently using numpy 1.13 because of other dependencies
-    # (e.g. you would install 1.12 but it would be upgraded by conda/pip)
-
     - MINICONDA: "C:\\Miniconda36"
-      CONDA_ENV_NAME: test_py_36_32bit_numpy_113
+      CONDA_ENV_NAME: test_py_36_32bit
       CONDA_PYTHON: "python=3.6"
 
     - MINICONDA: "C:\\Miniconda36-x64"
-      CONDA_ENV_NAME: test_py_36_64bit_numpy_113
+      CONDA_ENV_NAME: test_py_36_64bit
       CONDA_PYTHON: "python=3.6"
+
+    - MINICONDA: "C:\\Miniconda35"
+      CONDA_ENV_NAME: test_py_35_32bit
+      CONDA_PYTHON: "python=3.5"
+
+    - MINICONDA: "C:\\Miniconda35-x64"
+      CONDA_ENV_NAME: test_py_35_64bit
+      CONDA_PYTHON: "python=3.5"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
