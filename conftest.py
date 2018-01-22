@@ -24,7 +24,7 @@ def add_preconfigured_np(doctest_namespace):
     Note that even with this, doctests might fail due to the lack of full
     compatibility when using ``numpy.set_printoptions(legacy='1.13')``.
 
-    Some of the whitespace issues can be fixed by NORMALIZE_WHITESPACE
+    Some of the whitespace issues can be fixed by ``NORMALIZE_WHITESPACE``
     doctest option, which is currently set in ``pytest.ini``.
 
     See: https://github.com/numpy/numpy/issues/10383
