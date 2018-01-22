@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import codecs
 import importlib.util
@@ -78,6 +79,7 @@ setup_kwargs = dict(
         'pytest-cov',
         'scikit-learn',
         'statsmodels',
+        'setuptools',   # for pkg_resources
     ],
 
     extras_require={
