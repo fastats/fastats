@@ -3,6 +3,7 @@ import numba
 import numpy
 import pkg_resources
 import pytest
+import scipy
 
 
 # The first version of numpy that broke backwards compat and improved printing.
@@ -39,6 +40,6 @@ def add_preconfigured_np(doctest_namespace):
 
 
 def pytest_report_header(config):
-    return 'Testing fastats using: NumPy {}, numba {}'.format(
-        numpy.__version__, numba.__version__
+    return 'Testing fastats using: Numba {}, NumPy {}, SciPy {}'.format(
+        numba.__version__, numpy.__version__, scipy.__version__,
     )
