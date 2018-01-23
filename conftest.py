@@ -1,4 +1,5 @@
 
+import numba
 import numpy
 import pkg_resources
 import pytest
@@ -35,3 +36,9 @@ def add_preconfigured_np(doctest_namespace):
         numpy.set_printoptions(legacy='1.13')
 
     doctest_namespace['np'] = numpy
+
+
+def pytest_report_header(config):
+    return "Testing fastats using: NumPy {}, numba {}".format(
+        numpy.__version__, numba.__version__
+    )
