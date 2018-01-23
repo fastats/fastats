@@ -76,7 +76,7 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 #### Requirements
 
-Python >= 3.6 only.
+Python >= 3.5 only.  Python 3.6 or newer is strongly recommended.
 
 See [setup.py](setup.py) - `install_requires` for installation requirements.
 

@@ -21,7 +21,7 @@ def test_scale_no_op():
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_standard_scale_versus_sklearn(A):
-    data = A.value.data
+    data = A.value
     expected = StandardScaler().fit_transform(data)
     output = standard(data)
     assert np.allclose(expected, output)
@@ -29,7 +29,7 @@ def test_standard_scale_versus_sklearn(A):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_standard_scale_with_bessel_correction_versus_sklearn(A):
-    data = A.value.data
+    data = A.value
     df = pd.DataFrame(data)
 
     def zscore(data):
@@ -51,7 +51,7 @@ def test_standard_scale_raises_if_ddof_ne_0_or_1():
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_min_max_scale_versus_sklearn(A):
-    data = A.value.data
+    data = A.value
     expected = MinMaxScaler().fit_transform(data)
     output = min_max(data)
     assert np.allclose(expected, output)
@@ -59,7 +59,7 @@ def test_min_max_scale_versus_sklearn(A):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_rank_scale_versus_scipy(A):
-    data = A.value.data
+    data = A.value
 
     # rank the data all at once
     output = rank(data)
@@ -73,7 +73,7 @@ def test_rank_scale_versus_scipy(A):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_demean(A):
-    data = A.value.data
+    data = A.value
     expected = data - data.mean(axis=0)
     output = demean(data)
     assert np.allclose(expected, output)
@@ -94,7 +94,7 @@ standard_parallel_jit = njit(standard_parallel, parallel=parallel)
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_demean_parallel(A):
-    data = A.value.data
+    data = A.value
     expected = data - data.mean(axis=0)
 
     for fn in demean_parallel, demean_parallel_jit:
@@ -104,7 +104,7 @@ def test_demean_parallel(A):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_min_max_scale_parallel_versus_sklearn(A):
-    data = A.value.data
+    data = A.value
     expected = MinMaxScaler().fit_transform(data)
 
     for fn in min_max_parallel, min_max_parallel_jit:
@@ -114,7 +114,7 @@ def test_min_max_scale_parallel_versus_sklearn(A):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_standard_scale_parallel_versus_sklearn(A):
-    data = A.value.data
+    data = A.value
     expected = StandardScaler().fit_transform(data)
 
     for fn in standard_parallel, standard_parallel_jit:
@@ -124,7 +124,7 @@ def test_standard_scale_parallel_versus_sklearn(A):
 
 @mark.parametrize('A', SKLearnDataSets)
 def test_standard_scale_parallel_with_bessel_correction_versus_sklearn(A):
-    data = A.value.data
+    data = A.value
     df = pd.DataFrame(data)
 
     def zscore(data):
