@@ -39,6 +39,6 @@ def add_preconfigured_np(doctest_namespace):
 
 
 def pytest_report_header(config):
-    return "Testing fastats using: NumPy {}, numba {}".format(
+    return 'Testing fastats using: NumPy {}, numba {}'.format(
         numpy.__version__, numba.__version__
     )
