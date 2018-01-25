@@ -188,8 +188,7 @@ def mean_standard_error_residuals(A, b):
 
 def mean_standard_error_model(A, b):
     """
-    Mean squared error the model. This is the explained
-    sum of squares divided by the model degrees of freedom.
+    Mean squared error the model.
     """
     k = A.shape[1]
 
@@ -203,13 +202,12 @@ def mean_standard_error_model(A, b):
 def mean_standard_error_model_no_intercept(A, b):
     """
     Mean squared error the model in the case where A has no
-    intercept and the model is slope-only. This is the explained
-    sum of squares divided by the model degrees of freedom.
+    intercept and the model is slope-only.
     """
     k = A.shape[1]
 
     fitted = fitted_values(A, b)
-    sse = fitted @ fitted.T
+    sse = fitted.T @ fitted
 
     return sse / k
 
@@ -235,9 +233,6 @@ def t_statistic(A, b):
 def f_statistic(A, b):
     """
     F-statistic of the fully specified model.
-
-    Calculated as the mean squared error of the model divided
-    by the mean squared error of the residuals.
     """
     mse_model = mean_standard_error_model(A, b)
     mse_resid = mean_standard_error_residuals(A, b)
@@ -248,9 +243,6 @@ def f_statistic_no_intercept(A, b):
     """
     F-statistic of the fully specified model in the case where
     A has no intercept (a slope-only model).
-
-    Calculated as the mean squared error of the model divided
-    by the mean squared error of the residuals.
     """
     mse_model = mean_standard_error_model_no_intercept(A, b)
     mse_resid = mean_standard_error_residuals(A, b)
