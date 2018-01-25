@@ -12,8 +12,10 @@ from fastats.linear_algebra import (
     adjusted_r_squared_no_intercept, fitted_values,
     mean_standard_error_residuals, r_squared,
     r_squared_no_intercept, residuals, standard_error,
-    sum_of_squared_residuals, t_statistic
+    sum_of_squared_residuals, t_statistic, f_statistic,
+    f_statistic_no_intercept
 )
+
 
 class BaseOLS(TestCase):
     def setUp(self):
@@ -132,6 +134,12 @@ class OLSModelWithoutIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         output = adjusted_r_squared_no_intercept(A, b)
         assert output == approx(expected)
 
+    def test_f_statistic(self):
+        A, b, model = self.get_fixtures()
+        expected = model.fvalue
+        output = f_statistic_no_intercept(A, b)  # this is a replica of statsmodels behaviour
+        assert np.allclose(output, expected)
+
 
 class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
 
@@ -158,6 +166,12 @@ class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         expected = model.rsquared_adj
         output = adjusted_r_squared(A, b)
         assert output == approx(expected)
+
+    def test_f_statistic(self):
+        A, b, model = self.get_fixtures()
+        expected = model.fvalue
+        output = f_statistic(A, b)
+        assert np.allclose(output, expected)
 
 
 if __name__ == '__main__':
