@@ -28,14 +28,14 @@ class MatrixInverseValidator:
         assert A_inv.tolist() == self.A_inv
 
         I = np.eye(self._A.shape[0])
-        assert_allclose(self.A @ A_inv, I, atol=1e-8)
+        assert_allclose(self.A @ A_inv, I, atol=1e-10)
 
     def test_inv_outputs_numba(self):
         A_inv = inv_jit(self._A)
         assert A_inv.tolist() == self.A_inv
 
         I = np.eye(self._A.shape[0])
-        assert_allclose(self.A @ A_inv, I, atol=1e-8)
+        assert_allclose(self.A @ A_inv, I, atol=1e-10)
 
 
 class MathworldsInv2x2Test(MatrixInverseValidator, TestCase):
@@ -92,7 +92,30 @@ class ImperialInv3x3Test(MatrixInverseValidator, TestCase):
              [-8, 9, 3]]
 
 
-def test_inv_5_by_5_numpy():
+def test_hilbert_inv_5x5():
+    """
+    This test is an example 5x5 matrix inverse from
+    http://mathfaculty.fullerton.edu/mathews/n2003/Web/InverseMatrixMod/Links/MatrixInverseMod_lnk_2.html
+    """
+    hilbert = np.empty((5, 5))
+
+    for i in range(5):
+        for j in range(5):
+            hilbert[i][j] = 1 / (1 + i + j)
+
+    hilbert_inv = np.array([[25, -300, 1050, -1400, 630],
+                            [-300, 4800, -18900, 26880, -12600],
+                            [1050, -18900, 79380, -117600, 56700],
+                            [-1400, 26880, -117600, 179200, -88200],
+                            [630, -12600, 56700, -88200, 44100]])
+
+    for fn in inv, inv_jit:
+        output = fn(hilbert)
+        assert np.allclose(hilbert_inv, output)
+        assert np.allclose(hilbert @ output, np.eye(5))
+
+
+def test_inv_5x5_numpy():
 
     A = np.array([[3, 13, 14, 10, 12],
                   [8, 15, 4, 16, 5],
@@ -102,18 +125,23 @@ def test_inv_5_by_5_numpy():
 
     A_inv = np.linalg.inv(A)
 
-    output = inv(A)
-    assert np.allclose(A_inv, output)
-    assert np.allclose(A @ output, np.eye(5))
+    for fn in inv, inv_jit:
+        output = fn(A)
+        assert np.allclose(A_inv, output)
+        assert np.allclose(A @ output, np.eye(5))
 
 
 @mark.parametrize('n', range(2, 10))
 def test_inv_basic_sanity(n):
+    """
+    Note the degradation in run times for n > 5
+    """
     scalar = 4
     A = np.eye(n) * scalar
 
     A_inv = np.eye(n) * 1 / scalar
-    output = inv(A)
+
+    output = inv_jit(A)
     assert np.allclose(A_inv, output)
     assert np.allclose(A @ output, np.eye(n))
 
@@ -126,11 +154,12 @@ def test_matrix_minor():
     #                  \
     #                   eliminate this column (idx = 1)
 
-    output = matrix_minor_jit(A, 2, 1)
-    expected = np.array([[3, 14, 10, 12],
-                         [8,  4, 16, 5]])
+    for fn in matrix_minor, matrix_minor_jit:
+        output = fn(A, 2, 1)
+        expected = np.array([[3, 14, 10, 12],
+                             [8,  4, 16, 5]])
 
-    assert np.allclose(output, expected)
+        assert np.allclose(output, expected)
 
 
 if __name__ == '__main__':
