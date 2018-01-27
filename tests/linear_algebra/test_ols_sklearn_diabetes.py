@@ -13,8 +13,7 @@ from fastats.linear_algebra import (
     mean_standard_error_residuals, r_squared,
     r_squared_no_intercept, residuals, standard_error,
     sum_of_squared_residuals, t_statistic, f_statistic,
-    f_statistic_no_intercept
-    sum_of_squared_residuals, t_statistic, drop_missing
+    f_statistic_no_intercept, drop_missing
 )
 
 
