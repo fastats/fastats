@@ -148,8 +148,8 @@ def test_inv_basic_sanity(n):
 def test_matrix_minor():
 
     A = np.array([[3, 13, 14, 10, 12],
-                  [8, 15,  4, 16,  5],
-                  [6, 11,  7,  9, 17]])  # <- eliminate this row (idx = 2)
+                  [8, 15, 4, 16, 5],
+                  [6, 11, 7, 9, 17]])  # <- eliminate this row (idx = 2)
     #                  \
     #                   eliminate this column (idx = 1)
 
