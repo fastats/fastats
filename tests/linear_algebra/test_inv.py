@@ -8,6 +8,7 @@ from pytest import approx, mark
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.linear_algebra import inv, matrix_minor, det
 
+
 inv_jit = convert_to_jit(inv)
 matrix_minor_jit = convert_to_jit(matrix_minor)
 det_jit = convert_to_jit(det)
@@ -170,6 +171,14 @@ def test_matrix_minor():
                              [8,  4, 16, 5]])
 
         assert_allclose(output, expected)
+
+
+def test_det_1x1():
+    # special case where det is called for
+    # a 1x1 matrix
+    A = np.array([5]).reshape(1, 1)
+    output = det(A)
+    assert output == 5
 
 
 if __name__ == '__main__':
