@@ -8,7 +8,7 @@ If you would like to contribute anything, fork the repo and open a Pull Request 
 
 The best way to ensure that git history is not jumbled up too much is to add an `upstream` remote:
 
-```
+```bash
 $ git clone ...your_fastats_fork_url...
 $ cd fastats
 $ git remote add upstream https://github.com/fastats/fastats
@@ -16,7 +16,7 @@ $ git remote add upstream https://github.com/fastats/fastats
 
 Then you can fetch from `upstream` remote and create new features on your fork easily:
 
-```
+```bash
 $ git fetch upstream
 $ git checkout -b my_awesome_branch upstream/master
 ```
@@ -24,9 +24,12 @@ $ git checkout -b my_awesome_branch upstream/master
 
 ## Issues
 
-Issues are turned off forever.  We prefer Pull Requests for everything.
+Issues are turned off forever. We prefer Pull Requests for everything.
 
 There's many reasons for this, [this gist][bad_issues] from Ryan Florence details them nicely.
+
+If you have questions about using the library, please feel free to ask
+questions on the [fastats mailing list](https://groups.google.com/forum/#!forum/fastats)
 
 
 ## Reporting bugs and requesting changes
@@ -37,6 +40,48 @@ There's many reasons for this, [this gist][bad_issues] from Ryan Florence detail
 - To submit a fix, open a PR with passing unittests + doctests.
 
 Simples :)
+
+
+## Installing requirements for development
+
+To ease dependency management, we rely on `setup.py` script to contain the
+requirements.
+
+Some of the tests require extra libraries that are not required for normal
+installation.
+
+One way to develop `fastats` code is to work in a virtual environment and
+install `[dev]` requirements bundle:
+
+```bash
+$ pwd
+/your/github/checkout/of/fastats
+$ python3 -m pip install virtualenv --user
+$ python3 -m virtualenv venv
+$ . venv/bin/activate
+$ pip install -e .[dev]
+```
+
+Such install will ensure that all requirements are met, and that the changes
+to `fastats` code are immediately visible.
+
+#### IDEs
+
+Advanced IDEs, such as PyCharm, will allow you to create the virtualenv
+using GUI and pointing the project interpreter at it.  All you have to do then
+is fire up the terminal in the IDE, ensure you're in venv and run
+`pip install -e .[dev]`.  This should enable things like
+`right-click -> run py.test` etc.
+
+
+#### windows
+
+If you're on windows, the procedure should be analogous - except
+`activate` is a script that can be called directly.
+
+One problem that we've seen on windows is that `statsmodels` won't install
+unless `numpy` is installed first.  The solution is to run `pip install numpy`
+before `pip install -e .[dev]`.
 
 
 ## Code style
@@ -57,14 +102,21 @@ We tend to follow [PEP8][pep8] for Python code style, with a few exceptions:
 #### Tests
 
 - Doctests should be minimal, and serve as API docs for the most common use cases.
+
   - For doctests, you should place this at the bottom of your module (followed by a blank line, ofc):
 
-  ```python
-  if __name__ == '__main__':
-      import pytest
-      pytest.main([__file__])
-  ```
-  This ensures that you can "run" every doctest in the module ad-hoc.
+    ```python
+    if __name__ == '__main__':
+        import pytest
+        pytest.main([__file__])
+    ```
+      
+    This ensures that you can "run" every doctest in the module ad-hoc.
+  
+  - Note that some doctests require special setup / options that are provided by pytest.
+    Because of this, they won't work on their own.
+    
+    See the `conftest.py` and `pytest.ini` files for more details.
 
 - Unittests should be exhaustive and should reside in the `tests` directory.
 
