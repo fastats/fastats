@@ -1,9 +1,9 @@
 
 import numpy as np
-from numba import njit
+
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 
-@njit
 def matrix_minor(A, remove_row_idx, remove_col_idx):
     """
     Returns a square matrix, cut down from A by removing
@@ -24,7 +24,9 @@ def matrix_minor(A, remove_row_idx, remove_col_idx):
     return res
 
 
-@njit
+matrix_minor_jit = convert_to_jit(matrix_minor)
+
+
 def det(A):
     """
     Returns the determinant of A.
@@ -39,29 +41,35 @@ def det(A):
     else:
         determinant = 0
         for j in range(m):
-            determinant += ((-1) ** j) * A[0][j] * det(matrix_minor(A, 0, j))
+            determinant += ((-1) ** j) * A[0][j] * det_jit(matrix_minor_jit(A, 0, j))
 
     return determinant
 
 
-@njit
+det_jit = convert_to_jit(det)
+
+
 def inv(A):
     """
     Returns the inverse of A using the adjoint method.
 
-    adjoint A = (cofactor matrix of A).T
-    A_inv = (adjoint A) / (det A)
+    >>> import numpy as np
+    >>> A = np.array([[4, 3], [3, 2]])
+    >>> A_inv = inv(A)
+    >>> A_inv
+    array([[-2.,  3.],
+           [ 3., -4.]])
     """
     m, n = A.shape
-    cofactors = np.empty_like(A, dtype=np.float64)
+    co_factors = np.empty_like(A, dtype=np.float64)
 
     for r in range(n):
         for c in range(m):
-            minor = matrix_minor(A, r, c)
-            cofactors[r, c] = ((-1) ** (r + c)) * det(minor)
+            minor = matrix_minor_jit(A, r, c)
+            co_factors[r, c] = ((-1) ** (r + c)) * det_jit(minor)
 
-    adjoint = cofactors.T
-    return adjoint / det(A)
+    adjoint = co_factors.T
+    return adjoint / det_jit(A)
 
 
 if __name__ == '__main__':

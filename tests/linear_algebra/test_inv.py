@@ -1,78 +1,103 @@
 
-from pytest import mark
-import numpy as np
+from unittest import TestCase
 
+import numpy as np
+from numpy.testing import assert_allclose
+from pytest import mark
+
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.linear_algebra import inv, matrix_minor
 
-
-def test_inv_mathwords_2_by_2():
-
-    # http://www.mathwords.com/i/inverse_of_a_matrix.htm
-    A = np.array([[4, 3],
-                  [3, 2]])
-
-    A_inv = np.array([[-2,  3],
-                      [ 3, -4]])
-
-    output = inv(A)
-    assert np.allclose(A_inv, output)
-    assert np.allclose(A @ output, np.eye(2))
+inv_jit = convert_to_jit(inv)
+matrix_minor_jit = convert_to_jit(matrix_minor)
 
 
-def test_inv_mathwords_3_by_3():
+class MatrixInverseValidator:
+    """
+    This is a mixin class which tests both
+    the raw Python and the jit-compiled
+    version of the `inv()` function.
+    """
+    A, A_inv = None, None
 
-    # http://www.mathwords.com/i/inverse_of_a_matrix.htm
-    A = np.array([[1, 2, 3],
-                  [0, 4, 5],
-                  [1, 0, 6]])
+    def setUp(self):
+        self._A = np.array(self.A)
 
-    A_inv = np.array([[24, -12, -2],
-                      [ 5,   3, -5],
-                      [-4,   2,  4]]) * 1 / 22
+    def test_inv_outputs_numpy(self):
+        A_inv = inv(self._A)
+        assert A_inv.tolist() == self.A_inv
 
-    output = inv(A)
-    assert np.allclose(A_inv, output)
-    assert np.allclose(A @ output, np.eye(3))
+        I = np.eye(self._A.shape[0])
+        assert_allclose(self.A @ A_inv, I, atol=1e-8)
 
+    def test_inv_outputs_numba(self):
+        A_inv = inv_jit(self._A)
+        assert A_inv.tolist() == self.A_inv
 
-def test_inv_mathcentre_3_by_3():
-
-    # http://www.mathcentre.ac.uk/resources/uploaded/sigma-matrices11-2009-1.pdf
-    A = np.array([[ 7, 2,  1],
-                  [ 0, 3, -1],
-                  [-3, 4, -2]])
-
-    A_inv = np.array([[-2,   8, -5],
-                      [ 3, -11,  7],
-                      [ 9, -34, 21]])
-
-    output = inv(A)
-    assert np.allclose(A_inv, output)
-    assert np.allclose(A @ output, np.eye(3))
+        I = np.eye(self._A.shape[0])
+        assert_allclose(self.A @ A_inv, I, atol=1e-8)
 
 
-def test_inv_imperial_3_by_3():
+class MathworldsInv2x2Test(MatrixInverseValidator, TestCase):
+    """
+    This test is an example 2x2 matrix inverse from
+    http://www.mathwords.com/i/inverse_of_a_matrix.htm
+    """
+    A = [[4, 3],
+         [3, 2]]
 
-    # http: // wwwf.imperial.ac.uk / metric / metric_public / matrices / inverses / inverses2.html
-    A = np.array([[ 0, -3, -2],
-                  [ 1, -4, -2],
-                  [-3,  4,  1]])
+    A_inv = [[-2, 3],
+             [3, -4]]
 
-    A_inv = np.array([[ 4, -5, -2],
-                      [ 5, -6, -2],
-                      [-8,  9,  3]])
 
-    output = inv(A)
-    assert np.allclose(A_inv, output)
-    assert np.allclose(A @ output, np.eye(3))
+class MathworldsInv3x3Test(MatrixInverseValidator, TestCase):
+    """
+    This test is an example 3x3 matrix inverse from
+    http://www.mathwords.com/i/inverse_of_a_matrix.htm
+    """
+    A = [[1, 2, 3],
+         [0, 4, 5],
+         [1, 0, 6]]
+
+    A_inv = (np.array([[24, -12, -2],
+                       [5, 3, -5],
+                       [-4, 2,  4]]) * 1 / 22).tolist()
+
+
+class MathscentreInv3x3Test(MatrixInverseValidator, TestCase):
+    """
+    This test is an example 3x3 matrix inverse from
+    http://www.mathcentre.ac.uk/resources/uploaded/sigma-matrices11-2009-1.pdf
+    """
+    A = [[7, 2, 1],
+         [0, 3, -1],
+         [-3, 4, -2]]
+
+    A_inv = [[-2, 8, -5],
+             [3, -11, 7],
+             [9, -34, 21]]
+
+
+class ImperialInv3x3Test(MatrixInverseValidator, TestCase):
+    """
+    This test is an example 3x3 matrix inverse from
+    http://wwwf.imperial.ac.uk/metric/metric_public/matrices/inverses/inverses2.html
+    """
+    A = [[0, -3, -2],
+         [1, -4, -2],
+         [-3, 4, 1]]
+
+    A_inv = [[4, -5, -2],
+             [5, -6, -2],
+             [-8, 9, 3]]
 
 
 def test_inv_5_by_5_numpy():
 
-    A = np.array([[3,  13, 14, 10, 12],
-                  [8,  15,  4, 16,  5],
-                  [6,  11,  7,  9, 17],
-                  [18, 19,  2, 20, 21],
+    A = np.array([[3, 13, 14, 10, 12],
+                  [8, 15, 4, 16, 5],
+                  [6, 11, 7, 9, 17],
+                  [18, 19, 2, 20, 21],
                   [22, 23, 24, 25, 26]])
 
     A_inv = np.linalg.inv(A)
@@ -82,7 +107,7 @@ def test_inv_5_by_5_numpy():
     assert np.allclose(A @ output, np.eye(5))
 
 
-@mark.parametrize('n', range(2, 11))
+@mark.parametrize('n', range(2, 10))
 def test_inv_basic_sanity(n):
     scalar = 4
     A = np.eye(n) * scalar
@@ -101,7 +126,7 @@ def test_matrix_minor():
     #                  \
     #                   eliminate this column (idx = 1)
 
-    output = matrix_minor(A, 2, 1)
+    output = matrix_minor_jit(A, 2, 1)
     expected = np.array([[3, 14, 10, 12],
                          [8,  4, 16, 5]])
 
