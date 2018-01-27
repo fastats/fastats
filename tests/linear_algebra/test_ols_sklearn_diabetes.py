@@ -193,18 +193,19 @@ def test_drop_missing():
                   3.0,
                   np.nan])  # <- expect to be dropped
 
-    A_bar, b_bar = drop_missing(A, b)
+    for fn in drop_missing, drop_missing_jit:
+        A_bar, b_bar = fn(A, b)
 
-    expected_A_bar = np.array([[1.1, 1.2, 1.3],
-                               [1.2, 1.0, 1.3],
-                               [4.5, 4.2, 4.3]])
+        expected_A_bar = np.array([[1.1, 1.2, 1.3],
+                                   [1.2, 1.0, 1.3],
+                                   [4.5, 4.2, 4.3]])
 
-    expected_b_bar = np.array([1.0,
-                               6.0,
-                               3.0])
+        expected_b_bar = np.array([1.0,
+                                   6.0,
+                                   3.0])
 
-    assert np.allclose(A_bar, expected_A_bar)
-    assert np.allclose(b_bar, expected_b_bar)
+        assert np.allclose(A_bar, expected_A_bar)
+        assert np.allclose(b_bar, expected_b_bar)
 
 
 def test_ols_drop_missing_versus_statsmodels():
