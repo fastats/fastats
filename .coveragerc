@@ -1,5 +1,8 @@
 [run]
 branch = True
+omit =
+    setup.py
+    venv*
 
 [report]
 fail_under = 98

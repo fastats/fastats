@@ -64,7 +64,7 @@ def test_spearman_pairwise_versus_pandas(A):
     This is a check of the pairwise Spearman correlation against
     pandas DataFrame corr for an input dataset A.
     """
-    data = A.value.data
+    data = A.value
     expected = pd.DataFrame(data).corr(method='spearman').values
     output = spearman_pairwise(data)
     assert np.allclose(expected, output)

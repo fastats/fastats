@@ -6,6 +6,8 @@ from fastats.linear_algebra.ols import (
     adjusted_r_squared, standard_error, t_statistic,
     mean_standard_error_residuals, add_intercept,
     adjusted_r_squared_no_intercept, r_squared_no_intercept,
+    f_statistic, f_statistic_no_intercept
+    adjusted_r_squared_no_intercept, r_squared_no_intercept,
     drop_missing
 )
 from fastats.linear_algebra.pca import pca
@@ -29,5 +31,7 @@ __all__ = [
     'standard_error',
     'mean_standard_error_residuals',
     't_statistic',
+    'f_statistic',
+    'f_statistic_no_intercept',
     'drop_missing',
 ]
