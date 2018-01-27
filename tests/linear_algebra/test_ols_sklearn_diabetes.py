@@ -16,6 +16,11 @@ from fastats.linear_algebra import (
     f_statistic_no_intercept, drop_missing
 )
 
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+
+
+drop_missing_jit = convert_to_jit(drop_missing)
+
 
 class BaseOLS(TestCase):
     def setUp(self):
@@ -218,11 +223,12 @@ def test_ols_drop_missing_versus_statsmodels():
 
     sm_model = sm.OLS(b, A, missing='drop').fit()
 
-    output = ols(*drop_missing(A, b))
-    assert np.allclose(output, sm_model.params)
+    for fn in drop_missing, drop_missing_jit:
+        output = ols(*fn(A, b))
+        assert np.allclose(output, sm_model.params)
 
-    output = fitted_values(*drop_missing(A, b))
-    assert np.allclose(output, sm_model.fittedvalues)
+        output = fitted_values(*fn(A, b))
+        assert np.allclose(output, sm_model.fittedvalues)
 
 
 @mark.xfail(reason='Perfect multicollinearity')
