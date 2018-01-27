@@ -6,7 +6,7 @@ from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 def matrix_minor(A, remove_row_idx, remove_col_idx):
     """
-    Returns a square matrix, cut down from A by removing
+    Returns a minor matrix, cut down from A by removing
     one of its rows and one of its columns.
     """
     m = A.shape[0] - 1
