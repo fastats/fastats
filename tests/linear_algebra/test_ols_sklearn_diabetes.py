@@ -179,60 +179,82 @@ class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         assert np.allclose(output, expected)
 
 
-def test_drop_missing():
+class DropMissingTestMixin:
 
-    A = np.array([[1.1, 1.2, 1.3],
-                  [1.2, 1.0, 1.3],
-                  [1.6, np.nan, 2.0],  # <- expect to be dropped
-                  [4.5, 4.2, 4.3],
-                  [4.4, 4.0, 4.2]])
+    def setUp(self):
+        self.A = np.array([[1.1, 1.2, 1.3],
+                           [1.2, 1.0, 1.3],
+                           [1.6, np.nan, 2.0],  # <- expect to be dropped
+                           [4.5, 4.2, 4.3],
+                           [4.4, 4.0, 4.2]])
 
-    b = np.array([1.0,
-                  6.0,
-                  2.0,
-                  3.0,
-                  np.nan])  # <- expect to be dropped
+        self.b = np.array([1.0,
+                           6.0,
+                           2.0,
+                           3.0,
+                           np.nan])  # <- expect to be dropped
 
-    for fn in drop_missing, drop_missing_jit:
-        A_bar, b_bar = fn(A, b)
+        self.expected_A_bar = np.array([[1.1, 1.2, 1.3],
+                                        [1.2, 1.0, 1.3],
+                                        [4.5, 4.2, 4.3]])
 
-        expected_A_bar = np.array([[1.1, 1.2, 1.3],
-                                   [1.2, 1.0, 1.3],
-                                   [4.5, 4.2, 4.3]])
+        self.expected_b_bar = np.array([1.0,
+                                        6.0,
+                                        3.0])
 
-        expected_b_bar = np.array([1.0,
-                                   6.0,
-                                   3.0])
+    @staticmethod
+    def statsmodels_test_fixtures():
+        dataset = datasets.load_iris()
+        A = dataset.data
+        b = dataset.target.astype(np.float64)  # cast as float as we will set some values to NaN
 
-        assert np.allclose(A_bar, expected_A_bar)
-        assert np.allclose(b_bar, expected_b_bar)
+        # insert some NaNs into the features
+        A[1, 2] = np.nan
+        A[20, 3] = np.nan
 
+        # insert some NaNs into the targets
+        b[13] = np.nan
+        b[140] = np.nan
 
-def test_ols_drop_missing_versus_statsmodels():
+        sm_model = sm.OLS(b, A, missing='drop').fit()
+        return A, b, sm_model
 
-    dataset = datasets.load_iris()
-    A = dataset.data
-    b = dataset.target.astype(np.float64)  # cast as float as we will set some values to NaN
+    def test_drop_missing(self):
+        A_bar, b_bar = self.fn(self.A, self.b)
+        assert np.allclose(A_bar, self.expected_A_bar)
+        assert np.allclose(b_bar, self.expected_b_bar)
 
-    # insert some NaNs into the features
-    A[1, 2] = np.nan
-    A[20, 3] = np.nan
-
-    # insert some NaNs into the targets
-    b[13] = np.nan
-    b[140] = np.nan
-
-    sm_model = sm.OLS(b, A, missing='drop').fit()
-
-    for fn in drop_missing, drop_missing_jit:
-        output = ols(*fn(A, b))
+    def test_versus_statsmodels_params(self):
+        A, b, sm_model = self.statsmodels_test_fixtures()
+        output = ols(*self.fn(A, b))
         assert np.allclose(output, sm_model.params)
 
-        output = fitted_values(*fn(A, b))
+    def test_versus_statsmodels_fittedvalues(self):
+        A, b, sm_model = self.statsmodels_test_fixtures()
+        output = fitted_values(*self.fn(A, b))
         assert np.allclose(output, sm_model.fittedvalues)
 
+    def test_versus_statsmodels_residuals(self):
+        A, b, sm_model = self.statsmodels_test_fixtures()
+        output = residuals(*self.fn(A, b))
+        assert np.allclose(output, sm_model.resid)
 
-@mark.xfail(reason='Perfect multicollinearity')
+
+class DropMissingTests(DropMissingTestMixin, TestCase):
+
+    def setUp(self):
+        self.fn = drop_missing
+        super().setUp()
+
+
+class DropMissingNumbaTests(DropMissingTestMixin, TestCase):
+
+    def setUp(self):
+        self.fn = drop_missing_jit
+        super().setUp()
+
+
+@mark.xfail(reason='Perfect multicolinearity')
 def test_ols_fails_as_features_perfect_multicollinear():
 
     A = np.array([[1, 1, 2],
@@ -243,8 +265,7 @@ def test_ols_fails_as_features_perfect_multicollinear():
 
     b = np.array([0, 1, 2, 2])
 
-    output = ols(A, b)
-    assert output is not None
+    _ = ols(A, b)
 
 
 @mark.xfail(reason='Feature all zero')
@@ -258,8 +279,7 @@ def test_ols_fails_as_feature_all_zero():
 
     b = np.array([0, 1, 2, 2])
 
-    output = ols(A, b)
-    assert output is not None
+    _ = ols(A, b)
 
 
 if __name__ == '__main__':
