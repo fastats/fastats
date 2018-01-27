@@ -1,6 +1,6 @@
 
 from fastats.linear_algebra.lu import lu, lu_inplace
-from fastats.linear_algebra.inv import inv, matrix_minor
+from fastats.linear_algebra.inv import inv, matrix_minor, det
 from fastats.linear_algebra.ols import (
     ols, ols_cholesky, ols_qr, ols_svd, r_squared,
     sum_of_squared_residuals, fitted_values, residuals,
@@ -33,5 +33,6 @@ __all__ = [
     'f_statistic',
     'f_statistic_no_intercept',
     'inv',
-    'matrix_minor'
+    'matrix_minor',
+    'det',
 ]

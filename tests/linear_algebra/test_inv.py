@@ -3,13 +3,14 @@ from unittest import TestCase
 
 import numpy as np
 from numpy.testing import assert_allclose
-from pytest import mark
+from pytest import approx, mark
 
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
-from fastats.linear_algebra import inv, matrix_minor
+from fastats.linear_algebra import inv, matrix_minor, det
 
 inv_jit = convert_to_jit(inv)
 matrix_minor_jit = convert_to_jit(matrix_minor)
+det_jit = convert_to_jit(det)
 
 
 class MatrixInverseValidator:
@@ -36,6 +37,16 @@ class MatrixInverseValidator:
 
         I = np.eye(self._A.shape[0])
         assert_allclose(self.A @ A_inv, I, atol=1e-10)
+
+    def test_det_numpy(self):
+        expected = np.linalg.det(self._A)
+        output = det(self._A)
+        assert expected == approx(output)
+
+    def test_det_numba(self):
+        expected = np.linalg.det(self._A)
+        output = det_jit(self._A)
+        assert expected == approx(output)
 
 
 class MathworldsInv2x2Test(MatrixInverseValidator, TestCase):
@@ -94,7 +105,7 @@ class ImperialInv3x3Test(MatrixInverseValidator, TestCase):
 
 def test_hilbert_inv_5x5():
     """
-    This test is an example 5x5 matrix inverse from
+    This test is an example 5x5 Hilbert matrix inverse from
     http://mathfaculty.fullerton.edu/mathews/n2003/Web/InverseMatrixMod/Links/MatrixInverseMod_lnk_2.html
     """
     hilbert = np.empty((5, 5))
@@ -111,8 +122,8 @@ def test_hilbert_inv_5x5():
 
     for fn in inv, inv_jit:
         output = fn(hilbert)
-        assert np.allclose(hilbert_inv, output)
-        assert np.allclose(hilbert @ output, np.eye(5))
+        assert_allclose(hilbert_inv, output)
+        assert_allclose(hilbert @ output, np.eye(5), atol=1e-8)
 
 
 def test_inv_5x5_numpy():
@@ -127,8 +138,8 @@ def test_inv_5x5_numpy():
 
     for fn in inv, inv_jit:
         output = fn(A)
-        assert np.allclose(A_inv, output)
-        assert np.allclose(A @ output, np.eye(5))
+        assert_allclose(A_inv, output)
+        assert_allclose(A @ output, np.eye(5), atol=1e-10)
 
 
 @mark.parametrize('n', range(2, 10))
@@ -141,8 +152,8 @@ def test_inv_basic_sanity(n):
     A_inv = np.eye(n) * 1 / scalar
 
     output = inv_jit(A)
-    assert np.allclose(A_inv, output)
-    assert np.allclose(A @ output, np.eye(n))
+    assert_allclose(A_inv, output)
+    assert_allclose(A @ output, np.eye(n))
 
 
 def test_matrix_minor():
@@ -158,7 +169,7 @@ def test_matrix_minor():
         expected = np.array([[3, 14, 10, 12],
                              [8,  4, 16, 5]])
 
-        assert np.allclose(output, expected)
+        assert_allclose(output, expected)
 
 
 if __name__ == '__main__':
