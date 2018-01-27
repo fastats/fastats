@@ -61,7 +61,7 @@ class MathworldsInv3x3Test(MatrixInverseValidator, TestCase):
 
     A_inv = (np.array([[24, -12, -2],
                        [5, 3, -5],
-                       [-4, 2,  4]]) * 1 / 22).tolist()
+                       [-4, 2, 4]]) * 1 / 22).tolist()
 
 
 class MathscentreInv3x3Test(MatrixInverseValidator, TestCase):
