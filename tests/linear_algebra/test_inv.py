@@ -138,7 +138,6 @@ def test_inv_basic_sanity(n):
     """
     scalar = 4
     A = np.eye(n) * scalar
-
     A_inv = np.eye(n) * 1 / scalar
 
     output = inv_jit(A)
