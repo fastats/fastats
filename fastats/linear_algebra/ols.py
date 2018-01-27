@@ -257,13 +257,6 @@ def drop_missing(A, b):
 
     This is analogous to the statsmodels missing='drop' mechanism.
     """
-    """
-    Returns a filtration of A (features) and b (targets) where all
-    values are not NaN, with the intention that OLS can then be
-    performed on dense / 'complete' observations.
-
-    This is analogous to the statsmodels missing='drop' mechanism.
-    """
     m = A.shape[0]
     assert m == len(b)
 
