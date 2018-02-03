@@ -3,7 +3,7 @@ skip_branch_with_pr: false
 
 environment:
 
-  # TODO this should be migrated to tox
+  # TODO this should be migrated to tox (see .travis.yml and tox.ini)
   matrix:
     - MINICONDA: "C:\\Miniconda36"
       CONDA_ENV_NAME: test_py_36_32bit

@@ -19,6 +19,9 @@ def read_utf8(filename):
 
 
 def import_no_deps(module_name, module_path):
+    """
+    Import a module with no dependencies (e.g. ignore __init__.py)
+    """
     return importlib.machinery.SourceFileLoader(module_name, module_path).load_module()
 
 
