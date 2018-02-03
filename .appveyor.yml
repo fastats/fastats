@@ -2,12 +2,8 @@
 skip_branch_with_pr: false
 
 environment:
-  global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
+  # TODO this should be migrated to tox
   matrix:
     - MINICONDA: "C:\\Miniconda36"
       CONDA_ENV_NAME: test_py_36_32bit
@@ -54,7 +50,7 @@ install:
 
   # Install dependencies using pip
   - "pip install numpy"   # fix statsmodels install failing on windows when no numpy installed yet
-  - "pip install -e .[ci_test]"
+  - "pip install -e .[test]"
 
 # Ignore the MSBuild nonsense
 build: off
@@ -66,4 +62,5 @@ test_script:
 after_test:
   # Upload test report
   # See: https://www.appveyor.com/docs/running-tests/#uploading-xml-test-results
+  - "pip install httpie"
   - "http -f POST https://ci.appveyor.com/api/testresults/junit/%APPVEYOR_JOB_ID% pytest_report.xml@pytest_report.xml"
