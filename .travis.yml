@@ -12,6 +12,10 @@ env:
   - NUMPY=1.13
   - NUMPY=1.14
 
+matrix:
+  allow_failures:
+    - python: "3.7-dev"
+
 install:
   - pip install tox-travis
 
