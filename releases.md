@@ -12,6 +12,7 @@ or eigenvectors.
 - LU Decomposition
 - binary_search : Root finding using the bisection method
 - OLS: f_statistic
+- QR: classical and modified Gram Schmidt methods
 
 #### Bug fixes
 
