@@ -25,10 +25,6 @@ class QRTestMixin:
         assert_allclose(R, R_expected)
         assert_allclose(Q @ R, A)
 
-    def check_versus_numpy(self, Q, R, A):
-        Q_expected, R_expected = np.linalg.qr(A)
-        self.check_versus_expectations(Q, Q_expected, R, R_expected, A)
-
     def test_ucla_4x3(self):
         """
         QR decomposition of a 4x3 matrix, taken from literature directory
