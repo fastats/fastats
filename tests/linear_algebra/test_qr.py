@@ -9,7 +9,7 @@ from fastats.linear_algebra import qr, qr_classical_gram_schmidt
 
 
 qr_jit = convert_to_jit(qr)
-qr_qr_classical_gram_schmidt_jit = convert_to_jit(qr_classical_gram_schmidt)
+qr_classical_gram_schmidt_jit = convert_to_jit(qr_classical_gram_schmidt)
 
 
 class QRTestMixin:
@@ -95,7 +95,7 @@ class QRJitTests(QRTestMixin, TestCase):
 class QRClassicalGSJitTests(QRTestMixin, TestCase):
 
     def setUp(self):
-        self.fn = qr_qr_classical_gram_schmidt_jit
+        self.fn = qr_classical_gram_schmidt_jit
 
 
 if __name__ == '__main__':
