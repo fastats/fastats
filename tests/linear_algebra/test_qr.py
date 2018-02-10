@@ -25,8 +25,15 @@ class QRTestMixin:
         assert_allclose(R, R_expected)
         assert_allclose(Q @ R, A)
 
-    def test_ucla(self):
-        # http://www.seas.ucla.edu/~vandenbe/133A/lectures/qr.pdf
+    def check_versus_numpy(self, Q, R, A):
+        Q_expected, R_expected = np.linalg.qr(A)
+        self.check_versus_expectations(Q, Q_expected, R, R_expected, A)
+
+    def test_ucla_4x3(self):
+        """
+        QR decomposition of a 4x3 matrix, taken from literature directory
+        'ucla_qr_factorization.pdf':
+        """
         A = np.array([[-1, -1, 1],
                       [1, 3, 3],
                       [-1, -1, 5],
@@ -45,8 +52,11 @@ class QRTestMixin:
         self.check_versus_expectations(Q, Q_expected, R, R_expected, A)
         self.assert_orthonormal(Q)
 
-    def test_wikipedia(self):
-        # https://en.wikipedia.org/wiki/QR_decomposition
+    def test_wikipedia_3x3(self):
+        """
+        QR decomposition of a 3x3 matrix, per the following:
+        https://en.wikipedia.org/wiki/QR_decomposition
+        """
         A = np.array([[12, -51, 4],
                       [6, 167, -68],
                       [-4, 24, -41]])
