@@ -1,6 +1,8 @@
 
 from fastats.linear_algebra.lu import lu, lu_inplace
-from fastats.linear_algebra.inv import inv, matrix_minor, det
+from fastats.linear_algebra.inv import inv
+from fastats.linear_algebra.det import det
+from fastats.linear_algebra.matrix_minor import matrix_minor
 from fastats.linear_algebra.ols import (
     ols, ols_cholesky, ols_qr, ols_svd, r_squared,
     sum_of_squared_residuals, fitted_values, residuals,

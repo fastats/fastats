@@ -3,15 +3,9 @@ from unittest import TestCase
 
 import numpy as np
 from numpy.testing import assert_allclose
-from pytest import approx, mark
+from pytest import mark
 
-from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
-from fastats.linear_algebra import inv, matrix_minor, det
-
-
-inv_jit = convert_to_jit(inv)
-matrix_minor_jit = convert_to_jit(matrix_minor)
-det_jit = convert_to_jit(det)
+from fastats.linear_algebra import inv
 
 
 class MatrixInverseValidator:
@@ -32,25 +26,8 @@ class MatrixInverseValidator:
         I = np.eye(self._A.shape[0])
         assert_allclose(self.A @ A_inv, I, atol=1e-10)
 
-    def test_inv_outputs_numba(self):
-        A_inv = inv_jit(self._A)
-        assert A_inv.tolist() == self.A_inv
 
-        I = np.eye(self._A.shape[0])
-        assert_allclose(self.A @ A_inv, I, atol=1e-10)
-
-    def test_det_numpy(self):
-        expected = np.linalg.det(self._A)
-        output = det(self._A)
-        assert expected == approx(output)
-
-    def test_det_numba(self):
-        expected = np.linalg.det(self._A)
-        output = det_jit(self._A)
-        assert expected == approx(output)
-
-
-class MathworldsInv2x2Test(MatrixInverseValidator, TestCase):
+class MathwordsInv2x2Test(MatrixInverseValidator, TestCase):
     """
     This test is an example 2x2 matrix inverse from
     http://www.mathwords.com/i/inverse_of_a_matrix.htm
@@ -62,7 +39,7 @@ class MathworldsInv2x2Test(MatrixInverseValidator, TestCase):
              [3, -4]]
 
 
-class MathworldsInv3x3Test(MatrixInverseValidator, TestCase):
+class MathwordsInv3x3Test(MatrixInverseValidator, TestCase):
     """
     This test is an example 3x3 matrix inverse from
     http://www.mathwords.com/i/inverse_of_a_matrix.htm
@@ -121,10 +98,9 @@ def test_hilbert_inv_5x5():
                             [-1400, 26880, -117600, 179200, -88200],
                             [630, -12600, 56700, -88200, 44100]])
 
-    for fn in inv, inv_jit:
-        output = fn(hilbert)
-        assert_allclose(hilbert_inv, output)
-        assert_allclose(hilbert @ output, np.eye(5), atol=1e-8)
+    output = inv(hilbert)
+    assert_allclose(hilbert_inv, output)
+    assert_allclose(hilbert @ output, np.eye(5), atol=1e-8)
 
 
 def test_inv_5x5_numpy():
@@ -137,10 +113,9 @@ def test_inv_5x5_numpy():
 
     A_inv = np.linalg.inv(A)
 
-    for fn in inv, inv_jit:
-        output = fn(A)
-        assert_allclose(A_inv, output)
-        assert_allclose(A @ output, np.eye(5), atol=1e-10)
+    output = inv(A)
+    assert_allclose(A_inv, output)
+    assert_allclose(A @ output, np.eye(5), atol=1e-10)
 
 
 @mark.parametrize('n', range(2, 10))
@@ -152,33 +127,9 @@ def test_inv_basic_sanity(n):
     A = np.eye(n) * scalar
     A_inv = np.eye(n) * 1 / scalar
 
-    output = inv_jit(A)
+    output = inv(A)
     assert_allclose(A_inv, output)
     assert_allclose(A @ output, np.eye(n))
-
-
-def test_matrix_minor():
-
-    A = np.array([[3, 13, 14, 10, 12],
-                  [8, 15, 4, 16, 5],
-                  [6, 11, 7, 9, 17]])  # <- eliminate this row (idx = 2)
-    #                  \
-    #                   eliminate this column (idx = 1)
-
-    for fn in matrix_minor, matrix_minor_jit:
-        output = fn(A, 2, 1)
-        expected = np.array([[3, 14, 10, 12],
-                             [8,  4, 16, 5]])
-
-        assert_allclose(output, expected)
-
-
-def test_det_1x1():
-    # special case where det is called for
-    # a 1x1 matrix
-    A = np.array([5]).reshape(1, 1)
-    output = det(A)
-    assert output == 5
 
 
 if __name__ == '__main__':
