@@ -31,7 +31,7 @@ def test_matrix_minor_2x2():
     assert_allclose(output, expected)
 
 
-def test_matrix_minor():
+def test_matrix_minor_perimeter():
 
     A = np.array([[3, 13, 14, 10, 12],
                   [8, 15, 4, 16, 5],
