@@ -25,6 +25,21 @@ class QRTestMixin:
         assert_allclose(R, R_expected)
         assert_allclose(Q @ R, A)
 
+    @staticmethod
+    def standardise(Q, R):
+        """
+        QR decomposition may not be unique; here we chose to enforce
+        positive R diagonals
+        """
+        D = np.diag(np.sign(np.diag(R)))
+        return Q @ D, D @ R
+
+    def check_versus_numpy(self, Q, R, A):
+        Q_expected, R_expected = self.standardise(*np.linalg.qr(A))
+        Q, R = self.standardise(Q, R)
+        assert_allclose(Q, Q_expected)
+        assert_allclose(R, R_expected)
+
     def test_ucla_4x3(self):
         """
         QR decomposition of a 4x3 matrix, taken from literature directory
@@ -47,6 +62,7 @@ class QRTestMixin:
         Q, R = self.fn(A)
         self.check_versus_expectations(Q, Q_expected, R, R_expected, A)
         self.assert_orthonormal(Q)
+        self.check_versus_numpy(Q, R, A)
 
     def test_wikipedia_3x3(self):
         """
@@ -68,6 +84,7 @@ class QRTestMixin:
         Q, R = self.fn(A)
         self.check_versus_expectations(Q, Q_expected, R, R_expected, A)
         self.assert_orthonormal(Q)
+        self.check_versus_numpy(Q, R, A)
 
 
 class QRTests(QRTestMixin, TestCase):
