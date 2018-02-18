@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import numpy as np
 import statsmodels.api as sm
-from pytest import approx, mark
+from pytest import approx, raises
 from sklearn import datasets
 
 from fastats.linear_algebra import (
@@ -254,7 +254,6 @@ class DropMissingNumbaTests(DropMissingTestMixin, TestCase):
         super().setUp()
 
 
-@mark.xfail(reason='Perfect multicolinearity')
 def test_ols_fails_as_features_perfect_multicollinear():
 
     A = np.array([[1, 1, 2],
@@ -265,10 +264,13 @@ def test_ols_fails_as_features_perfect_multicollinear():
 
     b = np.array([0, 1, 2, 2])
 
-    _ = ols(A, b)
+    with raises(np.linalg.LinAlgError) as e:
+        _ = ols(A, b)
+
+    assert e.value.args[0] == 'Singular matrix'
+    # A.T @ A is singular, therefore not invertible
 
 
-@mark.xfail(reason='Feature all zero')
 def test_ols_fails_as_feature_all_zero():
 
     A = np.array([[1, 1, 0],
@@ -279,7 +281,11 @@ def test_ols_fails_as_feature_all_zero():
 
     b = np.array([0, 1, 2, 2])
 
-    _ = ols(A, b)
+    with raises(np.linalg.LinAlgError) as e:
+        _ = ols(A, b)
+
+    assert e.value.args[0] == 'Singular matrix'
+    # A.T @ A is singular, therefore not invertible
 
 
 if __name__ == '__main__':
