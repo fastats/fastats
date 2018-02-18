@@ -3,10 +3,11 @@ from unittest import TestCase
 
 import numpy as np
 from numpy.testing import assert_allclose
+from pytest import mark
 
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.linear_algebra import qr, qr_classical_gram_schmidt
-
+from tests.data.datasets import SKLearnDataSets
 
 qr_jit = convert_to_jit(qr)
 qr_classical_gram_schmidt_jit = convert_to_jit(qr_classical_gram_schmidt)
@@ -109,6 +110,42 @@ class QRClassicalGSJitTests(QRTestMixin, TestCase):
 
     def setUp(self):
         self.fn = qr_classical_gram_schmidt_jit
+
+
+def standardise(Q, R):
+    """
+    QR decomposition may not be unique; here we chose to enforce
+    positive R diagonals to facilitate comparison of solutions
+    """
+    D = np.diag(np.sign(np.diag(R)))
+    return Q @ D, D @ R
+
+
+def check_versus_numpy(A, fn, atol=1e-7):
+    Q_expected, R_expected = standardise(*np.linalg.qr(A))
+    Q, R = standardise(*fn(A))
+    assert_allclose(Q, Q_expected, atol=atol)
+    assert_allclose(R, R_expected, atol=atol)
+
+
+@mark.parametrize('A', SKLearnDataSets)
+def test_sklearn_dataset(A):
+    data = A.value
+    A = data.T @ data
+    check_versus_numpy(A, qr_jit)
+
+
+def test_stability_of_classical_gram_schmidt():
+    dataset = SKLearnDataSets.WINE
+    data = dataset.value
+    A = data.T @ data
+
+    check_versus_numpy(A, qr_classical_gram_schmidt, atol=1e-1)
+    check_versus_numpy(A, qr, atol=1e-10)  # <- much tighter tol
+
+    # notice that maximum atol for the modified Gram Schmidt
+    # method is significantly higher for this data set due to
+    # better numerical stability
 
 
 if __name__ == '__main__':
