@@ -18,8 +18,7 @@ def matrix_minor(A, remove_row_idx, remove_col_idx):
            [ 3.,  2.]])
     """
     m, n = A.shape
-    assert m > 1, 'Matrix must have more than one row'
-    assert n > 1, 'Matrix must have more than one column'
+    assert m > 1 and n > 1
     assert remove_row_idx <= m - 1, 'Row index out of bounds'
     assert remove_col_idx <= n - 1, 'Column index out of bounds'
 
