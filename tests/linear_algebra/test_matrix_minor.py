@@ -1,4 +1,8 @@
 
+import importlib
+import sys
+
+import mock
 import numpy as np
 from numpy.testing import assert_allclose
 from pytest import raises
@@ -44,17 +48,21 @@ def test_matrix_minor_perimeter():
     assert_allclose(output, expected)
 
 
-def test_matrix_minor_interior():
+def matrix_minor_interior_test(matrix_minor_fn):
 
     A = np.array([[3, 13, 14, 10, 12],
                   [8, 15, 4, 16, 5],
                   [6, 11, 7, 9, 17]])
 
-    output = matrix_minor(A, 1, 3)
+    output = matrix_minor_fn(A, 1, 3)
     expected = np.array([[3, 13, 14, 12],
                          [6, 11, 7, 17]])
 
     assert_allclose(output, expected)
+
+
+def test_matrix_minor_interior():
+    matrix_minor_interior_test(matrix_minor)
 
 
 def test_matrix_minor_raises_if_idx_out_of_bounds():
@@ -81,6 +89,16 @@ def test_matrix_minor_raises_if_array_not_at_least_2x2():
 
     with raises(AssertionError):
         _ = matrix_minor(A, 2, 0)
+
+
+def test_pure_python_matrix_minor():
+
+    with mock.patch('fastats.core.ast_transforms.convert_to_jit.convert_to_jit', lambda x: x):
+        module_name = 'fastats.linear_algebra.matrix_minor'
+        importlib.reload(sys.modules[module_name])
+        mod = importlib.import_module(module_name)
+        matrix_minor = getattr(mod, 'matrix_minor')
+        matrix_minor_interior_test(matrix_minor)
 
 
 if __name__ == '__main__':

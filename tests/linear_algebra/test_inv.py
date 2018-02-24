@@ -1,6 +1,9 @@
 
+import importlib
+import sys
 from unittest import TestCase
 
+import mock
 import numpy as np
 from numpy.testing import assert_allclose
 from pytest import mark
@@ -103,8 +106,7 @@ def test_hilbert_inv_5x5():
     assert_allclose(hilbert @ output, np.eye(5), atol=1e-8)
 
 
-def test_inv_5x5_numpy():
-
+def inv_5x5_test(inv_fn):
     A = np.array([[3, 13, 14, 10, 12],
                   [8, 15, 4, 16, 5],
                   [6, 11, 7, 9, 17],
@@ -113,9 +115,13 @@ def test_inv_5x5_numpy():
 
     A_inv = np.linalg.inv(A)
 
-    output = inv(A)
+    output = inv_fn(A)
     assert_allclose(A_inv, output)
     assert_allclose(A @ output, np.eye(5), atol=1e-10)
+
+
+def test_inv_5x5_numpy():
+    inv_5x5_test(inv)
 
 
 @mark.parametrize('n', range(2, 10))
@@ -130,6 +136,16 @@ def test_inv_basic_sanity(n):
     output = inv(A)
     assert_allclose(A_inv, output)
     assert_allclose(A @ output, np.eye(n))
+
+
+def test_pure_python_inv():
+
+    with mock.patch('fastats.core.ast_transforms.convert_to_jit.convert_to_jit', lambda x: x):
+        module_name = 'fastats.linear_algebra.inv'
+        importlib.reload(sys.modules[module_name])
+        mod = importlib.import_module(module_name)
+        inv = getattr(mod, 'inv')
+        inv_5x5_test(inv)
 
 
 if __name__ == '__main__':
