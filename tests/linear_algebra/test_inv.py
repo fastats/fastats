@@ -144,8 +144,7 @@ def test_pure_python_inv():
         module_name = 'fastats.linear_algebra.inv'
         importlib.reload(sys.modules[module_name])
         mod = importlib.import_module(module_name)
-        inv = getattr(mod, 'inv')
-        inv_5x5_test(inv)
+        inv_5x5_test(mod.inv)
 
 
 if __name__ == '__main__':

@@ -43,21 +43,18 @@ def test_determinant_mathworks():
     determinant_mathworks_test(det)
 
 
-def test_det_1x1():
-    # 1x1 matrix - special case
-    A = np.array([5]).reshape(1, 1)
-    output = det(A)
-    assert output == 5
-
-
 def test_pure_python_det():
 
     with mock.patch('fastats.core.ast_transforms.convert_to_jit.convert_to_jit', lambda x: x):
         module_name = 'fastats.linear_algebra.det'
         importlib.reload(sys.modules[module_name])
         mod = importlib.import_module(module_name)
-        det = getattr(mod, 'det')
-        determinant_mathworks_test(det)
+        determinant_mathworks_test(mod.det)
+
+        # 1x1 matrix - special case
+        A = np.array([5]).reshape(1, 1)
+        output = mod.det(A)
+        assert output == 5
 
 
 if __name__ == '__main__':

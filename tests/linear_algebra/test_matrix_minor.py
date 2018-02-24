@@ -97,8 +97,7 @@ def test_pure_python_matrix_minor():
         module_name = 'fastats.linear_algebra.matrix_minor'
         importlib.reload(sys.modules[module_name])
         mod = importlib.import_module(module_name)
-        matrix_minor = getattr(mod, 'matrix_minor')
-        matrix_minor_interior_test(matrix_minor)
+        matrix_minor_interior_test(mod.matrix_minor)
 
 
 if __name__ == '__main__':
