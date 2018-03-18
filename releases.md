@@ -12,6 +12,7 @@ or eigenvectors.
 - LU Decomposition
 - binary_search : Root finding using the bisection method
 - Documentation added using sphinx + numpydoc.
+- OLS: f_statistic
 
 #### Bug fixes
 

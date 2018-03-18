@@ -1,5 +1,4 @@
 
-
 def is_2d(n):
     return len(n.shape) == 2
 

@@ -64,7 +64,7 @@ def test_pearson_pairwise_versus_pandas(A):
     This is a check of the pairwise Pearson correlation against
     pandas DataFrame corr for an input dataset A.
     """
-    data = A.value.data
+    data = A.value
     expected = pd.DataFrame(data).corr(method='pearson').values
     output = pearson_pairwise(data)
     assert np.allclose(expected, output)
