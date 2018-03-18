@@ -23,14 +23,15 @@ Here's a quick example to show some basic concepts::
 
     data = np.random.random((1000000,))
 
+
     def square_minus_one(x):
         return x * x - 1.0
 
+
     result = single_pass(data, value=square_minus_one)
 
-
-`single_pass` is a core fastats function which takes a numpy array and a function, and applies
-the function to each row of the numpy array. The function must be passed as the keyword
+:func:`fastats.core.single_pass` is a core fastats function which takes a numpy array and a function,
+and applies the function to each row of the numpy array. The function must be passed as the keyword
 argument `value`.
 
 The `value` function can be any user-defined or library python function which is able to
@@ -302,40 +303,37 @@ choosing, without having to re-write the entire newton_raphson wrapper function.
 In `fastats` this is performed by changing the semantics of positional and keyword
 arguments; `numba` does not allow us to pass functions as arguments, but even if it
 did, we still need the ability to arbitrarily modify deeply nested functions (use
-cases discussed below).
+cases discussed below), rather than just the calls in the top-level function.
 
 The Newton-Raphson code shown above is in the `fastats` standard library, and allows us
 to do the following::
 
     from fastats.optimise.root_finding.newton_raphson import newton_raphson
+    from pytest import approx
 
-    def my_func(x, y):
-        return x**2 + y**2
+    def my_func(x):
+        return x ** 3 - x - 1
 
-    my_solver = newton_raphson(, 0.001, root=my_func)
+    result = newton_raphson(0.5, 0.001, root=my_func)
+    assert result == approx(1.324717)
 
-    my_solver(3, 4)
-
-`my_func` is the function for which we would like to find the roots. It takes two arguments,
-`x` and `y`, one of which will be kept constant whilst the other is varied to find the root.
+`my_func` is the function for which we would like to find the roots. It takes one argument `x`,
+which will be varied to find the root.
 
 When `newton_raphson` is called, it takes the `root=my_func` kwarg, and inspects the signature
-of `my_func`. It finds that `my_func` takes 2 arguments `x` and `y`, and expects the first argument
+of `my_func`. It finds that `my_func` takes 1 argument and expects the first argument
 (`x` in this case) to be the parameter that is modified by the algorithm to find the root.
 
-As a result, we need to be able to pass `y` from the top level caller all the way down to the
-places where 'root' is called. For example, line 5 in the example above needs to be changed to::
-
-    new_y = my_func(next_x, y)
-
-In order to do this, the `newton_raphson` function needs its signature modified to take `y`
-as an argument. This is what `fastats` performs: at any level in the AST, `fastats` will modify
+This is what `fastats` performs: at any level in the AST, `fastats` will modify
 the function signatures and ensure that the correct arguments are passed to all functions,
 in order to allow any function to be modified by passing it as a keyword argument at the
 top-level.
 
+`fastats` does not currently support multiple arguments to solver functions, but we will support this in
+a future release.
+
 In this example, `deriv` will numerically calculate the derivative at each point, which is the
-reason for requiring nested function substitution from the AST transform. It is possible to use
+reason for requiring nested function substitution from the AST transform. It is also possible to use
 the same `deriv` function for a wide range of `root` functions, as the numerical derivative just
 calls the `root` function with the x-values bumped in either direction. As a result, we need the
 `root=` keyword argument to replace all values in the child functions (including `deriv`), not
@@ -346,38 +344,34 @@ However, in this case we can trivially calculate the analytical derivative by ha
 like this::
 
     def my_deriv(x, y):
-        return 2 * x + 2 * y
+        return 2 * x ** 2 - 1
 
-    my_solve = newton_raphson(, 0.001, root=my_func, deriv=my_deriv)
+    result = newton_raphson(0.5, 0.001, root=my_func, deriv=my_deriv)
 
-    my_solve(3, 4)
-
-Which allows us to **optionally** pass an optimised function, but fall back on a non-optimised
-version for experimenting/research.
+Which allows us to **optionally** pass an optimised function to calculate the derivative, but fall back
+on an unoptimised version for fast experimenting/research.
 
 This is not-limited to specific functions - if you are happy with lower-precision in certain
 calculations, you can pass faster (lower-precision) versions of any mathematical functions,
-and `fastats` will replace them throughout the entire AST before sending onto numba, without
+and `fastats` will replace them throughout the entire AST before passing the code onto numba, without
 requiring you to modify any code.
 
 As an example, some calculations require the complementary error function `erfc` to be calculated.
-The accuracy (precision) of `erfc` depends partially on how many terms are in the multiplication. By
+The accuracy (precision) of `erfc` depends partially on how many terms are in the expansion. By
 reducing the number of terms we can speed up calculations at the expense of accuracy.
 
-If you are happy with 8 decimal places, you can speed up calculations by passing `erfc8`::
+If you are happy with 8 decimal places, and you had a a custom function `erfc8` to calculate this
+in an optimal manner, you could speed up calculations like this::
 
-    from fastats.core.erfc import erfc8
-
-    my_solve = newton_raphson(, 0.000, root=my_func, erfc=erfc8)
+    my_solve = newton_raphson(0.5, 0.001, root=my_func, erfc=erfc8)
 
 To increase precision (at the expense of calculation time), you could use `erfc16`::
 
-    from fastats.core.erfc import erfc16
-
-    my_solve = newton_raphson(, 0.001, root=my_func, deriv=my_deriv, erfc=erfc16)
+    my_solve = newton_raphson(0.5, 0.001, root=my_func, deriv=my_deriv, erfc=erfc16)
 
 These `ast-modification` semantics therefore allow you to use any pure python numerical
-code, regardless of whether the original author allowed arbitrary functions to be passed in.
+code which can be JIT-compiled, regardless of whether the original author allowed arbitrary
+functions to be passed in.
 
 Why are we re-writing functions that already exist in numpy/scipy/etc?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

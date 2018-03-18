@@ -5,9 +5,11 @@ from fastats.core.decorator import fs
 def square(x):
     return x * x
 
+
 @fs
 def cube(x):
     return x * x * x
+
 
 @fs
 def func(x):

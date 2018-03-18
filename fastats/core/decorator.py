@@ -115,3 +115,8 @@ def fs(func):
 
     fs_wrapper.undecorated = _func
     return fs_wrapper
+
+
+if __name__ == '__main__':
+    import pytest
+    pytest.main([__file__])
