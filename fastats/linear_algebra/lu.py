@@ -91,6 +91,24 @@ def lu(A):
     return L, U
 
 
+def lu_compact(A):
+    """
+    This performs LU Decomposition on `A`
+    """
+    assert A.shape[0] == A.shape[1]
+
+    U = A.astype(np.float64)
+    n = A.shape[0]
+    L = np.eye(n).astype(np.float64)
+
+    for k in range(n - 1):
+        for j in range(k + 1, n):
+            L[j, k] = U[j, k] / U[k, k]
+            U[j, k:n] -= L[j, k] * U[k, k:n]
+
+    return L, U
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
