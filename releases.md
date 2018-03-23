@@ -12,6 +12,7 @@ or eigenvectors.
 - LU Decomposition
 - binary_search : Root finding using the bisection method
 - Pseudo-inverse implementation
+- OLS: f_statistic
 
 #### Bug fixes
 

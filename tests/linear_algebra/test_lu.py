@@ -5,17 +5,18 @@ import numpy as np
 from numpy.testing import assert_allclose
 from pytest import approx
 
-from fastats.linear_algebra import lu, lu_inplace
+from fastats.linear_algebra import lu, lu_inplace, lu_compact
 from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
 
 lu_jit = convert_to_jit(lu)
+lu_compact_jit = convert_to_jit(lu_compact)
 
 
 class LUDecompValidator:
     """
     This is a mixin class which tests both
-    the raw python and the jit-compiled
+    the raw Python and the jit-compiled
     version of the `lu()` function.
     """
     A, L, U = None, None, None
@@ -40,9 +41,27 @@ class LUDecompValidator:
 
         assert_allclose(raw_L @ raw_U, self._A)
 
+    def test_lu_compact_outputs_numpy(self):
+
+        raw_L, raw_U = lu_compact(self._A)
+
+        assert raw_L.tolist() == self.L
+        assert raw_U.tolist() == self.U
+
+        assert_allclose(raw_L @ raw_U, self._A)
+
     def test_lu_outputs_numba(self):
 
         L, U = lu_jit(self._A)
+
+        assert L.tolist() == self.L
+        assert U.tolist() == self.U
+
+        assert_allclose(L @ U, self._A)
+
+    def test_lu_compact_outputs_numba(self):
+
+        L, U = lu_compact_jit(self._A)
 
         assert L.tolist() == self.L
         assert U.tolist() == self.U
