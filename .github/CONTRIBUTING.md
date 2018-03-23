@@ -121,5 +121,41 @@ We tend to follow [PEP8][pep8] for Python code style, with a few exceptions:
 - Unittests should be exhaustive and should reside in the `tests` directory.
 
 
+#### Running tests
+
+You can use [tox][tox] to run local tests for all supported Python versions and
+various versions of libraries such as NumPy.
+
+To run all tests in all environments you can simply execute:
+
+```bash
+$ tox
+```
+
+To install multiple Python versions so they are available to tox, such as
+`python3.5`, `python3.6` etc you can use [pyenv][pyenv]:
+
+```bash
+# make sure to install pyenv first: https://github.com/pyenv/pyenv#installation
+$ pyenv install 3.5.4
+$ pyenv install 3.6.4
+$ pyenv local 3.5.4 3.6.4
+$ pyenv versions
+  system
+* 3.5.4 (set by fastats/.python-version)
+* 3.6.4 (set by fastats/.python-version)
+```
+
+You can also install "in development" versions of Python such as `3.7.0a4`. 
+
+While this is quite useful, it's also a bit cumbersome.  Thankfully we're
+running all tests automatically on Travis CI.
+
+Note that tox does not require pyenv on Travis CI, as various Python versions
+come pre-installed out of the box.
+
+
 [bad_issues]: https://gist.github.com/ryanflorence/8a62abea562ca2896dee
 [pep8]: https://pep8.org/
+[pyenv]: https://github.com/pyenv/pyenv
+[tox]: https://tox.readthedocs.io/en/latest/

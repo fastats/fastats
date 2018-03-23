@@ -2,14 +2,28 @@ language: python
 sudo: false
 os:
   - linux
+
 python:
   - 3.5
   - 3.6
-  - 3.6-dev
+  - 3.7-dev
+
+env:
+  - NUMPY=1.13
+  - NUMPY=1.14
+
+matrix:
+  allow_failures:
+    - python: "3.7-dev"
+
 install:
-  - pip install -e .[ci_test,doc]
+  - pip install tox-travis
+
 script:
-  - pytest
-#  - sphinx-build docs/source docs/build -W
+  - tox
+
 after_success:
+    - pip install codecov
     - codecov
+    #  - pip install -e .[doc]
+    #  - sphinx-build docs/source docs/build -W

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import codecs
-import importlib.util
+import importlib.machinery
 from os import path
 
 from setuptools import setup, find_packages
@@ -18,16 +18,22 @@ def read_utf8(filename):
         return f.read()
 
 
-long_description = read_utf8('README.md')
+def import_no_deps(module_name, module_path):
+    """
+    Import a module with no dependencies (e.g. ignore __init__.py)
+    """
+    return importlib.machinery.SourceFileLoader(module_name, module_path).load_module()
+
+
+version_module_name = '_version'
+version_module_path = path.join(here, 'fastats', '_version.py')
 
 # import just the _version module, don't pull in any fastats dependencies
-spec = importlib.util.spec_from_file_location(
-    '_version', path.join(here, 'fastats', '_version.py')
-)
-version_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(version_module)
-
+version_module = import_no_deps(version_module_name, version_module_path)
 version = version_module.VERSION
+
+
+long_description = read_utf8('README.md')
 
 
 setup_kwargs = dict(
@@ -75,6 +81,7 @@ setup_kwargs = dict(
     ],
 
     tests_require=[
+        'coverage',
         'hypothesis',
         'pytest',
         'pytest-cov',
@@ -92,17 +99,11 @@ setup_kwargs = dict(
 )
 
 
-# CI-specific test utilities, e.g. travis, appveyor
-setup_kwargs['extras_require']['ci_test'] = (
-    setup_kwargs['tests_require']
-    + [
-        'codecov',
-        'httpie',
-    ]
-)
+# Alias for test requirements, e.g. `pip install -e .[test]`
+setup_kwargs['extras_require']['test'] = setup_kwargs['tests_require']
 
-# All ("development") requirements, including docs generation and tests,
-# but no CI-specific ones
+
+# All ("development") requirements, including docs generation and tests
 setup_kwargs['extras_require']['dev'] = (
     setup_kwargs['tests_require']
     + setup_kwargs['extras_require']['doc']
