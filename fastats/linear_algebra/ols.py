@@ -256,6 +256,15 @@ def drop_missing(A, b):
     performed on dense / 'complete' observations.
 
     This is analogous to the statsmodels missing='drop' mechanism.
+
+    >>> import numpy as np
+    >>> A = np.array([[1, 1.1], [2, np.nan], [3, 3.1], [4, 4.1]])
+    >>> b = np.array([5, 6, 7, 8])
+
+    >>> drop_missing(A, b)
+    (array([[ 1. ,  1.1],
+           [ 3. ,  3.1],
+           [ 4. ,  4.1]]), array([5, 7, 8]))
     """
     m = A.shape[0]
     assert m == len(b)
