@@ -254,6 +254,15 @@ class DropMissingNumbaTests(DropMissingTestMixin, TestCase):
         super().setUp()
 
 
+def assert_singular_matrix_raises(A, b):
+
+    with raises(np.linalg.LinAlgError) as e:
+        _ = ols(A, b)
+
+    assert e.value.args[0] == 'Singular matrix'
+    # A.T @ A is singular, therefore not invertible
+
+
 def test_ols_fails_as_features_perfect_multicollinear():
 
     A = np.array([[1, 1, 2],
@@ -264,11 +273,7 @@ def test_ols_fails_as_features_perfect_multicollinear():
 
     b = np.array([0, 1, 2, 2])
 
-    with raises(np.linalg.LinAlgError) as e:
-        _ = ols(A, b)
-
-    assert e.value.args[0] == 'Singular matrix'
-    # A.T @ A is singular, therefore not invertible
+    assert_singular_matrix_raises(A, b)
 
 
 def test_ols_fails_as_feature_all_zero():
@@ -281,11 +286,7 @@ def test_ols_fails_as_feature_all_zero():
 
     b = np.array([0, 1, 2, 2])
 
-    with raises(np.linalg.LinAlgError) as e:
-        _ = ols(A, b)
-
-    assert e.value.args[0] == 'Singular matrix'
-    # A.T @ A is singular, therefore not invertible
+    assert_singular_matrix_raises(A, b)
 
 
 if __name__ == '__main__':
