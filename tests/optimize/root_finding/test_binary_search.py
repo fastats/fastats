@@ -1,22 +1,20 @@
 
-from hypothesis import given
-from hypothesis.strategies import floats
-
 from numpy import cos, tan
 from pytest import approx
 
+from fastats import fastfunc
 from fastats.optimise.root_finding import binary_search
-from fastats.optimise.root_finding.binary_search import root
+from fastats.testing.decorators import fast_no_fast
 
 
 def func(x):
     return x ** 3 - x - 1
 
 
-bs_func = binary_search(0.1, 1.9, 1e-6, root=func,
-                        return_callable=True)
+bs_func = fastfunc(binary_search, root=func)
 
 
+@fast_no_fast
 def test_basic_sanity():
     assert func(0.5) == approx(-1.375)
     no_kwargs = binary_search(-2.0, 2.0, 1e-6)
@@ -44,11 +42,7 @@ def test_basic_sanity():
     assert low_delta == approx(1.324, abs=1e-3)
 
 
-@given(floats(allow_nan=False))
-def test_default_root(n):
-    assert root(n) == approx(n)
-
-
+@fast_no_fast
 def test_with_local_function():
     """
     Example taken from literature/NewtonRaphson.pdf
@@ -70,6 +64,7 @@ def tan_func(x):
     return x - tan(x)
 
 
+@fast_no_fast
 def test_tan_x():
     assert tan_func(0.5) == approx(-0.04630248)
     value = binary_search(2.0, 5.0, 1e-6, root=tan_func)
