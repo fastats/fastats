@@ -5,6 +5,7 @@ import pkg_resources
 import pytest
 import scipy
 
+
 # The first version of NumPy that broke backwards compat and improved printing.
 #
 # We set the printing format to legacy to maintain our doctests' compatibility
