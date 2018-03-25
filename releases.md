@@ -11,7 +11,9 @@ or eigenvectors.
 - Added Windows CI builds: #23
 - LU Decomposition
 - binary_search : Root finding using the bisection method
+- Documentation added using sphinx + numpydoc.
 - OLS: f_statistic
+- QR: classical and modified Gram Schmidt methods
 - drop_missing : helper function analogous to statsmodels missing='drop' mechanism which allows the user to evict 
 features and observations where one or more data points is NaN such that OLS may then be performed on dense / complete 
 data.

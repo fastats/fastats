@@ -1,5 +1,6 @@
 
-from fastats.linear_algebra.lu import lu, lu_inplace
+from fastats.linear_algebra.lu import lu, lu_inplace, lu_compact
+from fastats.linear_algebra.qr import qr, qr_classical_gram_schmidt
 from fastats.linear_algebra.ols import (
     ols, ols_cholesky, ols_qr, ols_svd, r_squared,
     sum_of_squared_residuals, fitted_values, residuals,
@@ -14,6 +15,7 @@ from fastats.linear_algebra.pca import pca
 __all__ = [
     'lu',
     'lu_inplace',
+    'lu_compact',
     'ols',
     'ols_cholesky',
     'ols_qr',
@@ -33,4 +35,6 @@ __all__ = [
     'f_statistic',
     'f_statistic_no_intercept',
     'drop_missing',
+    'qr',
+    'qr_classical_gram_schmidt',
 ]
