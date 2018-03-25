@@ -20,7 +20,7 @@ def test_spearman_basic_sanity():
     assert result == approx(-0.1757575, abs=1e-7)
 
     A = np.stack([iq, tv]).T
-    assert spearman_pairwise(A).diagonal(1) == approx(-0.1757575, abs=1e-7)
+    assert spearman_pairwise(A).diagonal(1)[0] == approx(-0.1757575, abs=1e-7)
 
 
 def test_spearman_nan_result():
