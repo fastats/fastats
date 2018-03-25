@@ -93,10 +93,10 @@ def test_non_converging():
     """
     Example also taken from literature/NewtonRaphson.pdf
     """
-    with raises(ZeroDivisionError): # Runtime Warning in python
+    with raises(ZeroDivisionError):  # Runtime Warning in Python
         _ = newton_raphson(5.0, 1e-6, root=tan_func)
 
-    # with warns(RuntimeWarning): # Runtime Warning in python
+    # with warns(RuntimeWarning):  # Runtime Warning in Python
     #     _ = newton_raphson(5.0, 1e-6, root=tan_func)
 
 

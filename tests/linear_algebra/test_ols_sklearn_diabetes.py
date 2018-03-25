@@ -6,13 +6,14 @@ import statsmodels.api as sm
 from pytest import approx
 from sklearn import datasets
 
-from fastats.maths import ols, ols_qr, ols_cholesky, ols_svd
-from fastats.maths.ols import (
-    add_intercept, r_squared, sum_of_squared_residuals,
-    fitted_values, residuals, adjusted_r_squared,
-    standard_error, mean_standard_error_residuals,
-    t_statistic, r_squared_no_intercept,
-    adjusted_r_squared_no_intercept
+from fastats.linear_algebra import (
+    ols, ols_cholesky, ols_qr, ols_svd,
+    add_intercept, adjusted_r_squared,
+    adjusted_r_squared_no_intercept, fitted_values,
+    mean_standard_error_residuals, r_squared,
+    r_squared_no_intercept, residuals, standard_error,
+    sum_of_squared_residuals, t_statistic, f_statistic,
+    f_statistic_no_intercept
 )
 
 
@@ -133,6 +134,12 @@ class OLSModelWithoutIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         output = adjusted_r_squared_no_intercept(A, b)
         assert output == approx(expected)
 
+    def test_f_statistic(self):
+        A, b, model = self.get_fixtures()
+        expected = model.fvalue
+        output = f_statistic_no_intercept(A, b)  # this is a replica of statsmodels behaviour
+        assert np.allclose(output, expected)
+
 
 class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
 
@@ -159,6 +166,12 @@ class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         expected = model.rsquared_adj
         output = adjusted_r_squared(A, b)
         assert output == approx(expected)
+
+    def test_f_statistic(self):
+        A, b, model = self.get_fixtures()
+        expected = model.fvalue
+        output = f_statistic(A, b)
+        assert np.allclose(output, expected)
 
 
 if __name__ == '__main__':

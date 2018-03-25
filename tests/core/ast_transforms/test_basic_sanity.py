@@ -1,6 +1,4 @@
 
-import pytest
-
 from fastats.core.decorator import fs
 from tests import cube
 

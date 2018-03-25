@@ -3,7 +3,7 @@ import numpy as np
 from pytest import approx
 
 from fastats import windowed_pass, windowed_pass_2d
-from fastats.maths import ols, r_squared
+from fastats.linear_algebra import ols, r_squared
 
 
 def std(x):
@@ -115,8 +115,8 @@ def test_windowed_pass_nanmean():
 
 
 def ols_wrap(x):
-    a = x[:,:1]
-    b = x[:,1:]
+    a = x[:, :1]
+    b = x[:, 1:]
     return ols(a, b)[0][0]
 
 

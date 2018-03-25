@@ -77,7 +77,7 @@ def add_intercept(A):
     """
     n = A.shape[0]
     intercept = ones(n).reshape(n, 1)
-    return hstack([intercept, A])
+    return hstack((intercept, A))
 
 
 def _hat(A):
@@ -93,7 +93,7 @@ def _m_matrix(A):
     equal to the first dimension of the supplied array A
     """
     n = A.shape[0]
-    l = np.ones(n).reshape((n, 1))
+    l = np.ones(n).reshape(n, 1)
     return _hat(l)
 
 
@@ -186,6 +186,32 @@ def mean_standard_error_residuals(A, b):
     return ssr / (n - k)
 
 
+def mean_standard_error_model(A, b):
+    """
+    Mean squared error the model.
+    """
+    k = A.shape[1]
+
+    sst = total_sum_of_squares(A, b)
+    ssr = sum_of_squared_residuals(A, b)
+    sse = sst - ssr
+
+    return sse / (k - 1)
+
+
+def mean_standard_error_model_no_intercept(A, b):
+    """
+    Mean squared error the model in the case where A has no
+    intercept and the model is slope-only.
+    """
+    k = A.shape[1]
+
+    fitted = fitted_values(A, b)
+    sse = fitted.T @ fitted
+
+    return sse / k
+
+
 def standard_error(A, b):
     """
     The standard errors of the parameter estimates.
@@ -202,6 +228,25 @@ def t_statistic(A, b):
     betas = ols(A, b)
     se = standard_error(A, b)
     return betas / se
+
+
+def f_statistic(A, b):
+    """
+    F-statistic of the fully specified model.
+    """
+    mse_model = mean_standard_error_model(A, b)
+    mse_resid = mean_standard_error_residuals(A, b)
+    return mse_model / mse_resid
+
+
+def f_statistic_no_intercept(A, b):
+    """
+    F-statistic of the fully specified model in the case where
+    A has no intercept (a slope-only model).
+    """
+    mse_model = mean_standard_error_model_no_intercept(A, b)
+    mse_resid = mean_standard_error_residuals(A, b)
+    return mse_model / mse_resid
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 
+from numba import prange
 from numpy import empty_like, mean, std, sqrt, argsort, ones, nonzero, empty
 from numpy import float64 as np_float64
 from numpy import int32 as np_int32
@@ -34,11 +35,11 @@ def standard(A, ddof=0):
         data_i = A[:, i]
         res[:, i] = (data_i - mean(data_i)) / std(data_i)
 
-    if ddof == 0:
-        return res
-    elif ddof == 1:
+    if ddof == 1:
         m = A.shape[0]
-        return res * sqrt((m - 1) / m)
+        res *= sqrt((m - 1) / m)
+
+    return res
 
 
 def min_max(A):
@@ -109,6 +110,83 @@ def demean(A):
     res = empty_like(A, dtype=np_float64)
 
     for i in range(n):
+        data_i = A[:, i]
+        res[:, i] = data_i - mean(data_i)
+
+    return res
+
+
+# ------------------------------------------------------------------------------------------
+# explicitly parallel versions - numba.prange indicates explicit parallel loop opportunities
+# ------------------------------------------------------------------------------------------
+
+
+def standard_parallel(A, ddof=0):
+    """
+    Standardise data by removing the mean and scaling to unit variance,
+    equivalent to sklearn StandardScaler.
+
+    The delta degrees of freedom (ddof) may be used to correct for bias
+    in the estimation of population variance by applying Bessel's
+    correction: https://en.wikipedia.org/wiki/Bessel%27s_correction
+
+    Uses explicit parallel loop; may offer improved performance in some
+    cases.
+    """
+    assert A.ndim > 1
+
+    if ddof not in (0, 1):
+        raise ValueError('ddof must be either 0 or 1')
+
+    n = A.shape[1]
+    res = empty_like(A, dtype=np_float64)
+
+    for i in prange(n):
+        data_i = A[:, i]
+        res[:, i] = (data_i - mean(data_i)) / std(data_i)
+
+    if ddof == 1:
+        m = A.shape[0]
+        res *= sqrt((m - 1) / m)
+
+    return res
+
+
+def min_max_parallel(A):
+    """
+    Standardise data by scaling data points by the sample minimum and maximum
+    such that all data points lie in the range 0 to 1, equivalent to sklearn
+    MinMaxScaler.
+
+    Uses explicit parallel loop; may offer improved performance in some
+    cases.
+    """
+    assert A.ndim > 1
+
+    n = A.shape[1]
+    res = empty_like(A, dtype=np_float64)
+
+    for i in prange(n):
+        data_i = A[:, i]
+        data_min = np_min(data_i)
+        res[:, i] = (data_i - data_min) / (np_max(data_i) - data_min)
+
+    return res
+
+
+def demean_parallel(A):
+    """
+    Subtract the mean from the supplied data column-wise.
+
+    Uses explicit parallel loop; may offer improved performance in some
+    cases.
+    """
+    assert A.ndim > 1
+
+    n = A.shape[1]
+    res = empty_like(A, dtype=np_float64)
+
+    for i in prange(n):
         data_i = A[:, i]
         res[:, i] = data_i - mean(data_i)
 
