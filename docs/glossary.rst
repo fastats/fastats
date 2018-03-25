@@ -4,7 +4,7 @@ Glossary
 .. todo::
     Make these linkable from other parts of the documentation.
 
-``fastfunc`` - Bla.
-``Pure function`` - Bla2.
-``Injection`` - Bla2.
-``Compound function`` - Bla2.
+``fastfunc`` - A fast numerical function processed by `fastats`.
+``Pure function`` - Unprocessed Python function.
+``Injection`` - ...TODO...
+``Compound function`` - ...TODO...

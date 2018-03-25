@@ -14,7 +14,7 @@ def inject(recursive: bool = True,
 
     :param recursive: apply injection recursively.
     :param force_fastfuncs: ensure that every object
-        injected is a [](fastfunc) REFER TO glossary.
+        injected is a [GLOSSARY REFERENCE: fastfunc]
     :param inject_symbols: mapping of names to
         functions to inject.
     """

@@ -14,7 +14,7 @@ def fastfunc(func, **bind_funcs):
        (enabling passing other fastfuncs into
         first one).
 
-    Under the hood, blablabla.
+    Under the hood, does TODO TODO ...
     """
     if not bind_funcs:
         return func
