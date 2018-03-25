@@ -13,6 +13,7 @@ or eigenvectors.
 - binary_search : Root finding using the bisection method
 - Documentation added using sphinx + numpydoc.
 - OLS: f_statistic
+- QR: classical and modified Gram Schmidt methods
 
 #### Bug fixes
 
