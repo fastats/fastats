@@ -21,8 +21,8 @@ def lu_inplace(A, L, U):
     iteration. From profiling, this saves ~10-20%
     of the runtime for small matrices.
 
-    Example
-    -------
+    Examples
+    --------
     This is the example from wikipedia:
     https://en.wikipedia.org/wiki/LU_decomposition
 

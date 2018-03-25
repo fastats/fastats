@@ -11,8 +11,8 @@ def pca(data, components=4):
 
     This does not scale the data.
 
-    Example
-    -------
+    Examples
+    --------
 
     >>> import numpy as np
     >>> x = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
