@@ -44,7 +44,7 @@ def test_matrix_minor_perimeter():
     assert_allclose(output, expected)
 
 
-def matrix_minor_interior_test():
+def test_matrix_minor_interior():
 
     A = np.array([[3, 13, 14, 10, 12],
                   [8, 15, 4, 16, 5],

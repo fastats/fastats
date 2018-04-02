@@ -99,7 +99,7 @@ def test_hilbert_inv_5x5():
     assert_allclose(hilbert @ output, np.eye(5), atol=1e-8)
 
 
-def inv_5x5_test():
+def test_inv_5x5():
     A = np.array([[3, 13, 14, 10, 12],
                   [8, 15, 4, 16, 5],
                   [6, 11, 7, 9, 17],

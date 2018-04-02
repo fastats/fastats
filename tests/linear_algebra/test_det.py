@@ -25,7 +25,7 @@ def test_determinant_wikipedia():
     assert det(A) == approx(np.linalg.det(A))
 
 
-def determinant_mathworks_test():
+def test_determinant_mathworks():
     """
     3x3 matrix determinant example, taken from:
     https://uk.mathworks.com/help/matlab/ref/det.html
