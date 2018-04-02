@@ -1,11 +1,8 @@
 
-from fastats.linear_algebra.lu import lu, lu_inplace
-from fastats.linear_algebra.lu import lu, lu_inplace, lu_compact
-from fastats.linear_algebra.inv import inv
 from fastats.linear_algebra.det import det
-from fastats.linear_algebra.matrix_minor import matrix_minor
+from fastats.linear_algebra.inv import inv
 from fastats.linear_algebra.lu import lu, lu_inplace, lu_compact
-from fastats.linear_algebra.qr import qr, qr_classical_gram_schmidt
+from fastats.linear_algebra.matrix_minor import matrix_minor
 from fastats.linear_algebra.ols import (
     ols, ols_cholesky, ols_qr, ols_svd, r_squared,
     sum_of_squared_residuals, fitted_values, residuals,
@@ -15,6 +12,7 @@ from fastats.linear_algebra.ols import (
     f_statistic, f_statistic_no_intercept
 )
 from fastats.linear_algebra.pca import pca
+from fastats.linear_algebra.qr import qr, qr_classical_gram_schmidt
 
 __all__ = [
     'lu',
