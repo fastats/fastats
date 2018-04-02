@@ -1,10 +1,7 @@
 
 import numpy as np
 
-from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 
-
-@convert_to_jit
 def matrix_minor(A, remove_row_idx, remove_col_idx):
     """
     Returns a minor matrix, cut down from A by removing

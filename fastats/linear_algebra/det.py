@@ -1,14 +1,13 @@
-from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+
 from fastats.linear_algebra.matrix_minor import matrix_minor
 
 
-@convert_to_jit
 def det(A):
     """
     Returns the determinant of A.
 
     >>> import numpy as np
-    >>> A = np.array([[4, 3], [3, 2]])
+    >>> A = np.array([[4, 3], [3, 2]], dtype=np.float32)
     >>> det(A)
     -1.0
     """

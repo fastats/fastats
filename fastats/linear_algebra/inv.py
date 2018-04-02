@@ -1,12 +1,10 @@
 
 import numpy as np
 
-from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
 from fastats.linear_algebra.det import det
 from fastats.linear_algebra.matrix_minor import matrix_minor
 
 
-@convert_to_jit
 def inv(A):
     """
     Returns the inverse of A using the adjoint method.
