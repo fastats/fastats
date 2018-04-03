@@ -14,6 +14,9 @@ or eigenvectors.
 - Documentation added using sphinx + numpydoc.
 - OLS: f_statistic
 - QR: classical and modified Gram Schmidt methods
+- Matrix inverse using adjoint method
+- Matrix determinant
+- Matrix minor (sub-matrix with one row and one column eliminated)
 
 #### Bug fixes
 

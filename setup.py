@@ -81,6 +81,7 @@ setup_kwargs = dict(
         'scikit-learn',
         'statsmodels',
         'setuptools',   # for pkg_resources
+        'mock',
     ],
 
     extras_require={
