@@ -13,7 +13,7 @@ from fastats.linear_algebra.lasso import soft_threshold
 def data():
     rng = np.random.RandomState(0)
 
-    # generate a 50 by 100 array of orthonormal features
+    # generate a 100 by 50 array of orthonormal features
     features = ortho_group.rvs(100, random_state=0)[:, :50]
     assert_orthonormal(features)
 
