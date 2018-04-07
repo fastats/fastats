@@ -116,6 +116,35 @@ def demean(A):
     return res
 
 
+def shrink_off_diagonals(A, shrinkage_factor):
+    """
+    Given a square matrix A, apply a multiplication
+    factor to all off-diagonal elements - e.g. to
+    shrink off-diagonal correlation / covariance.
+
+    Example usage:
+
+    >>> import numpy as np
+    >>> A = np.array([[1.1, 0.9, 0.8], [0.9, 1.2, 0.9], [0.8, 0.9, 1.3]])
+    >>> shrink_off_diagonals(A, 0.1)
+    array([[ 1.1 ,  0.09,  0.08],
+           [ 0.09,  1.2 ,  0.09],
+           [ 0.08,  0.09,  1.3 ]])
+    """
+    m, n = A.shape
+    assert m == n
+
+    out = empty_like(A)
+
+    for i in range(n):
+        for j in range(n):
+            val = A[i, j]
+            if i != j:
+                val *= shrinkage_factor
+            out[i, j] = val
+
+    return out
+
 # ------------------------------------------------------------------------------------------
 # explicitly parallel versions - numba.prange indicates explicit parallel loop opportunities
 # ------------------------------------------------------------------------------------------
