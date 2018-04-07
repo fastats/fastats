@@ -3,7 +3,7 @@
 [![Build Status (windows)](https://ci.appveyor.com/api/projects/status/9ufvyclit358sfb8/branch/master?svg=true)](https://ci.appveyor.com/project/pawroman/fastats/branch/master)
 [![codecov](https://codecov.io/gh/fastats/fastats/branch/master/graph/badge.svg)](https://codecov.io/gh/fastats/fastats)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2199521147834d58b9f0e8e155c97309)](https://www.codacy.com/app/dave.willmer/fastats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastats/fastats&amp;utm_campaign=Badge_Grade)
-
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A pure Python library for benchmarked, scalable numerics, built using [numba](https://numba.pydata.org/).
 

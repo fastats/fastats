@@ -10,6 +10,6 @@ install:
   - pip install -e .[ci_test,doc]
 script:
   - pytest
-#  - sphinx-build docs/source docs/build -W
+  - sphinx-build docs/source docs/build #-W
 after_success:
     - codecov

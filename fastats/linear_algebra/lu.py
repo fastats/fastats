@@ -21,8 +21,8 @@ def lu_inplace(A, L, U):
     iteration. From profiling, this saves ~10-20%
     of the runtime for small matrices.
 
-    Example
-    -------
+    Examples
+    --------
     This is the example from wikipedia:
     https://en.wikipedia.org/wiki/LU_decomposition
 
@@ -88,6 +88,24 @@ def lu(A):
     U = np.zeros_like(A)
 
     lu_inplace_jit(A, L, U)
+    return L, U
+
+
+def lu_compact(A):
+    """
+    This performs LU Decomposition on `A`
+    """
+    assert A.shape[0] == A.shape[1]
+
+    U = A.astype(np.float64)
+    n = A.shape[0]
+    L = np.eye(n).astype(np.float64)
+
+    for k in range(n - 1):
+        for j in range(k + 1, n):
+            L[j, k] = U[j, k] / U[k, k]
+            U[j, k:n] -= L[j, k] * U[k, k:n]
+
     return L, U
 
 
