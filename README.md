@@ -12,7 +12,7 @@ A pure Python library for benchmarked, scalable numerics, built using [numba](ht
 
 ---
 
-### WARNING: **This is pre-release software, there are no packages published yet.**
+### Latest Release: 2017.1rc0, get it using ``pip install fastats``
 
 ## Aims/Reasoning
 
@@ -26,8 +26,9 @@ To fix (1) we need better algorithms, code which vectorises to SIMD instructions
 
 To fix (2) we need to focus on simpler code which is easier to debug.
 
-fastats (ie, fast-stats) tries to help with both of these by using [numba](https://numba.pydata.org/)
-from [Anaconda](https://www.anaconda.com/) to JIT compile pure Python code to
+``fastats`` (ie, fast-stats) tries to help with both of these by; using Linear Algebra for performance optimizations in common functions,
+using [numba](https://numba.pydata.org/)
+from [Anaconda](https://www.anaconda.com/) to JIT compile the optimized Python code to
 vectorised native code, whilst being trivial to run in pure Python mode for debugging.
 
 ## Usage
@@ -84,6 +85,8 @@ The secret is in the handling of the function arguments.
 When we write C-extensions to high-level languages, we are usually trying to speed up a certain algorithm which is taking too long. This works well for specialised libraries, however in this world of `big` data, the next step is usually `now I want to apply that function to this array of 10 million items`. This is where the C-extension / native library technique falls down.
 
 C-extensions to high-level languages are necessarily limited by the defined API - ie, you can write a C function to take 3 floats, or 3 arrays of floats, but it's very difficult to deal with arbitrary inputs.
+
+``fastats`` allows you to pass functions as arguments into ``numba``, and therefore abstract away the specific looping or concurrency constructs, resulting in faster, cleaner development time, as well as faster execution time.
 
 #### Requirements
 
