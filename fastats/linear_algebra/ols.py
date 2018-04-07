@@ -277,7 +277,7 @@ def drop_missing(A, b):
     for i in range(m):
         feature_row = A[i, :]
         target = b[i]
-        if np.all(~np.isnan(feature_row)) and ~np.isnan(target):
+        if np.all(np.isfinite(feature_row)) and np.isfinite(target):
             A_bar[ctr, :] = feature_row
             b_bar[ctr] = target
             ctr += 1
