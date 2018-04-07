@@ -32,10 +32,10 @@ vectorised native code, whilst being trivial to run in pure Python mode for debu
 
 ## Usage
 
-Finding the roots of an equation is central to much of machine learning. For monotonic functions we can use a Newton-Raphson solver to find the root:
+Finding the roots of an equation is central to much of data science and machine learning. For monotonic functions we can use a Newton-Raphson solver to find the root:
 
 ```python
-from fastats.api import newton_raphson
+from fastats import newton_raphson
 
 def my_func(x):
     return x**3 - x - 1
@@ -43,20 +43,31 @@ def my_func(x):
 result = newton_raphson(0.025, 1e-6, root=my_func)
 ```
 
+This uses [numba](https://numba.pydata.org/) under-the-hood to JIT compile the python code to native code, and uses fastats transforms to call ``my_func`` where required.
 
-```bash
->>> %timeit newton_raphson(0.025, 1e-6, root=my_func)
+However, we usually wish to take a fast function and apply it to a large data set, so ``fastats`` allows you to get the optimized function back as a callable:
 
+```python
+newton_opt = newton_raphson(0.025, 1e-6, root=my_func, return_callable=True)
+
+result = newton_opt(0.03, 1e-6)
 ```
 
-compared with SciPy 0.12 ...
+If you profile this you will find it's extremely fast (from a 2015 Macbook Pro):
+
+```bash
+>>> %timeit newton_opt(0.03, 1e-6)
+785 ns ± 8.2 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+```
+
+compared with SciPy 1.0.1:
 
  ```bash
  >>> import scipy
  >>> scipy.__version__
  >>> from scipy.optimize import newton
- >>> %timeit newton(my_function, x0=0.025)
-
+ >>> %timeit newton(my_func, x0=0.03, tol=1e-6)
+25.6 µs ± 954 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
  ```
 
 
