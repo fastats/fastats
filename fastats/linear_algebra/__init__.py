@@ -1,6 +1,7 @@
 
 from fastats.linear_algebra.det import det
 from fastats.linear_algebra.inv import inv
+from fastats.linear_algebra.lasso import lasso_orthonormal
 from fastats.linear_algebra.lu import lu, lu_inplace, lu_compact
 from fastats.linear_algebra.matrix_minor import matrix_minor
 from fastats.linear_algebra.ols import (
@@ -41,4 +42,5 @@ __all__ = [
     'det',
     'qr',
     'qr_classical_gram_schmidt',
+    'lasso_orthonormal'
 ]
