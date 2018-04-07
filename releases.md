@@ -17,6 +17,7 @@ or eigenvectors.
 - Matrix inverse using adjoint method
 - Matrix determinant
 - Matrix minor (sub-matrix with one row and one column eliminated)
+- Scaling functions (standard, min_max, rank, demean, shrink off diagonals)
 - Lasso regression for orthonormal covariates (features)
 
 #### Bug fixes

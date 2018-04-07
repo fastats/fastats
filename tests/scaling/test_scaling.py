@@ -3,12 +3,13 @@ import numpy as np
 import pandas as pd
 import sys
 from numba import njit
-from pytest import mark, raises
+from numpy.testing import assert_allclose
+from pytest import mark, raises, approx
 from scipy.stats import rankdata
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 from fastats.scaling.scaling import (standard, min_max, rank, scale, demean, standard_parallel, min_max_parallel,
-                                     demean_parallel)
+                                     demean_parallel, shrink_off_diagonals)
 from tests.data.datasets import SKLearnDataSets
 
 
@@ -77,6 +78,37 @@ def test_demean(A):
     expected = data - data.mean(axis=0)
     output = demean(data)
     assert np.allclose(expected, output)
+
+
+@mark.parametrize('factor', np.linspace(-1, 1, 9), ids='factor_{0:.2f}'.format)
+def test_shrink_off_diagonals(factor):
+
+    A = np.empty(shape=(10, 10))
+    m, n = A.shape
+
+    for i in range(m):
+        for j in range(n):
+            A[i, j] = 1.0 - abs(i - j) / m
+
+    output = shrink_off_diagonals(A, factor)
+
+    # diagonals should be unaffected
+    assert_allclose(np.diag(output), np.diag(A))
+
+    # all other values should have been shrunk
+    for i in range(m):
+        for j in range(n):
+            if i != j:
+                assert output[i, j] == approx(A[i, j] * factor)
+
+
+def test_shrink_off_diagonals_factor_zero():
+    A = np.arange(100, dtype=np.float64).reshape(10, 10)
+
+    # special case where factor is 0 - we expect an output
+    # where all off diagonal values are zeroed out
+    output = shrink_off_diagonals(A, 0)
+    assert_allclose(output, np.diag(np.diag(A)))
 
 
 # ----------------------------------------------------------------
