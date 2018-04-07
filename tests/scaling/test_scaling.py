@@ -102,6 +102,15 @@ def test_shrink_off_diagonals(factor):
                 assert output[i, j] == approx(A[i, j] * factor)
 
 
+def test_shrink_off_diagonals_factor_zero():
+    A = np.arange(100, dtype=np.float64).reshape(10, 10)
+
+    # special case where factor is 0 - we expect an output
+    # where all off diagonal values are zeroed out
+    output = shrink_off_diagonals(A, 0)
+    assert_allclose(output, np.diag(np.diag(A)))
+
+
 # ----------------------------------------------------------------
 # explicitly parallel algorithm tests
 #
