@@ -19,6 +19,9 @@ or eigenvectors.
 - Matrix minor (sub-matrix with one row and one column eliminated)
 - Scaling functions (standard, min_max, rank, demean, shrink off diagonals)
 - Lasso regression for orthonormal covariates (features)
+- drop_missing : helper function analogous to statsmodels missing='drop' mechanism which allows the user to evict 
+features and observations where one or more data points is not finite such that OLS may then be performed on dense / 
+complete data.
 
 #### Bug fixes
 

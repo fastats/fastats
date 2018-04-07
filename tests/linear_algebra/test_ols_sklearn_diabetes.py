@@ -3,7 +3,7 @@ from unittest import TestCase
 
 import numpy as np
 import statsmodels.api as sm
-from pytest import approx
+from pytest import approx, raises
 from sklearn import datasets
 
 from fastats.linear_algebra import (
@@ -13,8 +13,13 @@ from fastats.linear_algebra import (
     mean_standard_error_residuals, r_squared,
     r_squared_no_intercept, residuals, standard_error,
     sum_of_squared_residuals, t_statistic, f_statistic,
-    f_statistic_no_intercept
+    f_statistic_no_intercept, drop_missing
 )
+
+from fastats.core.ast_transforms.convert_to_jit import convert_to_jit
+
+
+drop_missing_jit = convert_to_jit(drop_missing)
 
 
 class BaseOLS(TestCase):
@@ -172,6 +177,116 @@ class OLSModelWithIntercept(BaseOLS, OLSFitMeasuresTestMixin):
         expected = model.fvalue
         output = f_statistic(A, b)
         assert np.allclose(output, expected)
+
+
+class DropMissingTestMixin:
+
+    def setUp(self):
+        self.A = np.array([[1.1, 1.2, 1.3],
+                           [1.2, 1.0, 1.3],
+                           [1.6, np.nan, 2.0],  # <- expect to be dropped
+                           [4.5, 4.2, 4.3],
+                           [4.4, 4.0, 4.2]])
+
+        self.b = np.array([1.0,
+                           6.0,
+                           2.0,
+                           3.0,
+                           np.nan])  # <- expect to be dropped
+
+        self.expected_A_bar = np.array([[1.1, 1.2, 1.3],
+                                        [1.2, 1.0, 1.3],
+                                        [4.5, 4.2, 4.3]])
+
+        self.expected_b_bar = np.array([1.0,
+                                        6.0,
+                                        3.0])
+
+    @staticmethod
+    def statsmodels_test_fixtures():
+        dataset = datasets.load_iris()
+        A = dataset.data
+        b = dataset.target.astype(np.float64)  # cast as float as we will set some values to NaN
+
+        # insert some NaNs into the features
+        A[1, 2] = np.nan
+        A[20, 3] = np.nan
+
+        # insert some NaNs into the targets
+        b[13] = np.nan
+        b[140] = np.nan
+
+        sm_model = sm.OLS(b, A, missing='drop').fit()
+        return A, b, sm_model
+
+    def test_drop_missing(self):
+        A_bar, b_bar = self.fn(self.A, self.b)
+        assert np.allclose(A_bar, self.expected_A_bar)
+        assert np.allclose(b_bar, self.expected_b_bar)
+
+    def test_versus_statsmodels_params(self):
+        A, b, sm_model = self.statsmodels_test_fixtures()
+        output = ols(*self.fn(A, b))
+        assert np.allclose(output, sm_model.params)
+
+    def test_versus_statsmodels_fittedvalues(self):
+        A, b, sm_model = self.statsmodels_test_fixtures()
+        output = fitted_values(*self.fn(A, b))
+        assert np.allclose(output, sm_model.fittedvalues)
+
+    def test_versus_statsmodels_residuals(self):
+        A, b, sm_model = self.statsmodels_test_fixtures()
+        output = residuals(*self.fn(A, b))
+        assert np.allclose(output, sm_model.resid)
+
+
+class DropMissingTests(DropMissingTestMixin, TestCase):
+
+    def setUp(self):
+        self.fn = drop_missing
+        super().setUp()
+
+
+class DropMissingNumbaTests(DropMissingTestMixin, TestCase):
+
+    def setUp(self):
+        self.fn = drop_missing_jit
+        super().setUp()
+
+
+def assert_singular_matrix_raises(A, b):
+
+    with raises(np.linalg.LinAlgError) as e:
+        _ = ols(A, b)
+
+    assert e.value.args[0] == 'Singular matrix'
+    # A.T @ A is singular, therefore not invertible
+
+
+def test_ols_fails_as_features_perfect_multicollinear():
+
+    A = np.array([[1, 1, 2],
+                  [1, 2, 4],
+                  [2, 3, 6],
+                  [3, 4, 8]])
+    #                    \____ this feature is 2 * previous feature
+
+    b = np.array([0, 1, 2, 2])
+
+    assert_singular_matrix_raises(A, b)
+
+
+def test_ols_fails_as_feature_all_zero():
+
+    A = np.array([[1, 1, 0],
+                  [1, 2, 0],
+                  [2, 3, 0],
+                  [3, 4, 0]])
+    #                    \____ all feature values zero
+
+    b = np.array([0, 1, 2, 2])
+
+    assert_singular_matrix_raises(A, b)
 
 
 if __name__ == '__main__':

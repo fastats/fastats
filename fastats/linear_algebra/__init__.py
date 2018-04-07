@@ -10,7 +10,8 @@ from fastats.linear_algebra.ols import (
     adjusted_r_squared, standard_error, t_statistic,
     mean_standard_error_residuals, add_intercept,
     adjusted_r_squared_no_intercept, r_squared_no_intercept,
-    f_statistic, f_statistic_no_intercept
+    f_statistic, f_statistic_no_intercept,
+    drop_missing
 )
 from fastats.linear_algebra.pca import pca
 from fastats.linear_algebra.qr import qr, qr_classical_gram_schmidt
@@ -42,5 +43,6 @@ __all__ = [
     'det',
     'qr',
     'qr_classical_gram_schmidt',
-    'lasso_orthonormal'
+    'lasso_orthonormal',
+    'drop_missing',
 ]
