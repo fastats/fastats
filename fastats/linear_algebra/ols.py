@@ -252,7 +252,7 @@ def f_statistic_no_intercept(A, b):
 def drop_missing(A, b):
     """
     Returns a filtration of A (features) and b (targets) where all
-    values are not NaN, with the intention that OLS can then be
+    values are finite, with the intention that OLS can then be
     performed on dense / 'complete' observations.
 
     This is analogous to the statsmodels missing='drop' mechanism.

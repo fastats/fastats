@@ -43,6 +43,6 @@ __all__ = [
     'det',
     'qr',
     'qr_classical_gram_schmidt',
-    'lasso_orthonormal'
+    'lasso_orthonormal',
     'drop_missing',
 ]
