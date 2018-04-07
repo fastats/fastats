@@ -22,6 +22,10 @@ or eigenvectors.
 - drop_missing : helper function analogous to statsmodels missing='drop' mechanism which allows the user to evict
 features and observations where one or more data points is not finite such that OLS may then be performed on dense /
 complete data.
+- QR: classical and modified Gram Schmidt methods
+- drop_missing : helper function analogous to statsmodels missing='drop' mechanism which allows the user to evict 
+features and observations where one or more data points is NaN such that OLS may then be performed on dense / complete 
+data.
 
 #### Bug fixes
 

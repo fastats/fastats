@@ -41,6 +41,7 @@ __all__ = [
     'inv',
     'matrix_minor',
     'det',
+    'drop_missing',
     'qr',
     'qr_classical_gram_schmidt',
     'lasso_orthonormal',
