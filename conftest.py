@@ -6,7 +6,7 @@ import pytest
 import scipy
 
 
-# The first version of numpy that broke backwards compat and improved printing.
+# The first version of NumPy that broke backwards compat and improved printing.
 #
 # We set the printing format to legacy to maintain our doctests' compatibility
 # with both newer and older versions.
