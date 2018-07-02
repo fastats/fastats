@@ -8,3 +8,4 @@ scikit-learn
 statsmodels
 setuptools
 mock
+pandas
