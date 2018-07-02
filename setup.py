@@ -82,6 +82,7 @@ setup_kwargs = dict(
         'statsmodels',
         'setuptools',   # for pkg_resources
         'mock',
+        'pandas'
     ],
 
     extras_require={
