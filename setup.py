@@ -4,6 +4,7 @@ import codecs
 import importlib.util
 from os import path
 
+from pip.req import parse_requirements
 from setuptools import setup, find_packages
 
 
@@ -68,21 +69,11 @@ setup_kwargs = dict(
         'pytest-runner',    # to enable pytest for setup.py test via setup.cfg
     ],
 
-    install_requires=[
-        'numba>=0.37.0',
-        'numpy',
-        'scipy',
-    ],
+    install_requires=[str(pip_req.req) for pip_req in
+                      parse_requirements('requirements.txt', session='setup')],
 
-    tests_require=[
-        'hypothesis',
-        'pytest',
-        'pytest-cov',
-        'scikit-learn',
-        'statsmodels',
-        'setuptools',   # for pkg_resources
-        'mock',
-    ],
+    tests_require=[str(pip_req.req) for pip_req in
+                   parse_requirements('requirements-dev.txt', session='setup')],
 
     extras_require={
         'doc': [    # documentation
