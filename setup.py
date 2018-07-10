@@ -4,7 +4,6 @@ import codecs
 import importlib.util
 from os import path
 
-from pip.req import parse_requirements
 from setuptools import setup, find_packages
 
 
@@ -18,6 +17,13 @@ def read_utf8(filename):
     with codecs.open(path.join(here, filename), encoding='utf-8') as f:
         return f.read()
 
+
+def read_reqs(filename):
+    """
+    For a given requirements file, return the lines as a list of strings
+    """
+    with open(filename) as file:
+        return file.readlines()
 
 long_description = read_utf8('README.md')
 
@@ -69,11 +75,9 @@ setup_kwargs = dict(
         'pytest-runner',    # to enable pytest for setup.py test via setup.cfg
     ],
 
-    install_requires=[str(pip_req.req) for pip_req in
-                      parse_requirements('requirements.txt', session='setup')],
+    install_requires=read_reqs('requirements.txt'),
 
-    tests_require=[str(pip_req.req) for pip_req in
-                   parse_requirements('requirements-dev.txt', session='setup')],
+    tests_require=read_reqs('requirements-dev.txt'),
 
     extras_require={
         'doc': [    # documentation
