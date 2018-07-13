@@ -1,20 +1,37 @@
 
-from fastats.maths.ewma import ewma
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
+
+from fastats.maths.ewma import ewma
+
+
+def _validate_results(random_data):
+    df = pd.DataFrame(random_data)
+    pandas_result = df.ewm(halflife=10).mean()
+    ewma_result = ewma(random_data, halflife=10)
+    fast_result = pd.DataFrame(ewma_result)
+    pd.testing.assert_frame_equal(pandas_result, fast_result)
+
+
+def test_ewma_1d_array():
+    random_data = np.random.random(100)
+    _validate_results(random_data)
 
 
 def test_ewma_basic_sanity():
     random_data = np.random.random((100, 100))
-    df = pd.DataFrame(random_data)
+    _validate_results(random_data)
 
-    pandas_result = df.ewm(halflife=10).mean()
 
-    ewma_result = ewma(random_data, halflife=10)
-    fast_result = pd.DataFrame(ewma_result)
+@pytest.mark.xfail(reason='NaN support to be implemented')
+def test_nan_compat():
+    random_data = np.random.random((100, 100))
+    random_data[0, :] = np.nan
+    random_data[10, :] = np.nan
+    random_data[70, :50] = np.nan
+    _validate_results(random_data)
 
-    pd.testing.assert_frame_equal(pandas_result, fast_result)
 
 if __name__ == '__main__':
-    import pytest
     pytest.main([__file__])
