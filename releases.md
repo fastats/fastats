@@ -1,3 +1,13 @@
+# 2018.1
+
+#### New features
+
+- Exponentially Weighted Moving Average
+
+#### Bug fixes
+
+
+#### Enhancements
 
 # 2017.1
 
