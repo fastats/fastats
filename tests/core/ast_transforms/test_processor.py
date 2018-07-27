@@ -1,6 +1,7 @@
 
 import ast
 from collections import Iterable
+
 import pytest
 
 from fastats.core.ast_transforms.processor import recompile, uncompile
