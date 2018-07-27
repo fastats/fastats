@@ -9,7 +9,7 @@ def test_recompile_happy_path():
 def f(n):
      # This is a comment
      return n ** 2
-    '''
+'''
     tree_module = ast.parse(func_as_string)
     recompile(tree_module, 'test_processor.py', 'exec')
 
