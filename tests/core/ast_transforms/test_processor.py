@@ -51,8 +51,3 @@ def test_uncompile_bad_file_path():
     compiled = compile('21 + 21', '/this/file/doesnt/exist.py', 'exec')
     with raises(Exception, match='source code not available'):
         uncompile(compiled)
-
-
-if __name__ == 'main':
-    import pytest
-    pytest.main([__file__])
