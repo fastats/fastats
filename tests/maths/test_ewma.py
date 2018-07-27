@@ -29,8 +29,8 @@ def test_bad_halflifes():
     bad_halflifes = [
         np.NaN,
         np.inf,
-        -100,
-        1.5
+        -np.inf,
+        -100
     ]
     for halflife in bad_halflifes:
         with pytest.raises(AssertionError):
