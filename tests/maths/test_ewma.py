@@ -24,6 +24,19 @@ def test_ewma_basic_sanity():
     _validate_results(random_data)
 
 
+def test_bad_halflifes():
+    random_data = np.random.random(100)
+    bad_halflifes = [
+        np.NaN,
+        np.inf,
+        -100,
+        1.5
+    ]
+    for halflife in bad_halflifes:
+        with pytest.raises(AssertionError):
+            ewma(random_data, halflife)
+
+
 @pytest.mark.xfail(reason='NaN support to be implemented')
 def test_nan_compat():
     random_data = np.random.random((100, 100))
