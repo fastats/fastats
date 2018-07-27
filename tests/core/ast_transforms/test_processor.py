@@ -1,6 +1,8 @@
 
-import pytest
 import ast
+
+import pytest
+
 from fastats.core.ast_transforms.processor import recompile, uncompile
 
 
