@@ -18,6 +18,13 @@ def read_utf8(filename):
         return f.read()
 
 
+def read_reqs(filename):
+    """
+    For a given requirements file, return the lines as a list of strings
+    """
+    with open(filename) as file:
+        return file.readlines()
+
 long_description = read_utf8('README.md')
 
 # import just the _version module, don't pull in any fastats dependencies
@@ -68,21 +75,9 @@ setup_kwargs = dict(
         'pytest-runner',    # to enable pytest for setup.py test via setup.cfg
     ],
 
-    install_requires=[
-        'numba>=0.37.0',
-        'numpy',
-        'scipy',
-    ],
+    install_requires=read_reqs('requirements.txt'),
 
-    tests_require=[
-        'hypothesis',
-        'pytest',
-        'pytest-cov',
-        'scikit-learn',
-        'statsmodels',
-        'setuptools',   # for pkg_resources
-        'mock',
-    ],
+    tests_require=read_reqs('requirements-dev.txt'),
 
     extras_require={
         'doc': [    # documentation
