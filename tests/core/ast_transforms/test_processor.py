@@ -1,6 +1,6 @@
 
 import ast
-
+from collections import Iterable
 import pytest
 
 from fastats.core.ast_transforms.processor import recompile, uncompile
@@ -30,12 +30,7 @@ def test_uncompile_happy_path():
         return num ** 2
     _ = sq(4)  # For test coverage metrics
     result = uncompile(sq.__code__)
-    try:
-        iter(result)
-    except Exception as err:
-        raise Exception('''
-        Expected the result of uncompile to be iterable, error below:
-        {}'''.format(err))
+    assert isinstance(result, Iterable)
 
 
 def test_uncompile_lambdas():
