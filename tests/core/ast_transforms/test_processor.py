@@ -1,6 +1,7 @@
 
 import ast
 from collections import Iterable
+from textwrap import dedent
 
 from pytest import raises
 
@@ -8,19 +9,19 @@ from fastats.core.ast_transforms.processor import recompile, uncompile
 
 
 def test_recompile_happy_path():
-    func_as_string = '''
-def f(n):
-     # This is a comment
-     return n ** 2
-'''
+    func_as_string = dedent('''
+    def f(n):
+         # This is a comment
+         return n ** 2
+    ''')
     tree_module = ast.parse(func_as_string)
     recompile(tree_module, 'test_processor.py', 'exec')
 
 
 def test_recompile_no_func():
-    not_a_func = '''
-12 + 12 * 3
-'''
+    not_a_func = dedent('''
+    12 + 12 * 3
+    ''')
     tree_module = ast.parse(not_a_func)
     with raises(TypeError, match='Function body code not found'):
         recompile(tree_module, 'test_processor.py', 'exec')
