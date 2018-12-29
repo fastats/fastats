@@ -3,38 +3,43 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from fastats.maths.ewma import ewma
+from fastats.maths.ewma import ewma, ewma_2d
 
 
-def _validate_results(random_data):
+def _validate_results(random_data, fn=ewma):
     df = pd.DataFrame(random_data)
     pandas_result = df.ewm(halflife=10).mean()
-    ewma_result = ewma(random_data, halflife=10)
+    ewma_result = fn(random_data, halflife=10)
     fast_result = pd.DataFrame(ewma_result)
     pd.testing.assert_frame_equal(pandas_result, fast_result)
 
 
 def test_ewma_1d_array():
-    random_data = np.random.random(100)
+    rng = np.random.RandomState(0)
+    random_data = rng.randn(100)
     _validate_results(random_data)
 
 
-def test_ewma_basic_sanity():
-    random_data = np.random.random((100, 100))
-    _validate_results(random_data)
+@pytest.mark.parametrize('fn', (ewma, ewma_2d))
+def test_ewma_basic_sanity(fn):
+    rng = np.random.RandomState(0)
+    random_data = rng.randn(10_000).reshape(1_000, 10)
+    _validate_results(random_data, fn)
 
 
-def test_bad_halflifes():
+@pytest.mark.parametrize('fn', (ewma, ewma_2d))
+def test_bad_halflifes(fn):
     random_data = np.random.random(100)
     bad_halflifes = [
         np.NaN,
         np.inf,
         -np.inf,
-        -100
+        -100,
+        0,
     ]
     for halflife in bad_halflifes:
         with pytest.raises(AssertionError):
-            ewma(random_data, halflife)
+            fn(random_data, halflife)
 
 
 @pytest.mark.xfail(reason='NaN support to be implemented')
