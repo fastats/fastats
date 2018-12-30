@@ -23,7 +23,7 @@ def test_ewma_1d_array():
 @pytest.mark.parametrize('fn', (ewma, ewma_2d))
 def test_ewma_basic_sanity(fn):
     rng = np.random.RandomState(0)
-    random_data = rng.randn(10_000).reshape(1_000, 10)
+    random_data = rng.randn(10000).reshape(1000, 10)
     _validate_results(random_data, fn)
 
 
