@@ -47,6 +47,7 @@ or eigenvectors.
 - drop_missing : helper function analogous to statsmodels missing='drop' mechanism which allows the user to evict 
 features and observations where one or more data points is not finite such that OLS may then be performed on dense / 
 complete data.
+- EWMA functions for 1D and 2D data sets (dense data / no NaNs)
 
 #### Bug fixes
 
