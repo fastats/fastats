@@ -144,7 +144,6 @@ def test_min_max_scale_parallel_versus_sklearn(A):
         assert np.allclose(expected, output)
 
 
-@mark.xfail(reason='Numba lowering errors due to ddof param')
 @mark.parametrize('A', SKLearnDataSets)
 def test_standard_scale_parallel_versus_sklearn(A):
     data = A.value
@@ -155,7 +154,6 @@ def test_standard_scale_parallel_versus_sklearn(A):
         assert np.allclose(expected, output)
 
 
-@mark.xfail(reason='Numba lowering errors due to ddof param')
 @mark.parametrize('A', SKLearnDataSets)
 def test_standard_scale_parallel_with_bessel_correction_versus_sklearn(A):
     data = A.value
@@ -177,12 +175,11 @@ def test_standard_scale_parallel_with_bessel_correction_versus_sklearn(A):
         assert np.allclose(expected, output)
 
 
-@mark.xfail(reason='Numba lowering errors due to ddof param')
 def test_standard_scale_parallel_raises_if_ddof_ne_0_or_1():
     data = np.arange(20, dtype=float).reshape(2, 10)
 
     for fn in standard_parallel, standard_parallel_jit:
-        with raises(ValueError):
+        with raises(AssertionError):
             _ = fn(data, ddof=-1)
 
 
