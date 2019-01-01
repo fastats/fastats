@@ -5,8 +5,8 @@ from hypothesis.strategies import floats
 from numpy import cos, tan
 from pytest import approx
 
-from fastats.optimise.root_finding import binary_search
-from fastats.optimise.root_finding.binary_search import root
+from fastats.optimise.binary_search import binary_search
+from fastats.optimise.binary_search import root
 
 
 def func(x):

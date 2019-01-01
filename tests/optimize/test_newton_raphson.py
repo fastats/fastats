@@ -4,8 +4,8 @@ from hypothesis.strategies import floats
 from numpy import cos, tan
 from pytest import approx, raises
 
-from fastats.optimise.root_finding import newton_raphson
-from fastats.optimise.root_finding.newton_raphson import root
+from fastats.optimise.newton_raphson import newton_raphson
+from fastats.optimise.newton_raphson import root
 
 
 def func(x):
