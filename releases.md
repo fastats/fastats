@@ -1,3 +1,18 @@
+# 2019.1
+
+Numba requirements changed to be >= 0.41 due to Windows segfaults
+
+#### New features
+
+#### Bug fixes
+
+- Fixed the numba lowering error from the scaling check for `ddof not in (0, 1)`
+
+#### Enhancements
+
+- Now testing all PRs on python 3.5, 3.6 and 3.7 on Linux and Windows, and 3.7-dev on linux
+- Travis CI using Xenial instead of Trusty to get python 3.7 support
+
 # 2018.1
 
 #### New features

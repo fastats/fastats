@@ -12,7 +12,7 @@ A pure Python library for benchmarked, scalable numerics, built using [numba](ht
 
 ---
 
-### Latest Release: 2017.1rc0, get it using ``pip install fastats``
+### Latest Release: 2019.1, get it using ``pip install fastats``
 
 ## Aims/Reasoning
 
