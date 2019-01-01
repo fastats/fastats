@@ -1,3 +1,3 @@
-numba==0.42
+numba>=0.41
 numpy
 scipy

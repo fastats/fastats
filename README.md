@@ -97,8 +97,6 @@ See [setup.py](setup.py) - `install_requires` for installation requirements.
 The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
 development requirements.
 
-**Note**: `fastats` is currently pre-release software and has not been published yet.
-
 ##### Test requirements
 
 For test requirements, take a look at [.travis.yml](.travis.yml) or [.appveyor.yml](.appveyor.yml).
