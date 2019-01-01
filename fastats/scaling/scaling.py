@@ -163,9 +163,7 @@ def standard_parallel(A, ddof=0):
     cases.
     """
     assert A.ndim > 1
-
-    if ddof not in (0, 1):
-        raise ValueError('ddof must be either 0 or 1')
+    assert ddof == 0 or ddof == 1
 
     n = A.shape[1]
     res = empty_like(A, dtype=np_float64)

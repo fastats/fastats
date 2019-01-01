@@ -12,7 +12,7 @@ A pure Python library for benchmarked, scalable numerics, built using [numba](ht
 
 ---
 
-### Latest Release: 2017.1rc0, get it using ``pip install fastats``
+### Latest Release: 2019.1, get it using ``pip install fastats``
 
 ## Aims/Reasoning
 
@@ -96,8 +96,6 @@ See [setup.py](setup.py) - `install_requires` for installation requirements.
 
 The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
 development requirements.
-
-**Note**: `fastats` is currently pre-release software and has not been published yet.
 
 ##### Test requirements
 

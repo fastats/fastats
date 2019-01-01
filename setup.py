@@ -51,7 +51,7 @@ setup_kwargs = dict(
     # For a list of valid classifiers, see
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
@@ -66,6 +66,7 @@ setup_kwargs = dict(
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 
     keywords='algorithmics ast linear-algebra numba numerics',
