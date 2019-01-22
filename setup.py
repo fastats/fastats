@@ -18,6 +18,13 @@ def read_utf8(filename):
         return f.read()
 
 
+def read_reqs(filename):
+    """
+    For a given requirements file, return the lines as a list of strings
+    """
+    with open(filename) as file:
+        return file.readlines()
+
 long_description = read_utf8('README.md')
 
 # import just the _version module, don't pull in any fastats dependencies
@@ -44,7 +51,7 @@ setup_kwargs = dict(
     # For a list of valid classifiers, see
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
 
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
@@ -59,6 +66,7 @@ setup_kwargs = dict(
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 
     keywords='algorithmics ast linear-algebra numba numerics',
@@ -68,20 +76,9 @@ setup_kwargs = dict(
         'pytest-runner',    # to enable pytest for setup.py test via setup.cfg
     ],
 
-    install_requires=[
-        'numba>=0.36.1',
-        'numpy',
-        'scipy',
-    ],
+    install_requires=read_reqs('requirements.txt'),
 
-    tests_require=[
-        'hypothesis',
-        'pytest',
-        'pytest-cov',
-        'scikit-learn',
-        'statsmodels',
-        'setuptools',   # for pkg_resources
-    ],
+    tests_require=read_reqs('requirements-dev.txt'),
 
     extras_require={
         'doc': [    # documentation

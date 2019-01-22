@@ -5,7 +5,7 @@ omit =
     venv*
 
 [report]
-fail_under = 98
+fail_under = 99
 skip_covered = True
 exclude_lines =
     if __name__ == .__main__.:

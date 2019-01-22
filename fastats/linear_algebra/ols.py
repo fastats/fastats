@@ -249,6 +249,42 @@ def f_statistic_no_intercept(A, b):
     return mse_model / mse_resid
 
 
+def drop_missing(A, b):
+    """
+    Returns a filtration of A (features) and b (targets) where all
+    values are finite, with the intention that OLS can then be
+    performed on dense / 'complete' observations.
+
+    This is analogous to the statsmodels missing='drop' mechanism.
+
+    >>> import numpy as np
+    >>> A = np.array([[1, 1.1], [2, np.nan], [3, 3.1], [4, 4.1]])
+    >>> b = np.array([5, 6, 7, 8])
+
+    >>> drop_missing(A, b)
+    (array([[ 1. ,  1.1],
+           [ 3. ,  3.1],
+           [ 4. ,  4.1]]), array([5, 7, 8]))
+    """
+    m = A.shape[0]
+    assert m == len(b)
+
+    A_bar = np.empty_like(A)
+    b_bar = np.empty_like(b)
+
+    ctr = 0
+
+    for i in range(m):
+        feature_row = A[i, :]
+        target = b[i]
+        if np.all(np.isfinite(feature_row)) and np.isfinite(target):
+            A_bar[ctr, :] = feature_row
+            b_bar[ctr] = target
+            ctr += 1
+
+    return A_bar[:ctr, :], b_bar[:ctr]
+
+
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])

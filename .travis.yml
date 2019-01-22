@@ -2,14 +2,16 @@ language: python
 sudo: false
 os:
   - linux
+dist: xenial
 python:
   - 3.5
   - 3.6
-  - 3.6-dev
+  - 3.7
+  - 3.7-dev
 install:
   - pip install -e .[ci_test,doc]
 script:
   - pytest
-#  - sphinx-build docs/source docs/build -W
+  - sphinx-build docs/source docs/build #-W
 after_success:
     - codecov
