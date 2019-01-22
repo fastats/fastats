@@ -1,3 +1,14 @@
+# 2019.2
+
+#### New features
+
+#### Bug fixes
+
+#### Enhancements
+
+- New unit-test for rolling window nanmedian
+
+
 # 2019.1
 
 Numba requirements changed to be >= 0.41 due to Windows segfaults
