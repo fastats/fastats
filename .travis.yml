@@ -18,9 +18,13 @@ env:
 matrix:
   exclude:
     - python: 3.7
-      env: NUMPY=1.14
+      env: NUMPY=1.14 NUMBA=0.41
+    - python: 3.7
+      env: NUMPY=1.14 NUMBA=0.42
     - python: 3.7-dev
-      env: NUMPY=1.14
+      env: NUMPY=1.14 NUMBA=0.41
+    - python: 3.7-dev
+      env: NUMPY=1.14 NUMBA=0.42
 install:
   - pip install -e .[ci_test,doc]
   - pip install numpy==$NUMPY
