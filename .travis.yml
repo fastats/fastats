@@ -17,8 +17,8 @@ env:
   - NUMPY=1.16 NUMBA=0.42
 install:
   - pip install -e .[ci_test,doc]
-  - pip install numpy=$NUMPY
-  - pip install numba=$NUMBA
+  - pip install numpy==$NUMPY
+  - pip install numba==$NUMBA
 script:
   - pytest
   - sphinx-build docs/source docs/build #-W
