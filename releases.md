@@ -7,6 +7,7 @@
 #### Enhancements
 
 - New unit-test for rolling window nanmedian
+- Naive pseudo-inverse implementation (pinv)
 
 
 # 2019.1
@@ -49,7 +50,6 @@ or eigenvectors.
 - binary_search : Root finding using the bisection method
 - Documentation added using sphinx + numpydoc.
 - OLS: f_statistic
-- Pseudo-inverse implementation (pinv)
 - QR: classical and modified Gram Schmidt methods
 - Matrix inverse using adjoint method
 - Matrix determinant
