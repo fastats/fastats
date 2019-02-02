@@ -20,7 +20,7 @@ def pearson(x, y):
     >>> x = np.array([1, 2, 3, 4])
     >>> y = np.array([2, 3, 4, 3])
     >>> pearson(x, y)
-    0.63245553203367588
+    0.6324555320336759
 
     :param x: a `numpy.array` of floats or ints
     :param y: a `numpy.array` of floats or ints

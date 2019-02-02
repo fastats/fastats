@@ -31,9 +31,9 @@ def windowed_pass(x, win):
     >>> x = np.array(range(10), dtype='float')
     >>> result = windowed_pass(x, 5, value=mean)
     >>> result[:6]
-    array([ nan,  nan,  nan,  nan,   2.,   3.])
+    array([nan, nan, nan, nan, 2., 3.])
     >>> result[6:10]
-    array([ 4.,  5.,  6.,  7.])
+    array([4., 5., 6., 7.])
     """
     result = np.full_like(x, np.nan)
     for i in range(win, x.shape[0]+1):

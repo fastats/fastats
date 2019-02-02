@@ -8,7 +8,7 @@ def ewma(x, halflife):
     It is expected that the numbers passed as x will be finite, halflife is
     expected to be a finite, positive number.
     >>> ewma(np.arange(5), halflife=2)
-    array([ 0.        ,  0.58578644,  1.22654092,  1.91911977,  2.65947261])
+    array([0.        , 0.58578644, 1.22654092, 1.91911977, 2.65947261])
     """
     assert np.isfinite(halflife) and halflife > 0
 
