@@ -14,7 +14,10 @@ def check_versus_sklearn(data, fn):
         sk_pca.fit(data)
         expected = sk_pca.transform(data)
         output = fn(data, components=n)
-        assert np.allclose(np.abs(expected), np.abs(output))  # vector could legitimately be in 'opposite' direction
+        # vector could legitimately be in
+        # opposite direction
+        assert np.allclose(np.abs(expected),
+                           np.abs(output))
 
 
 @mark.parametrize('A', SKLearnDataSets)
