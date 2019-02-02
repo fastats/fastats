@@ -48,8 +48,8 @@ or eigenvectors.
 - LU Decomposition
 - binary_search : Root finding using the bisection method
 - Documentation added using sphinx + numpydoc.
-- Pseudo-inverse implementation (pinv)
 - OLS: f_statistic
+- Pseudo-inverse implementation (pinv)
 - QR: classical and modified Gram Schmidt methods
 - Matrix inverse using adjoint method
 - Matrix determinant
