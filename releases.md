@@ -8,6 +8,7 @@ Numpy requirements updated to be >= 1.14
 
 #### Enhancements
 
+- New unit-test for rolling window nanmedian
 - Removed support for numpy < 1.14, and fixed formatting from earlier numpy versions
 
 # 2019.1

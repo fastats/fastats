@@ -168,7 +168,7 @@ so the function also needs to accept an array, not a scalar value.
 
 To change the window from 10 items to 25 items, we would therefore change line 6 above to::
 
-    result = windowed_pass(x, 10, value=mean)
+    result = windowed_pass(x, 25, value=mean)
 
 For a more real-world example, let's take a look at a rolling least-squares regression (OLS) across an array. The OLS
 code will be discussed in the ``linear_algebra`` section later, but for now let's look at how to perform a high-performance
@@ -213,6 +213,18 @@ wrap function::
 This works because the return value from the ``windowed_pass`` function is always the same shape as the input data. As a result
 with the raw input data in two columns, we can support two return values from the inner jitted function. This is however quite
 restrictive, and we will improve this in a future release.
+
+To call a numpy function as a rolling window, you currently need to wrap the numpy call in another function::
+
+    from fastats import windowed_pass
+
+    def nanmean(x):
+        return np.nanmean(x)
+
+    result = windowed_pass(x, 10, value=nanmean)
+
+
+We will work to remove this restriction in a future release.
 
 .. automodule:: fastats.core.windowed_pass
     :members:

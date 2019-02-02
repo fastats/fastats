@@ -1,7 +1,7 @@
 numba>=0.41,<=0.42
 numpy
 scipy
-hypothesis
+hypothesis==3.23.2
 pytest
 pytest-cov
 scikit-learn

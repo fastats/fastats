@@ -114,6 +114,37 @@ def test_windowed_pass_nanmean():
     assert res2[-1] == approx(7.0)
 
 
+def nanmedian(x):
+    return np.nanmedian(x)
+
+
+def test_windowed_pass_nanmedian():
+    raw = [1, 2, 3, np.nan, np.nan, 4, 5, 6, 7, np.nan]
+    data = np.array(raw, dtype='float')
+    assert nanmedian(data) == approx(4.0)
+
+    res = windowed_pass(data, 5, value=nanmedian)
+
+    assert np.all(np.isnan(res[:4]))
+    assert res[4] == approx(2.0)
+    assert res[5] == approx(3.0)
+    assert res[6] == approx(4.0)
+    assert res[7] == approx(5.0)
+    assert res[8] == approx(5.5)
+
+    res2 = windowed_pass(data, 2, value=nanmedian)
+    assert np.isnan(res2[0])
+    assert res2[1] == approx(1.5)
+    assert res2[2] == approx(2.5)
+    assert res2[3] == approx(3.0)
+    assert np.isnan(res2[4])
+    assert res2[5] == approx(4.0)
+    assert res2[6] == approx(4.5)
+    assert res2[7] == approx(5.5)
+    assert res2[8] == approx(6.5)
+    assert res2[9] == approx(7.0)
+
+
 def ols_wrap(x):
     a = x[:, :1]
     b = x[:, 1:]
