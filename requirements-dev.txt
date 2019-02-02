@@ -1,0 +1,12 @@
+numba>=0.41,<=0.42
+numpy
+scipy
+hypothesis==3.23.2
+pytest
+pytest-cov
+scikit-learn
+statsmodels
+setuptools
+mock
+pandas
+patsy
