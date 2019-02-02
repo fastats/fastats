@@ -3,7 +3,6 @@ from unittest import skipIf
 
 import numpy as np
 from numpy.testing import assert_allclose
-from pytest import raises
 
 from fastats.linear_algebra import pinv
 
@@ -65,8 +64,8 @@ def test_pinv_vector():
 
 
 @skipIf(StrictVersion(np.__version__) < StrictVersion('1.15'),
-        """ Numpy 1.14 has different nan-handling here, and gets 
-            the answer wrong. We will be dropping support for 
+        """ Numpy 1.14 has different nan-handling here, and gets
+            the answer wrong. We will be dropping support for
             1.14 shortly, so will just skip for now""")
 def test_pinv_nan():
     a = np.array([[1], [np.nan], [5]])
