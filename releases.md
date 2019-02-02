@@ -1,3 +1,15 @@
+# 2019.2
+
+Numpy requirements updated to be >= 1.14
+
+#### New features
+
+#### Bug fixes
+
+#### Enhancements
+
+- Removed support for numpy < 1.14, and fixed formatting from earlier numpy versions
+
 # 2019.1
 
 Numba requirements changed to be >= 0.41 due to Windows segfaults
