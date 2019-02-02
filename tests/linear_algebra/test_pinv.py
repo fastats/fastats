@@ -1,3 +1,5 @@
+from distutils.version import StrictVersion
+from unittest import skipIf
 
 import numpy as np
 from numpy.testing import assert_allclose
@@ -62,6 +64,10 @@ def test_pinv_vector():
     assert_allclose(np.linalg.pinv(a), result)
 
 
+@skipIf(StrictVersion(np.__version__) < StrictVersion('1.15'),
+        """ Numpy 1.14 has different nan-handling here, and gets 
+            the answer wrong. We will be dropping support for 
+            1.14 shortly, so will just skip for now""")
 def test_pinv_nan():
     a = np.array([[1], [np.nan], [5]])
 
@@ -70,17 +76,6 @@ def test_pinv_nan():
 
     assert_allclose(expected, result, equal_nan=True)
     assert_allclose(np.linalg.pinv(a), result, equal_nan=True)
-
-
-def test_pinv_singular_raises():
-    a = np.array([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ])
-
-    with raises(np.linalg.linalg.LinAlgError):
-        _ = pinv(a)
 
 
 if __name__ == '__main__':
