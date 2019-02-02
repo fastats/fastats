@@ -8,8 +8,27 @@ python:
   - 3.6
   - 3.7
   - 3.7-dev
+env:
+  - NUMPY=1.14 NUMBA=0.41
+  - NUMPY=1.14 NUMBA=0.42
+  - NUMPY=1.15 NUMBA=0.41
+  - NUMPY=1.15 NUMBA=0.42
+  - NUMPY=1.16 NUMBA=0.41
+  - NUMPY=1.16 NUMBA=0.42
+matrix:
+  exclude:
+    - python: 3.7
+      env: NUMPY=1.14 NUMBA=0.41
+    - python: 3.7
+      env: NUMPY=1.14 NUMBA=0.42
+    - python: 3.7-dev
+      env: NUMPY=1.14 NUMBA=0.41
+    - python: 3.7-dev
+      env: NUMPY=1.14 NUMBA=0.42
 install:
   - pip install -e .[ci_test,doc]
+  - pip install numpy==$NUMPY
+  - pip install numba==$NUMBA
 script:
   - pytest
   - sphinx-build docs/source docs/build #-W
