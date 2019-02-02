@@ -24,8 +24,8 @@ def spearman(x, y):
     >>> import numpy as np
     >>> x = np.array([1, 2, 3, 4])
     >>> y = np.array([2, 3, 4, 3])
-    >>> spearman(x, y)  # doctest: +ELLIPSIS
-    0.800000000...
+    >>> spearman(x, y)
+    0.8
 
     :param x: A `numpy.array` of floats or ints
     :param y: A `numpy.array` of floats or ints

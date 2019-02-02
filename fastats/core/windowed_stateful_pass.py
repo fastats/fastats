@@ -54,7 +54,7 @@ def windowed_stateful_pass(x, win):
     >>> x = np.arange(7, dtype='float')
     >>> result = windowed_stateful_pass(x, 4, value=rolling_sum)
     >>> result
-    array([ nan,  nan,  nan,   6.,  10.,  14.,  18.])
+    array([nan, nan, nan, 6., 10., 14., 18.])
     """
     result = np.full_like(x, np.nan)
     state = np.empty(0, dtype=result.dtype)
