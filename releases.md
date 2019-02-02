@@ -1,5 +1,7 @@
 # 2019.2
 
+Numpy requirements updated to be >= 1.14
+
 #### New features
 
 #### Bug fixes
@@ -7,6 +9,7 @@
 #### Enhancements
 
 - New unit-test for rolling window nanmedian
+- Removed support for numpy < 1.14, and fixed formatting from earlier numpy versions
 - Naive pseudo-inverse implementation (pinv)
 
 

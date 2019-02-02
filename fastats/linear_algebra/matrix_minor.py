@@ -11,8 +11,8 @@ def matrix_minor(A, remove_row_idx, remove_col_idx):
     >>> A = np.array([[4, 3, 5], [3, 2, 6], [3, 2, 7]])
     >>> A_inv = matrix_minor(A, 2, 2)
     >>> A_inv
-    array([[ 4.,  3.],
-           [ 3.,  2.]])
+    array([[4., 3.],
+           [3., 2.]])
     """
     m, n = A.shape
     assert m > 1 and n > 1
