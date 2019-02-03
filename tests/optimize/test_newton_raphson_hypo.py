@@ -4,7 +4,7 @@ from hypothesis.strategies import floats
 from numpy import cos
 from pytest import approx
 
-from fastats.optimise.root_finding import newton_raphson
+from fastats.optimise.newton_raphson import newton_raphson
 
 
 def func(x):
