@@ -1,7 +1,8 @@
 
 from pytest import approx
 
-from fastats.maths import beta_pdf
+from fastats.maths.beta_pdf import beta_pdf
+
 
 def test_beta_pdf():
 	assert beta_pdf(0.1, 2, 5) == approx(1.968300037)
@@ -13,5 +14,5 @@ def test_beta_pdf():
 
 
 if __name__ == '__main__':
-    import pytest
-    pytest.main([__file__])
+	import pytest
+	pytest.main([__file__])
