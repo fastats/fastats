@@ -1,30 +1,27 @@
 
-from numpy import power, sqrt
-from fastats.maths import Gamma
+from numpy import power, sqrt, pi
+from fastats.maths.gamma import gamma
+
 
 def t_pdf(x, nu):
-	"""
-	Student-T Distribution Probability
-	Density Function.
+    """
+    Student-t distribution Probability
+    Density Function.
 
-	PDF across `x` for a beta distribution with degrees of
-	freedom `nu`.
+    PDF across `x` for a t distribution
+    with degrees of freed `nu`.
 
-	It is expected that x be a real number, and that nu
-	be a positive real number.
-
-	>>> t_pdf(x=0.56, nu=5)
-	0.3796067...
-	>>>> t_pdf(x=-5, nu=2) # symmetrical
-	0.0071277...
-	>>> t_pdf(x=5, nu=2) # symmetrical
-	0.0071277...
-	"""
-
-    u = Gamma(0.5*(nu + 1))
-    v1 = sqrt(nu*pi)*Gamma(0.5*nu)
-    v2 = power(1 + power(x,2)/nu, 0.5*(nu + 1))
-    out = u/(v1*v2)
+    >>> t_pdf(0.56, 5)
+    0.3162840947898818
+    >>> t_pdf(-5, 2)
+    0.007127781101036206
+    >>> t_pdf(5, 2)
+    0.007127781101036206
+    """
+    u = gamma(0.5 * (nu + 1))
+    v1 = sqrt(nu * pi) * gamma(0.5 * nu)
+    v2 = power(1 + power(x, 2) / nu, 0.5 * (nu + 1))
+    out = u / (v1 * v2)
     return out
 
 

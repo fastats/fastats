@@ -1,30 +1,27 @@
 
 from numpy import power
-from fastats.maths import Gamma
+from fastats.maths.gamma import gamma
 
 
 def beta_pdf(x, alpha, beta):
-	"""
-	Beta Distribution Probability
-	Density Function.
+    """
+    Beta distribution Probability
+    Density Function.
 
-	PDF across `x` for a beta distribution with parameters
-	`alpha` and `beta`.
+    PDF across `x` for a beta
+    distribution with parameters
+    `alpha` and `beta`.
 
-	It is expected that x be in the range 0<x<1 and
-	parameters alpha and beta both be greater than 0.
-
-	>>> beta_pdf(x=0.56, alpha=1.2, beta=3.4)
-	0.6068862...
-	>>>> beta_pdf(x=0.2, alpha=2, beta=2) # symmetrical
-	0.9600000...
-	>>> beta_pdf(x=0.8, alpha=2, beta=2) # symmetrical
-	0.9600000...
-	"""
-
-    u = Gamma(alpha + beta)*power(1 - x, beta - 1)*power(x, alpha - 1)
-    v = Gamma(alpha)*Gamma(beta)
-    out = u/v
+    >>> beta_pdf(0.56, 1.2, 3.4) # doctest: +ELLIPSIS
+    0.606886294679549...
+    >>> beta_pdf(0.2, 2, 2)
+    0.9600000335418806
+    >>> beta_pdf(0.8, 2, 2)
+    0.9600000335418805
+    """
+    u = gamma(alpha + beta) * power(1 - x, beta - 1) * power(x, alpha - 1)
+    v = gamma(alpha) * gamma(beta)
+    out = u / v
     return out
 
 
