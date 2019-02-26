@@ -1,6 +1,6 @@
 
 from hypothesis import given, assume
-from hypothesis.strategies import floats
+from hypothesis.strategies import floats, settings
 from numpy import cos
 from pytest import approx
 
@@ -43,6 +43,7 @@ nr_cos = newton_raphson(0.5, 1e-6, root=cos_func, return_callable=True)
 
 
 @given(floats(min_value=0.3, max_value=0.8))
+@settings(deadline=None)
 def test_cos_minus_2x(x):
     value = nr_cos(x, 1e-6)
     assert less_or_equal(value, compared_to=cos_func(x))
