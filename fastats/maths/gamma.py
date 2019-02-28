@@ -18,12 +18,12 @@ def _gammaln_weier(z):
     
     Uses the Weierstrass series. Specifically given in Abramowitz 6.1.41 (Tenth printing)
     
-    >>> _gammaln_weier(8.01)
-    8.54532442974174
-    >>> _gammaln_weier(4.71)
-    2.750791224024592
-    >>> _gammaln_weier(55.001)
-    164.32411048709804
+    >>> _gammaln_weier(8.01) # doctest: +ELLIPSIS
+    8.54532442974...
+    >>> _gammaln_weier(4.71) # doctest: +ELLIPSIS
+    2.75079122402...
+    >>> _gammaln_weier(55.001) # doctest: +ELLIPSIS
+    164.32411048709...
     """
     assert z > 0.
 
@@ -41,12 +41,12 @@ def _reciprocal_gamma(z):
     
     Works very well for z < 3.
     
-    >>> _reciprocal_gamma(2)
-    1.0000000188842577
+    >>> _reciprocal_gamma(2) # doctest: +ELLIPSIS
+    1.00000001888...
     >>> _reciprocal_gamma(1.414) # doctest: +ELLIPSIS
-    1.127916654309146...
-    >>> _reciprocal_gamma(0.0731)
-    0.07592735941730301
+    1.12791665430...
+    >>> _reciprocal_gamma(0.0731) # doctest: +ELLIPSIS
+    0.07592735941...
     """
     assert z > 0.
 
@@ -64,12 +64,12 @@ def gamma(z):
     This function uses the two gamma functions with minimum
     error, which will be demonstrated below.
 
-    >>> gamma(7.1)
-    868.9568587853641
+    >>> gamma(7.1) # doctest: +ELLIPSIS
+    868.95685878536...
     >>> gamma(0.99) # doctest: +ELLIPSIS
-    1.005871979644107...
-    >>> gamma(87)
-    2.4227095383671897e+130
+    1.0058719796441...
+    >>> gamma(13.8) # doctest: +ELLIPSIS
+    3705442052.278129...
     """
     assert z > 0.
 
