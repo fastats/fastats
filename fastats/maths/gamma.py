@@ -18,8 +18,8 @@ def _gammaln_weier(z):
     
     Uses the Weierstrass series. Specifically given in Abramowitz 6.1.41 (Tenth printing)
     
-    >>> _gammaln_weier(10)
-    12.801827480080647
+    >>> _gammaln_weier(8.01)
+    8.54532442974174
     >>> _gammaln_weier(4.71)
     2.750791224024592
     >>> _gammaln_weier(55.001)
@@ -64,8 +64,8 @@ def gamma(z):
     This function uses the two gamma functions with minimum
     error, which will be demonstrated below.
 
-    >>> gamma(10)
-    362879.99999970134
+    >>> gamma(7.1)
+    868.9568587853641
     >>> gamma(0.99) # doctest: +ELLIPSIS
     1.005871979644107...
     >>> gamma(87)
