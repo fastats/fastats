@@ -61,7 +61,7 @@ install:
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
   # Install dependencies
-  - "conda install -y numpy"   # fix statsmodels install failing on windows when no numpy installed yet
+  - "conda install -y 'numpy>=1.14'"   # fix statsmodels install failing on windows when no numpy installed yet
   - "pip install -e .[ci_test]"
 
 # Ignore the MSBuild nonsense
