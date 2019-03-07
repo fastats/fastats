@@ -19,13 +19,12 @@ def gammaln(z):
     Log Gamma function.
 
     Returns Log of the Gamma function for
-    all `z` > 0; gammaln(z) = (z-1)!
+    all `z` > 0; gammaln(z) = log( (z-1)! )
 
     It is expected that all inputs
     are greater than zero.
 
     Given in Numerical Recipes 6.1
-
 
     >>> gammaln(4) # doctest: +ELLIPSIS
     1.79175946922805...
@@ -35,6 +34,7 @@ def gammaln(z):
     291.32395009427034
     """
     assert np.greater(z, 0), "Values must be greater than zero!"
+
     y = z
     tmp = z + 5.24218750000000000
     tmp = (z + 0.5) * log(tmp) - tmp
