@@ -1,6 +1,6 @@
 
-from numpy import power, sqrt, pi
-from fastats.maths.gamma import gamma
+from numpy import exp, power, sqrt, pi
+from fastats.maths.gamma import gammaln
 
 
 def t_pdf(x, nu):
@@ -11,17 +11,17 @@ def t_pdf(x, nu):
     PDF across `x` for a t distribution
     with degrees of freed `nu`.
 
-    >>> t_pdf(0.56, 5)
-    0.3162840947898818
-    >>> t_pdf(-5, 2)
-    0.007127781101036206
-    >>> t_pdf(5, 2)
-    0.007127781101036206
+    >>> t_pdf(0.56, 5) # doctest: +ELLIPSIS
+    0.316284053187681...
+    >>> t_pdf(-5, 2) # doctest: +ELLIPSIS
+    0.007127781101106...
+    >>> t_pdf(5, 2) # doctest: +ELLIPSIS
+    0.007127781101106...
     """
-    u = gamma(0.5 * (nu + 1))
-    v1 = sqrt(nu * pi) * gamma(0.5 * nu)
-    v2 = power(1 + power(x, 2) / nu, 0.5 * (nu + 1))
-    out = u / (v1 * v2)
+    u = gammaln(0.5 * (nu + 1)) - gammaln(0.5 * nu)
+    u = exp(u)
+    v = sqrt(nu * pi) * power(1 + power(x, 2) / nu, 0.5 * (nu + 1))
+    out = u / v
     return out
 
 
