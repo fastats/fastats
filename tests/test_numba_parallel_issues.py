@@ -1,7 +1,7 @@
 
 import sys
 
-from hypothesis import given
+from hypothesis import given, settings
 from hypothesis.strategies import integers
 
 from numba import jit
@@ -20,6 +20,7 @@ get_jit = jit(nopython=True, parallel=parallel)(get)
 
 
 @given(integers(min_value=10, max_value=100000))
+@settings(deadline=None)
 def test_all_ones(x):
     """
     We found one of the scaling tests failing on
