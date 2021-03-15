@@ -1,4 +1,4 @@
-numba>=0.41,<0.43
+numba>=0.41,<0.54
 numpy>=1.14
 scipy
 hypothesis==4.18.3
