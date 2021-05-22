@@ -4,29 +4,22 @@ os:
   - linux
 dist: xenial
 python:
-  - 3.5
   - 3.6
   - 3.7
-  - 3.7-dev
+  - 3.8
+  - 3.9
 env:
-  - NUMPY=1.14 NUMBA=0.41
-  - NUMPY=1.14 NUMBA=0.42
-  - NUMPY=1.15 NUMBA=0.41
-  - NUMPY=1.15 NUMBA=0.42
-  - NUMPY=1.16 NUMBA=0.41
-  - NUMPY=1.16 NUMBA=0.42
+  - NUMPY=1.15 NUMBA=0.48
+  - NUMPY=1.15 NUMBA=0.49
+  - NUMPY=1.15 NUMBA=0.50
+  - NUMPY=1.16 NUMBA=0.48
+  - NUMPY=1.16 NUMBA=0.49
+  - NUMPY=1.16 NUMBA=0.50
+  - NUMPY=1.18 NUMBA=0.52
 matrix:
   exclude:
-    - python: 3.7
-      env: NUMPY=1.15 NUMBA=0.48
-    - python: 3.7
-      env: NUMPY=1.16 NUMBA=0.49
-    - python: 3.8
-      env: NUMPY=1.17 NUMBA=0.52
-    - python: 3.8
+    - python: 3.6
       env: NUMPY=1.18 NUMBA=0.52
-    - python: 3.9
-      env: NUMPY=1.20 NUMBA=0.53
 install:
   - pip install -e .[ci_test,doc]
   - pip install numpy==$NUMPY
