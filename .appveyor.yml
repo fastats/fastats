@@ -4,11 +4,19 @@ skip_branch_with_pr: false
 environment:
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # /E:ON and /V:ON options are not enabled in the batch script interpreter
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
+    - MINICONDA: "C:\\Miniconda38"
+      CONDA_ENV_NAME: test_py_38_32bit
+      CONDA_PYTHON: "python=3.8"
+
+    - MINICONDA: "C:\\Miniconda38-x64"
+      CONDA_ENV_NAME: test_py_38_64bit
+      CONDA_PYTHON: "python=3.8"
+
     - MINICONDA: "C:\\Miniconda37"
       CONDA_ENV_NAME: test_py_37_32bit
       CONDA_PYTHON: "python=3.7"
@@ -25,13 +33,6 @@ environment:
       CONDA_ENV_NAME: test_py_36_64bit
       CONDA_PYTHON: "python=3.6"
 
-    - MINICONDA: "C:\\Miniconda35"
-      CONDA_ENV_NAME: test_py_35_32bit
-      CONDA_PYTHON: "python=3.5"
-
-    - MINICONDA: "C:\\Miniconda35-x64"
-      CONDA_ENV_NAME: test_py_35_64bit
-      CONDA_PYTHON: "python=3.5"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
