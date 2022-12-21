@@ -90,16 +90,16 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 #### Requirements
 
-Python >= 3.5 only.  Python 3.6 or newer is strongly recommended.
-
-See [setup.py](setup.py) - `install_requires` for installation requirements.
+This project is managed using the `poetry` library; all dependencies are specified in `pyproject.toml`.
 
 The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
 development requirements.
 
-##### Test requirements
+#### Running the tests
 
-For test requirements, take a look at [.travis.yml](.travis.yml) or [.appveyor.yml](.appveyor.yml).
+Run `poetry run pytest` from the top-level of the repository.
+
+To install `poetry`, you can use `pip install poetry` then `poetry install`.
 
 #### Contributing
 

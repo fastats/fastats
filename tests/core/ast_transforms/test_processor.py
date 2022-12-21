@@ -1,6 +1,6 @@
 
 import ast
-from collections import Iterable
+from collections.abc import Iterable
 from textwrap import dedent
 
 from pytest import raises
