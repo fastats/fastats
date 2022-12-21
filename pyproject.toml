@@ -6,7 +6,7 @@ authors = ["Dave Willmer <dave.willmer@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/fastats/fastats"
-exclude = "*.ipynb"
+exclude = ["*.ipynb"]
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11"
