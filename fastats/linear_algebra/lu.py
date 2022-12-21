@@ -94,6 +94,18 @@ def lu(A):
 def lu_compact(A):
     """
     This performs LU Decomposition on `A`
+
+    Example
+    -------
+    >>> import numpy as np
+    >>> A = np.array([[4, 3], [6, 3]], dtype=np.float32)
+    >>> L, U = lu(A)
+    >>> L
+    array([[ 1. , -0. ],
+           [ 1.5,  1. ]], dtype=float32)
+    >>> U
+    array([[ 4. ,  3. ],
+           [ 0. , -1.5]], dtype=float32)
     """
     assert A.shape[0] == A.shape[1]
 

@@ -92,6 +92,8 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 This project is managed using the `poetry` library; all dependencies are specified in `pyproject.toml`.
 
+Run `pip install poetry` then `poetry install` to get the correct development environment.
+
 The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
 development requirements.
 
