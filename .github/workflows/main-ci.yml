@@ -1,0 +1,14 @@
+name: CI
+run-name: CI
+on: [push]
+jobs:
+  run-ci-py38:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+      - uses: SG60/setup-poetry@v1
+      - run: poetry install
+      - run: poetry run pytest
