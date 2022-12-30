@@ -9,7 +9,6 @@ def inv(A):
     """
     Returns the inverse of A using the adjoint method.
 
-    >>> import numpy as np
     >>> A = np.array([[4, 3], [3, 2]])
     >>> A_inv = inv(A)
     >>> A_inv

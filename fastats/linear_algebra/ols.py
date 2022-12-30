@@ -257,7 +257,6 @@ def drop_missing(A, b):
 
     This is analogous to the statsmodels missing='drop' mechanism.
 
-    >>> import numpy as np
     >>> A = np.array([[1, 1.1], [2, np.nan], [3, 3.1], [4, 4.1]])
     >>> b = np.array([5, 6, 7, 8])
 

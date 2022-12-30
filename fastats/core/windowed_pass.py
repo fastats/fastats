@@ -25,7 +25,6 @@ def windowed_pass(x, win):
     Example
     -------
 
-    >>> import numpy as np
     >>> def mean(x):
     ...     return np.sum(x) / x.size
     >>> x = np.array(range(10), dtype='float')

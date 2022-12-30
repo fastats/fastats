@@ -26,7 +26,6 @@ def lu_inplace(A, L, U):
     This is the example from wikipedia:
     https://en.wikipedia.org/wiki/LU_decomposition
 
-    >>> import numpy as np
     >>> A = np.array([[4, 3], [6, 3]], dtype=np.float32)
     >>> L, U = np.zeros_like(A), np.zeros_like(A)
     >>> lu_inplace(A, L, U)
@@ -74,7 +73,6 @@ def lu(A):
     This is the example from wikipedia:
     https://en.wikipedia.org/wiki/LU_decomposition
 
-    >>> import numpy as np
     >>> A = np.array([[4, 3], [6, 3]], dtype=np.float32)
     >>> L, U = lu(A)
     >>> L
@@ -97,7 +95,6 @@ def lu_compact(A):
 
     Example
     -------
-    >>> import numpy as np
     >>> A = np.array([[4, 3], [6, 3]], dtype=np.float32)
     >>> L, U = lu(A)
     >>> L

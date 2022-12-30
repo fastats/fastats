@@ -44,7 +44,6 @@ def windowed_stateful_pass(x, win):
 
     Example
     -------
-    >>> import numpy as np
     >>> def rolling_sum(x, val_in, val_out, state):
     ...     if state.size == 0:   # state is empty
     ...         state = np.array([np.sum(x)], dtype=x.dtype)

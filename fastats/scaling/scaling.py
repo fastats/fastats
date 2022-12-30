@@ -124,7 +124,6 @@ def shrink_off_diagonals(A, shrinkage_factor):
 
     Example usage:
 
-    >>> import numpy as np
     >>> A = np.array([[1.1, 0.9, 0.8], [0.9, 1.2, 0.9], [0.8, 0.9, 1.3]])
     >>> shrink_off_diagonals(A, 0.1)
     array([[1.1 , 0.09, 0.08],
