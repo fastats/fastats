@@ -1,5 +1,0 @@
-include LICENSE
-include README.md
-include releases.md
-
-global-exclude *.ipynb

@@ -1,3 +1,19 @@
+# 2023.1
+
+Major update/re-work of build and install system.
+
+#### Bug fixes
+
+- Removed deprecation warning by changing `Iterable` import to be from `collections.abc`
+
+#### Enhancements
+
+- Moved build/install system to use `poetry` instead of raw `pip` commands
+- Removed official support for python 3.7 and below
+- Numpy supported versions now >= 1.20.3
+- Numba supported versions now >= 0.55.0
+- To run tests use `poetry run pytest`
+
 # 2019.2
 
 Numpy requirements updated to be >= 1.14

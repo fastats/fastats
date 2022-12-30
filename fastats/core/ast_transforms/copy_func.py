@@ -15,7 +15,6 @@ def copy_func(f, new_funcs):
     True
     >>> f(1, 2, 3) == g(1, 2, 3)
     True
-    >>> import numpy as np
     >>> isinstance(np.sin, np.ufunc)
     True
     >>> copy_func(np.sin, {})

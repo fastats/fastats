@@ -3,7 +3,7 @@ from inspect import isbuiltin, isfunction
 from types import MappingProxyType
 
 from numba import jit
-from numba.targets.registry import CPUDispatcher
+from numba.core.target_extension import CPUDispatcher
 
 
 JIT_KWARGS = MappingProxyType({

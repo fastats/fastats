@@ -12,3 +12,23 @@ jobs:
       - uses: SG60/setup-poetry@v1
       - run: poetry install
       - run: poetry run pytest
+  run-ci-py39:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - uses: SG60/setup-poetry@v1
+      - run: poetry install
+      - run: poetry run pytest
+  run-ci-py310:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - uses: SG60/setup-poetry@v1
+      - run: poetry install
+      - run: poetry run pytest

@@ -6,7 +6,6 @@ def det(A):
     """
     Returns the determinant of A.
 
-    >>> import numpy as np
     >>> A = np.array([[4, 3], [3, 2]], dtype=np.float32)
     >>> det(A)
     -1.0

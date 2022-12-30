@@ -1,6 +1,4 @@
 # fastats
-[![Build Status](https://travis-ci.org/fastats/fastats.svg?branch=master)](https://travis-ci.org/fastats/fastats)
-[![Build Status (windows)](https://ci.appveyor.com/api/projects/status/9ufvyclit358sfb8/branch/master?svg=true)](https://ci.appveyor.com/project/pawroman/fastats/branch/master)
 [![codecov](https://codecov.io/gh/fastats/fastats/branch/master/graph/badge.svg)](https://codecov.io/gh/fastats/fastats)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2199521147834d58b9f0e8e155c97309)](https://www.codacy.com/app/dave.willmer/fastats?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fastats/fastats&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -90,16 +88,18 @@ C-extensions to high-level languages are necessarily limited by the defined API 
 
 #### Requirements
 
-Python >= 3.5 only.  Python 3.6 or newer is strongly recommended.
+This project is managed using the `poetry` library; all dependencies are specified in `pyproject.toml`.
 
-See [setup.py](setup.py) - `install_requires` for installation requirements.
+Run `pip install poetry` then `poetry install` to get the correct development environment.
 
 The [contribution guide](.github/CONTRIBUTING.md) contains information on how to install
 development requirements.
 
-##### Test requirements
+#### Running the tests
 
-For test requirements, take a look at [.travis.yml](.travis.yml) or [.appveyor.yml](.appveyor.yml).
+Run `poetry run pytest` from the top-level of the repository.
+
+To install `poetry`, you can use `pip install poetry` then `poetry install`.
 
 #### Contributing
 

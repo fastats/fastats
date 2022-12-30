@@ -3,5 +3,5 @@
 # including setup, packaging, documentation generation etc.
 #
 # Normally, this should be available as fastats.__version__
-VERSION = '2019.1'
+VERSION = '2022.x'
 

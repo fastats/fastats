@@ -91,3 +91,6 @@ ENV/
 
 # PyCharm/JetBrains IDE settings
 .idea
+
+# LiteXL IDE Settings
+.lite_project.lua

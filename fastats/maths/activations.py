@@ -19,7 +19,6 @@ def relu(x):
     0
     >>> relu(0.0)
     0.0
-    >>> import numpy as np
     >>> relu(np.nan)   # NaN should work just fine
     nan
     """
@@ -41,7 +40,6 @@ def softplus(x):
     100.0...
     >>> softplus(0)  # doctest: +ELLIPSIS
     0.6931471...
-    >>> import numpy as np
     >>> softplus(np.nan)   # NaN should work just fine
     nan
     """

@@ -7,7 +7,6 @@ def matrix_minor(A, remove_row_idx, remove_col_idx):
     Returns a minor matrix, cut down from A by removing
     one of its rows and one of its columns.
 
-    >>> import numpy as np
     >>> A = np.array([[4, 3, 5], [3, 2, 6], [3, 2, 7]])
     >>> A_inv = matrix_minor(A, 2, 2)
     >>> A_inv
